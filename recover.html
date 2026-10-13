@@ -1,58 +1,88 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#09171b">
-  <meta name="description" content="Read public Arkiv manifests directly and verify service recovery endpoints against a pinned publisher wallet.">
-  <title>RelayLine — Independent Recovery</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#091715">
+  <meta name="description" content="Find a trusted recovery address for a website directly from Arkiv, without a wallet or RelayLine's publisher backend.">
+  <title>RelayLine — Find a trusted recovery route</title>
 </head>
 <body>
-<div class="app-shell">
-  <aside class="sidebar">
-    <a class="brand" href="https://relayline-beta.vercel.app/"><span class="logo-mark">R<span>↗</span></span><span>relayline<small>THE OPEN CONTINUITY NETWORK</small></span></a>
-    <div class="side-section"><span class="side-label">WORKSPACE</span>
-      <a class="nav-item" href="https://relayline-beta.vercel.app/"><span>◈</span> Publisher console ↗</a>
-      <a class="nav-item selected" href="/recover.html"><span>↗</span> Independent reader</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-container">
+      <a class="brand" href="https://relayline-beta.vercel.app/" aria-label="RelayLine publisher site"><span class="brand-symbol" aria-hidden="true"><i data-lucide="network"></i></span><span class="brand-name">relayline<span class="brand-dot">.</span></span></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a href="https://relayline-beta.vercel.app/"><i data-lucide="layout-dashboard"></i><span>Publisher</span></a>
+        <a href="/" aria-current="page"><i data-lucide="compass"></i><span>Find a service</span></a>
+        <a class="nav-docs" href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer"><i data-lucide="github"></i><span>Open source</span></a>
+      </nav>
+      <span class="network-badge" title="The reader queries the Arkiv Tiramisu testnet directly"><span class="pulse"></span><span>Independent reader</span></span>
     </div>
-    <div class="side-section"><span class="side-label">DEVELOPER</span>
-      <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://github.com/victorkay97/RelayLine"><span>⌘</span> GitHub repository ↗</a>
-      <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://github.com/victorkay97/RelayLine/blob/main/arkiv/schema.md"><span>◇</span> Data contract ↗</a>
-    </div>
-    <div class="side-bottom"><div class="online-badge">● &nbsp;INDEPENDENT BY DESIGN</div><p>This reader does not call a RelayLine application server.</p><span class="version">v0.1 · direct Arkiv access</span></div>
-  </aside>
-  <main class="main">
-    <header class="topbar"><span><span class="crumb-muted">RelayLine</span> / Independent reader</span><div class="top-right"><span class="testnet-pill">TIRAMISU · TESTNET</span><span class="wallet-text">NO WALLET REQUIRED</span></div></header>
-    <div class="content">
-      <div class="hero-area hero-reader">
-        <div class="eyebrow"><span class="tiny-diamond">◆</span> RECOVERY PROTOCOL / 002</div>
-        <h1>When the lights go out,<br><em>the path stays visible.</em></h1>
-        <p class="hero-subtitle">Verify a publisher's recovery information independently. This page queries Arkiv directly and never asks for access to your wallet.</p>
+  </header>
+  <main id="main" class="page-shell">
+    <section class="hero hero-reader" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-line"></span> INDEPENDENT SERVICE RECOVERY</span>
+        <h1 id="page-title">Find the way back.<br><span class="heading-soft">Even when the usual<br class="desktop-break"> route disappears.</span></h1>
+        <p>If a website is unavailable, find recovery destinations authorized by its real publisher. No RelayLine account, backend or wallet required to read.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#recovery-workspace">Find a service <i data-lucide="arrow-right"></i></a><a class="btn btn-link" href="https://relayline-beta.vercel.app/">Protect your website <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="hero-note"><i data-lucide="shield-check"></i><span>Identity first. Never trust a shared recovery link on its own.</span></div>
       </div>
-      <div class="reader-intro"><span class="ping"></span><div><strong>Direct-to-Arkiv verification</strong><p>No RelayLine API, proxy or centralized index. Results come from the public Tiramisu network and are filtered against a locally pinned publisher wallet.</p></div></div>
-      <section class="section-grid">
-        <div class="section-heading"><div class="eyebrow">01 / ESTABLISH TRUST</div><h2>Know who you're<br>recovering.</h2>
-          <p>Two services can claim the same name. A trustworthy recovery client must know the publisher wallet it expects before accepting an endpoint.</p>
-          <div class="notice"><strong>Publisher wallet pinning</strong><p>Obtain the address from an independently authenticated channel, such as the organization's verified website while it is online. An address embedded in a shared recovery URL is not itself evidence of authenticity.</p></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="eyebrow">RECOVERY QUERY</div><h3>Inspect a service</h3></div><span class="status-flag">READ ONLY</span></div>
-          <form id="recovery-form" autocomplete="off">
-            <div class="form-row"><label for="recovery-service">Service identifier</label><input id="recovery-service" required maxlength="63" placeholder="e.g. independent-journal"></div>
-            <div class="form-row"><label for="recovery-publisher">Expected publisher wallet</label><input id="recovery-publisher" required placeholder="0x… (40-character Ethereum address)" spellcheck="false"></div>
-            <div class="form-row"><label for="trusted-monitors">Optional trusted monitor wallets <span>COMMA-SEPARATED · QUORUM 2</span></label><input id="trusted-monitors" placeholder="0x… , 0x… (independently verified)" spellcheck="false"><p class="helper">Availability is unknown without independent monitor signatures. This field never controls which endpoints are authorized.</p></div>
-            <div class="trust-actions"><button id="pin-publisher" type="button" class="button button-secondary">Pin authenticated publisher</button><button id="clear-pin" type="button" class="text-button">Forget pinned identity</button></div>
-            <p id="pin-status" class="message" data-kind="neutral">No locally pinned wallet.</p>
-            <div class="form-footer"><span>Public records only · no wallet prompts</span><button class="button button-primary" type="submit">Query Arkiv ↗</button></div>
+      <div class="reader-visual" aria-label="Summary of independent recovery verification">
+        <div class="visual-topline"><span>RECOVERY / TRUST FLOW</span><span class="preview-tag">Read only</span></div>
+        <div class="trust-flow"><span class="flow-number">01</span><span class="flow-icon"><i data-lucide="fingerprint"></i></span><div><strong>Confirm the publisher</strong><small>Use an independently authenticated wallet address</small></div></div>
+        <div class="flow-divider"></div>
+        <div class="trust-flow"><span class="flow-number">02</span><span class="flow-icon"><i data-lucide="database"></i></span><div><strong>Read Arkiv directly</strong><small>Verify real on-chain creator and current record</small></div></div>
+        <div class="flow-divider"></div>
+        <div class="trust-flow"><span class="flow-number">03</span><span class="flow-icon"><i data-lucide="external-link"></i></span><div><strong>Choose an authorized route</strong><small>See endpoints without invented availability claims</small></div></div>
+        <div class="visual-footer"><i data-lucide="lock-keyhole"></i><span>Separate deployment. Shared open protocol.</span></div>
+      </div>
+    </section>
+    <section class="value-strip" aria-label="Reader guarantees">
+      <div><i data-lucide="shield-check"></i><span><strong>Verify the signer</strong><small>Not a website's claimed name</small></span></div>
+      <div><i data-lucide="globe-2"></i><span><strong>Read directly</strong><small>Public Arkiv, no RelayLine API</small></span></div>
+      <div><i data-lucide="key-round"></i><span><strong>No wallet needed</strong><small>Browse securely without signing</small></span></div>
+    </section>
+    <section id="recovery-workspace" class="setup-section reader-setup" aria-labelledby="find-title">
+      <div class="section-heading"><div><span class="eyebrow"><span class="eyebrow-line"></span> RECOVERY WORKSPACE</span><h2 id="find-title">Verify a service's safe route.</h2><p>Start with a service name and a publisher wallet you trust. We'll check the live public record and show exactly what we know.</p></div><div class="status-hint"><i data-lucide="lock-keyhole"></i><span>Wallet-free · Direct query</span></div></div>
+      <div class="setup-grid">
+        <aside class="journey-panel">
+          <ol class="journey-list">
+            <li class="current"><span class="journey-count">01</span><span><strong>Identify the service</strong><small>Use its registered short ID</small></span></li>
+            <li class="current"><span class="journey-count">02</span><span><strong>Verify its publisher</strong><small>Pin a wallet from a trusted source</small></span></li>
+            <li><span class="journey-count">03</span><span><strong>See recovery options</strong><small>Inspect current authorized links</small></span></li>
+          </ol>
+          <div class="side-info"><i data-lucide="shield-alert"></i><div><strong>Why pin a wallet?</strong><p>Anyone can publish the same service name. Only a wallet you've verified independently can establish who is authorized.</p><a href="https://github.com/victorkay97/RelayLine/blob/main/docs/PROTOCOL.md" target="_blank" rel="noopener noreferrer">Learn about verification <i data-lucide="arrow-up-right"></i></a></div></div>
+        </aside>
+        <div class="form-card reader-card">
+          <div class="form-card-top"><span class="overline">IDENTITY & DISCOVERY</span><span class="testnet-tag"><i data-lucide="network"></i> Arkiv public RPC</span></div>
+          <form id="recovery-form" novalidate>
+            <fieldset class="wizard-step">
+              <legend>Which service are you looking for?</legend><p class="step-description">Enter the service ID and the publisher wallet you obtained from a trusted channel—not from a random recovery link.</p>
+              <div class="field"><label for="recovery-service">Service ID <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="search"></i><input id="recovery-service" required maxlength="63" pattern="[a-z0-9][a-z0-9_-]{0,62}" autocomplete="off" placeholder="e.g. the-daily-brief" spellcheck="false" aria-describedby="reader-service-help"></div><p class="field-help" id="reader-service-help">The short identifier assigned by the publisher.</p></div>
+              <div class="field"><label for="recovery-publisher">Trusted publisher wallet <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="fingerprint"></i><input id="recovery-publisher" required placeholder="0x... 40-character address" spellcheck="false" autocomplete="off" aria-describedby="reader-wallet-help"></div><p class="field-help" id="reader-wallet-help">Confirm this address from the publisher's authentic channel before trusting it.</p></div>
+              <div class="trusted-box">
+                <div class="trusted-heading"><i data-lucide="shield-check"></i><strong>Locally trusted identity</strong></div>
+                <p id="pin-status" class="subtle-msg" role="status" aria-live="polite">No publisher pinned yet.</p>
+                <div class="trusted-actions"><button id="pin-publisher" type="button" class="btn btn-outline"><i data-lucide="key-round"></i> Pin trusted publisher</button><button id="clear-pin" type="button" class="btn btn-text"><i data-lucide="rotate-cw"></i> Reset trust</button></div>
+              </div>
+              <details class="advanced-options"><summary><i data-lucide="settings-2"></i><span>Advanced verification options</span><i data-lucide="chevron-right" class="disclosure-arrow"></i></summary>
+                <div class="advanced-content"><label for="trusted-monitors">Independent monitor wallets (optional)</label><input id="trusted-monitors" placeholder="0x… , 0x… (comma-separated)" spellcheck="false" autocomplete="off"><p class="field-help">Only monitors you independently trust. Two agreeing wallets are required to report reachability; otherwise status remains unknown.</p></div>
+              </details>
+              <div class="step-actions"><span class="step-indicator">No account or wallet connection required</span><button class="btn btn-primary" id="query-service" type="submit">Verify and find routes <i data-lucide="arrow-right"></i></button></div>
+            </fieldset>
           </form>
-          <p id="recovery-status" role="status" class="message" data-kind="neutral">Ready for an independently authenticated publisher.</p>
-          <div id="recovery-result" hidden class="evidence recovery-output"></div>
+          <p id="recovery-status" class="form-message" role="status" aria-live="polite" data-kind="neutral">Ready when you are. Identity verification happens in your browser.</p>
+          <section id="recovery-result" class="recovery-result" hidden aria-label="Live service verification results"></section>
         </div>
-      </section>
-      <section class="reader-footer-section"><div class="eyebrow">02 / FAILURE MODEL</div><h2>Independent doesn't mean invincible.</h2><div class="small-cards"><article><strong>Publisher identity</strong><p>Creator attribution verifies a wallet, not an organization's legal identity.</p></article><article><strong>Reachability</strong><p>Authorized URLs aren't guaranteed online, safe or outside a censorship zone.</p></article><article><strong>Arkiv dependency</strong><p>The network and its RPC must remain accessible to retrieve current records.</p></article></div></section>
-      <footer class="footer"><span>RelayLine · Reader runs entirely in your browser.</span><span>Public query · No login · MIT</span></footer>
-    </div>
+      </div>
+    </section>
+    <section class="explain-section" aria-labelledby="trust-title"><div class="explain-top"><div><span class="eyebrow"><span class="eyebrow-line"></span> READ WITH CONFIDENCE</span><h2 id="trust-title">What these results mean.</h2></div></div>
+      <div class="explain-grid"><article><div class="feature-icon"><i data-lucide="fingerprint"></i></div><h3>Authenticated, not endorsed</h3><p>A matching creator means the expected wallet published the record. It doesn't prove a real-world organization owns that wallet.</p></article><article><div class="feature-icon"><i data-lucide="activity"></i></div><h3>Evidence can be missing</h3><p>Without recent independent checks, availability is unknown. That doesn't mean the website is definitely down or safe.</p></article><article><div class="feature-icon"><i data-lucide="shield-alert"></i></div><h3>Stay in control</h3><p>A pinned wallet is remembered only in this browser. Resetting trust removes local rollback history and should be treated cautiously.</p></article></div>
+    </section>
   </main>
-</div>
-<script type="module" src="/web/reader.mjs"></script>
+  <footer class="site-footer"><div class="footer-inner"><span class="brand-name">relayline<span class="brand-dot">.</span></span><p>Publicly queryable. Independently verifiable.</p><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer">MIT licensed <i data-lucide="arrow-up-right"></i></a></div></footer>
+  <script type="module" src="/web/reader.mjs"></script>
 </body>
 </html>

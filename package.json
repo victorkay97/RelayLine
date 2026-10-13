@@ -25,13 +25,19 @@
     "build:reader": "node scripts/build-reader.mjs",
     "demo:judge": "node scripts/demo-judge.mjs",
     "smoke:hosted": "node scripts/smoke-hosted.mjs",
-    "probe:friction": "node scripts/probe-friction.mjs"
+    "probe:friction": "node scripts/probe-friction.mjs",
+    "test:ui": "playwright test"
   },
   "dependencies": {
     "@arkiv-network/sdk": "0.8.1",
-    "viem": "2.57.5"
+    "viem": "2.57.5",
+    "lucide": "1.55.0",
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/inter": "5.3.0"
   },
   "devDependencies": {
-    "vite": "6.4.4"
+    "vite": "6.4.4",
+    "@playwright/test": "1.64.0",
+    "@axe-core/playwright": "4.13.0"
   }
 }

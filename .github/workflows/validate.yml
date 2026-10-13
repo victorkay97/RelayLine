@@ -51,6 +51,26 @@ jobs:
         with:
           node-version: '22'
       - run: npm run smoke:hosted
+  ux-browser:
+    name: Responsive UX, journeys and accessibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:ui
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ux-browser-debug
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
   tiramisu-read-only:
     name: Read-only Tiramisu connectivity
     runs-on: ubuntu-latest
