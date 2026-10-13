@@ -21,7 +21,9 @@
     "monitor:dry": "node scripts/monitor.mjs",
     "monitor:run": "node scripts/monitor.mjs",
     "revoke": "node scripts/revoke.mjs",
-    "rotate": "node scripts/rotate.mjs"
+    "rotate": "node scripts/rotate.mjs",
+    "build:reader": "node scripts/build-reader.mjs",
+    "demo:judge": "node scripts/demo-judge.mjs"
   },
   "dependencies": {
     "@arkiv-network/sdk": "^0.8.0",

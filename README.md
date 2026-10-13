@@ -4,7 +4,7 @@
 
 RelayLine helps users discover authorized recovery endpoints when a primary website becomes unavailable. Service publishers register versioned recovery manifests on Arkiv Tiramisu; an independent reader can query those entities directly without relying on RelayLine's hosted backend.
 
-> **Development status — October 13, 2026:** The architecture is approved for validation. Offline trust-policy tests pass in the existing validation prototype; **live Tiramisu reads, writes, wallet impersonation checks, and on-chain recovery have not been demonstrated**. Do not mistake a simulated local recovery for on-chain validation.
+> **Development status — October 13, 2026:** Live read-only Tiramisu RPC and SDK entity queries pass; offline policies are covered by automated tests. **Real wallet-signed RelayLine entity writes, a forged on-chain manifest, and live manifest-backed recovery have NOT been validated.** Do not confuse offline fixtures or a deployed UI with successful on-chain writes.
 
 ## Initial release objective
 
@@ -54,3 +54,12 @@ The reader can apply a quorum of independently pinned monitor wallets to short-l
 The reader also supports publisher-signed manifest revocations and a single-hop root-signed key rotation. Revoked latest manifests fail closed. Local epoch/revision watermarks reduce rollback from subsequently deleted control entities, but **cannot guarantee protection to a brand-new reader**. See `docs/MONITORING.md` and `docs/SECURITY.md`.
 
 To publish a revocation or rotation from the test-only CLI, explicitly set `CONTROL_PUBLISH=YES` and the appropriate public identifiers. This is **not** required for dry-run automated tests and must not be placed into CI.
+
+## Hackathon judging and independent reproduction
+
+- Publisher console: https://relayline-beta.vercel.app/
+- Independently hosted read-only client: https://relayline-reader.vercel.app/
+- Run `npm run build:reader` to produce a standalone `dist-reader/` static site.
+- Run `npm run demo:judge` for an explicit **offline synthetic** failure/recovery, attacker, monitor and revocation demonstration.
+- Read `docs/JUDGING.md`, `docs/REPRODUCE.md`, `docs/DEMO.md` and `docs/ONCHAIN_EVIDENCE.md`.
+- The mandatory demo video and real Arkiv creation-transaction evidence are still pending.
