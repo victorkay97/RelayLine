@@ -98,7 +98,7 @@ input,button{min-width:0}
 .setup-grid{display:grid;grid-template-columns:minmax(230px,.35fr) minmax(0,.65fr);gap:29px;align-items:start}
 .journey-panel{background:#0f1f19;border:1px solid #2a4135;border-radius:17px;padding:27px 23px}
 .journey-list{list-style:none;padding:0;margin:0}
-.journey-list li{display:flex;align-items:flex-start;gap:17px;padding:9px 0 28px;position:relative;opacity:.56}
+.journey-list li{display:flex;align-items:flex-start;gap:17px;padding:9px 0 28px;position:relative;opacity:1}
 .journey-list li:last-child{padding-bottom:13px}
 .journey-list li:not(:last-child):after{content:'';position:absolute;left:17px;top:47px;bottom:1px;border-left:1px dashed #416247}
 .journey-list li.current,.journey-list li.done{opacity:1}
