@@ -25,9 +25,26 @@ Target network: Tiramisu, chain ID 7738577; SDK 0.8.x.
 - Operator-only CLI enforces exact HTTPS URL allowlist and public IPv4 DNS lookup pinned for TLS request, without redirects. See `docs/MONITORING.md`.
 - Never interpret a monitor claim as proof of censorship. CLI cannot publish without an explicit funded monitor wallet and `MONITOR_PUBLISH=YES`.
 
+## Implemented in code: publisher revocation and single-hop key rotation (M6)
+
+### Revocation
+
+- Indexed attributes: `project`, `kind: str("revocation")`, `service_id`, `target_key: str("0x…")`.
+- Payload: `{schema_version:1,service_id,target_key,reason:"retired"|"compromised"|"incorrect"}`.
+- Signed only by the current authorized publisher, with 90-day entity expiry, read-only flags.
+- A revocation of the latest otherwise-valid manifest causes a hard failure; readers **do not** fall back to an earlier revision.
+
+### One-hop rotation
+
+- Indexed attributes: `project`, `kind: str("rotation")`, `service_id`, `epoch: u64(1)`.
+- Payload: `{schema_version:1,service_id,successor,min_revision,epoch:1}`.
+- Signed by the pinned **root** publisher wallet, names the next publisher signer. Exactly one active root-signed rotation is allowed; conflicting records fail closed. Successor must already publish a valid manifest with revision >= min_revision. This implementation deliberately **does not** support multiple hops.
+- Reader makes **one** all-kinds query (`project + service_id`) so manifest, revocation and rotation decisions share the same block snapshot; signed monitor observations can be evaluated from the same query.
+- Browser reader pins root wallet out of band and remembers maximum accepted revision, rotation epoch and observed publisher revocations in localStorage. This is a **local rollback fence**, not global indelibility. A new device without trusted history can still be fooled by missing/deleted control records. A record's owner can delete it despite `readonly`.
+- CLI `npm run revoke` or `npm run rotate` requires `CONTROL_PUBLISH=YES` and a dedicated test-only wallet. These writes are UNVERIFIED on the real Tiramisu chain until receipt evidence exists.
+
 ## Planned but not yet implemented
 
-- `revocation`: explicitly invalidated manifest/entity from root wallet; necessary before production rollout.
-- Safe publisher key rotation and monitor trust policies.
+- Multi-hop identity rotation, durable independent archival of controls and stronger monitor reputation. Live control writes still need testnet validation.
 
 Everything on Arkiv is publicly readable. Do not publish private keys, personal data, authentication credentials or secrets.

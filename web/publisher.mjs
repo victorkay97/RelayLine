@@ -79,7 +79,10 @@ byId('publisher-form').addEventListener('submit', async (event) => {
   status(publishStatus, 'Awaiting wallet approval and chain confirmation…', 'neutral');
   try {
     lastEvidence = await publishFromBrowser({ session, manifest: validated });
-    status(publishStatus, 'Manifest confirmed on Arkiv. Verify direct querying below.', 'good');
+    status(publishStatus, lastEvidence.verification === 'read_back' ?
+      'Arkiv write returned and the entity was independently read back.' :
+      'Write transaction returned. Direct read-back still pending; verify below.',
+      lastEvidence.verification === 'read_back' ? 'good' : 'neutral');
     evidence.hidden = false;
     evidence.innerHTML = [
       '<div class="eyebrow">Transaction confirmed</div>',

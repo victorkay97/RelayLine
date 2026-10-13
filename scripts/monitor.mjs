@@ -1,5 +1,5 @@
-import { walletClient, publicClient, readManifests } from '../src/arkiv.mjs';
-import { selectTrustedManifest } from '../src/policy.mjs';
+import { walletClient, publicClient, readServiceRecords } from '../src/arkiv.mjs';
+import { resolveServiceState } from '../src/control-policy.mjs';
 import { monitorProbe } from '../src/monitor-probe.mjs';
 import { publishObservation } from '../src/monitor-arkiv.mjs';
 
@@ -15,8 +15,8 @@ async function main() {
   }
   // Fail closed if an endpoint was not already approved by the local monitor operator.
   const allowlisted = new URL(approvedUrl).href;
-  const { headBlock, entities } = await readManifests(serviceId);
-  const decision = selectTrustedManifest(entities, { pinnedPublisher, serviceId, headBlock });
+  const { headBlock, entities } = await readServiceRecords(serviceId);
+  const decision = resolveServiceState(entities, { pinnedPublisher, serviceId, headBlock });
   if (!decision.selected) throw new Error('No unambiguous trusted service manifest: ' + decision.issue);
   const endpoint = decision.selected.manifest.endpoints.find(item => item.id === endpointId);
   if (!endpoint || endpoint.url !== allowlisted) throw new Error('Endpoint URL does not match signed manifest and operator allowlist');

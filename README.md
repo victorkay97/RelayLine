@@ -46,3 +46,11 @@ Open `http://localhost:5173/` for publishing and `http://localhost:5173/recover.
 Writing requires a wallet funded with **test GLM** through Arkiv's official faucet. **Live publisher writes and reader authentication remain unverified until transaction evidence is recorded.** Offline unit tests and a successful read-only Arkiv query are not equivalent to publishing.
 
 See `docs/VALIDATION.md`, `docs/LIVE_READ_EVIDENCE.md`, and [open live validation gates](https://github.com/victorkay97/RelayLine/issues/2).
+
+## M5 independent monitoring and M6 control records (code-complete, chain writes unverified)
+
+The reader can apply a quorum of independently pinned monitor wallets to short-lived observation entities. A monitor process can probe one explicitly operator-allowlisted HTTPS endpoint and optionally sign the result using a test-only wallet. Health can be `reachable`, `unreachable`, `disputed`, `unknown` or `not_configured`. It is never proof of censorship.
+
+The reader also supports publisher-signed manifest revocations and a single-hop root-signed key rotation. Revoked latest manifests fail closed. Local epoch/revision watermarks reduce rollback from subsequently deleted control entities, but **cannot guarantee protection to a brand-new reader**. See `docs/MONITORING.md` and `docs/SECURITY.md`.
+
+To publish a revocation or rotation from the test-only CLI, explicitly set `CONTROL_PUBLISH=YES` and the appropriate public identifiers. This is **not** required for dry-run automated tests and must not be placed into CI.
