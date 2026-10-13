@@ -14,7 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      # Trust-policy tests have no runtime dependencies and are safe without a wallet.
+      # SDK adapter tests import the installed Arkiv SDK, but require no wallet.
+      - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm test
       - run: npm run demo:offline
   web-build:
