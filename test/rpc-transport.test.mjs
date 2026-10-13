@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {parseReadRpcUrls,makeReadTransport,DEFAULT_TIRAMISU_RPC} from '../src/rpc-transport.mjs';
 
 test('defaults only to genuine, documented Tiramisu RPC',()=>{
- assert.deepEqual(parseReadRpcUrls(),[DEFAULT_TIRAMISU_RPC]);
+ assert.deepEqual(parseReadRpcUrls(),[new URL(DEFAULT_TIRAMISU_RPC).href]);
  assert.equal(typeof makeReadTransport(),'function');
 });
 test('operator can configure multiple independent read-only RPCs',()=>{
