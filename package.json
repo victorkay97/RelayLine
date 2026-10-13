@@ -10,6 +10,7 @@
     "test": "node --test test/*.test.mjs",
     "demo:offline": "node scripts/offline-demo.mjs",
     "probe:rpc": "node scripts/probe-rpc.mjs",
+    "probe:query": "node scripts/probe-query.mjs",
     "publish": "node scripts/publish.mjs",
     "read": "node scripts/read.mjs"
   },
