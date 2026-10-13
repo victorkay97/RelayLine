@@ -18,9 +18,9 @@ A publisher should be able to understand why recovery matters, connect a wallet,
 5. Advanced: monitor verification optional and disabled by default; unknown status should be clear without implying the fallback is unavailable.
 
 ## QA gates
-- [ ] Automated DOM/browser flows: mobile and desktop, form errors, keyboard navigation, wallet missing/refused, mock successful write, pinned-root recovery, attacker/expired states.
+- [x] Automated Playwright scenarios authored for desktop, 375px and 320px, with CI execution gate pending: mobile and desktop, form errors, keyboard navigation, wallet missing/refused, mock successful write, pinned-root recovery, attacker/expired states.
 - [ ] Test UI on real browser engines, 320px/375px/768px/1440px widths with no sideways scroll.
-- [ ] Contrast and accessibility audit, focus order and screen reader check.
+- [ ] CI automated axe-core WCAG A/AA (critical/serious) checks; manual focus order and screen reader audit remain outstanding.
 - [ ] Wallet-signed transaction + on-chain read/forgery/controlled outage remains on hold until user can authorize a dedicated test wallet.
 - [ ] Human usability validation before declaring the UX objectively seamless.
 
