@@ -1,6 +1,6 @@
 const targets=[
-  {label:'publisher',url:'https://relayline-vkalu2266-3185s-projects.vercel.app/',expected:'RelayLine — Publisher Console'},
-  {label:'independent reader',url:'https://relayline-reader-vkalu2266-3185s-projects.vercel.app/recover.html',expected:'RelayLine — Independent Recovery'}
+  {label:'publisher',url:'https://relayline-vkalu2266-3185s-projects.vercel.app/',expected:'RelayLine — Protect your online presence'},
+  {label:'independent reader',url:'https://relayline-reader-vkalu2266-3185s-projects.vercel.app/recover.html',expected:'RelayLine — Find a trusted recovery route'}
 ];
 for(const target of targets){
   let lastError='';
