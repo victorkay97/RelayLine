@@ -64,4 +64,5 @@ jobs:
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm run probe:rpc
       - run: npm run probe:query
+      - run: npm run probe:friction
       # Never store funded wallets as CI secrets or auto-publish on every PR.
