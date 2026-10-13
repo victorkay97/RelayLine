@@ -15,7 +15,8 @@
 - [ ] R4c — Independently hosted monitor agents with periodic execution and documented operational costs.
 - [x] R5a — Immutable publisher revocations, pinned-root single-hop rotation, local revision/epoch rollback fences and adversarial tests implemented; live signing pending.
 - [ ] R5b — Validate real revocation and successor writes on Tiramisu; document and review key compromise recovery.
-- [ ] R5c — RPC failover, durable control replication, multi-hop recovery and external security audit.
+- [x] R5c1 — Configurable (not presumed) multi-RPC public read fallback implemented, tested with no secret-bearing URLs.
+- [ ] R5c2 — Validate at least two trusted actual Tiramisu RPC providers, durable control replication, multi-hop recovery and independent audit.
 - [x] R6a — Publisher and independent-reader public Vercel deployments created.
 - [x] R6b — Reproducible synthetic judge demo, independent reader-only build, documented scoring evidence, video storyboard and Devfolio draft prepared (CI pending).
 - [ ] R6c — User-approved real publisher/attacker transactions and live recovery evidence.

@@ -63,3 +63,7 @@ To publish a revocation or rotation from the test-only CLI, explicitly set `CONT
 - Run `npm run demo:judge` for an explicit **offline synthetic** failure/recovery, attacker, monitor and revocation demonstration.
 - Read `docs/JUDGING.md`, `docs/REPRODUCE.md`, `docs/DEMO.md` and `docs/ONCHAIN_EVIDENCE.md`.
 - The mandatory demo video and real Arkiv creation-transaction evidence are still pending.
+
+## Read-only RPC resilience
+
+The optional `ARKIV_RPC_URLS` (CLI) or `VITE_ARKIV_RPC_URLS` (browser build) can specify up to four vetted HTTPS RPC URLs. Read clients use viem fallback transport across configured endpoints. **Only one real endpoint is bundled; actual failover needs a separately verified second RPC.** Do not put API-key URLs or secrets into static builds.

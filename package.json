@@ -26,10 +26,10 @@
     "demo:judge": "node scripts/demo-judge.mjs"
   },
   "dependencies": {
-    "@arkiv-network/sdk": "^0.8.0",
-    "viem": "^2.0.0"
+    "@arkiv-network/sdk": "0.8.1",
+    "viem": "2.57.5"
   },
   "devDependencies": {
-    "vite": "^6.3.5"
+    "vite": "6.4.4"
   }
 }

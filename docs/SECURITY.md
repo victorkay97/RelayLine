@@ -53,3 +53,7 @@ The above commands **require** a configured, funded, user-controlled test-only s
 - Before production: stronger cross-device rollback resistance, distributed archive of control records, domain/identity proofs, rate/abuse controls, RPC failover, external security audit, honest browser-wallet transaction tests.
 
 See [architecture](ARCHITECTURE.md), [Arkiv schema](../arkiv/schema.md), and [live test gates](VALIDATION.md).
+
+## Read-only RPC resilience
+
+`src/rpc-transport.mjs` accepts 1–4 explicitly configured HTTPS Tiramisu RPC URLs, deduplicates them, rejects credential-bearing/query-token URLs and uses viem fallback transport for read-only queries. No imaginary second Arkiv endpoint is bundled. By default only the official public RPC is configured and **there is no actual failover capacity**. Endpoint operators must separately verify chain authenticity and availability; a matching chain ID alone does not prove honest state or provide light-client verification. Signed publication continues through one explicitly chosen trusted signer RPC.
