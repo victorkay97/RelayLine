@@ -3,13 +3,15 @@ import { tiramisu } from '@arkiv-network/sdk/chains';
 import { custom, http } from 'viem';
 import { queryServiceManifests, queryServiceRecords } from './query.mjs';
 import { publishWithWallet } from './write.mjs';
+import { makeReadTransport } from './rpc-transport.mjs';
 import { queryObservations } from './monitor-arkiv.mjs';
 
 const CHAIN_HEX = '0x7614d1';
 export const ARKIV_RPC_URL = 'https://rpc.tiramisu.db-chain.testnet.arkiv.network';
 
 export function makePublicClient() {
-  return createPublicClient({ chain: tiramisu, transport: http(ARKIV_RPC_URL) });
+  return createPublicClient({ chain: tiramisu,
+    transport: makeReadTransport(import.meta.env?.VITE_ARKIV_RPC_URLS ?? ARKIV_RPC_URL) });
 }
 export async function readPublicManifests(serviceId) {
   return queryServiceManifests(makePublicClient(), serviceId);

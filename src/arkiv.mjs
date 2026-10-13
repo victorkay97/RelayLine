@@ -4,11 +4,12 @@ import { http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { queryServiceManifests, queryServiceRecords } from './query.mjs';
 import { publishWithWallet } from './write.mjs';
+import { makeReadTransport } from './rpc-transport.mjs';
 
 export const RPC = process.env.ARKIV_RPC_URL ?? 'https://rpc.tiramisu.db-chain.testnet.arkiv.network';
 
 export function publicClient() {
-  return createPublicClient({ chain: tiramisu, transport: http(RPC) });
+  return createPublicClient({ chain: tiramisu, transport: makeReadTransport(process.env.ARKIV_RPC_URLS ?? RPC) });
 }
 
 export function walletClient(privateKeyEnv) {
