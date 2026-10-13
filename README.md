@@ -27,3 +27,22 @@ A signed Arkiv record proves which wallet created it, **not** that it belongs to
 The validation implementation will be proposed on a feature branch for review. The repository will include `arkiv/schema.md`, `arkiv/friction.md`, and separately documented local versus live-chain test evidence.
 
 No wallet private keys should be shared in chat, issues, pull requests, CI logs, or committed files.
+
+## Browser publisher console and independent reader
+
+The **publisher console** is a static, client-side wallet application. It requests a compatible EVM wallet, switches to Arkiv Tiramisu, validates a public recovery manifest and asks the wallet to sign `createEntity`. **No wallet private key is handled by the web application or RelayLine servers.**
+
+The **independent recovery reader** is a separately built static entry page (`recover.html`). It calls the Arkiv public RPC directly, requires an explicitly pinned publisher wallet and applies the same auditable trust policy as the CLI. It displays authorized endpoints but does **not** claim browser-based cross-origin reachability.
+
+```bash
+npm install
+npm test
+npm run build
+npm run dev
+```
+
+Open `http://localhost:5173/` for publishing and `http://localhost:5173/recover.html` for reading. To demonstrate independence, deploy the generated reader and shared assets on a different host from the publisher console. The reader must not depend on RelayLine's application backend.
+
+Writing requires a wallet funded with **test GLM** through Arkiv's official faucet. **Live publisher writes and reader authentication remain unverified until transaction evidence is recorded.** Offline unit tests and a successful read-only Arkiv query are not equivalent to publishing.
+
+See `docs/VALIDATION.md`, `docs/LIVE_READ_EVIDENCE.md`, and [open live validation gates](https://github.com/victorkay97/RelayLine/issues/2).
