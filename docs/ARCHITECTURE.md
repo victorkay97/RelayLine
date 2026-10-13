@@ -26,3 +26,11 @@ Manifest revocation and key rotation not implemented. No distributed monitoring 
 ## Evidence standard
 
 Report LIVE only when there is an actual Tiramisu transaction or read result. Retain creator addresses, entity keys, block heights, SDK versions and reproducible steps. Do not fabricate operational results.
+
+## Browser implementation (2026-10-13)
+
+The `index.html` publisher console is a static frontend using an injected EIP-1193 wallet; it never asks for or persists a private key. `recover.html` is an independently deployable static reader. Both import browser-safe Arkiv clients from `src/browser-arkiv.mjs`, while Node uses `src/arkiv.mjs`. Shared `src/query.mjs`, `src/write.mjs`, and `src/policy.mjs` prevent protocol divergence.
+
+Reader trust is **opt-in pinned per service ID in localStorage**. A publisher address from an untrusted shared URL is not silently pinned. If an existing pin differs from the entered wallet, discovery fails closed until the user explicitly forgets the old pin. The browser only displays authorized HTTPS links; it cannot reliably verify availability across cross-origin domains because of CORS restrictions.
+
+The publisher shows actual SDK transaction results when signed and confirmed; the independent reader verifies through a new public Arkiv query. The ability to build does not prove live wallet compatibility or user-fundable transactions.
