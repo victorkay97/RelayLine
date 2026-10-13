@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09171b">
+  <meta name="description" content="Publisher-authenticated continuity infrastructure. Register and verify independent recovery endpoints on Arkiv.">
+  <title>RelayLine — Publisher Console</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/"><span class="logo-mark">R<span>↗</span></span><span>relayline<small>THE OPEN CONTINUITY NETWORK</small></span></a>
+      <div class="side-section">
+        <span class="side-label">WORKSPACE</span>
+        <a class="nav-item selected" href="/"><span>◈</span> Publisher console</a>
+        <a class="nav-item" href="/recover.html"><span>↗</span> Independent reader</a>
+      </div>
+      <div class="side-section">
+        <span class="side-label">DEVELOPER</span>
+        <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://github.com/victorkay97/RelayLine"><span>⌘</span> GitHub repository ↗</a>
+        <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://github.com/victorkay97/RelayLine/blob/main/docs/VALIDATION.md"><span>◇</span> Validation protocol ↗</a>
+        <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://docs.arkiv.network/networks/tiramisu/"><span>◎</span> Arkiv Tiramisu ↗</a>
+      </div>
+      <div class="side-bottom">
+        <div class="online-badge">● &nbsp;CENSORSHIP RESISTANCE</div>
+        <p>Discovery should outlive the service that published it.</p>
+        <span class="version">v0.1 · testnet preview</span>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><span><span class="crumb-muted">RelayLine</span> / Publisher console</span><div class="top-right"><span class="testnet-pill">TIRAMISU · TESTNET</span><span id="wallet-label" class="wallet-text">Not connected</span></div></header>
+      <div class="content">
+        <div class="hero-area">
+          <div class="eyebrow"><span class="tiny-diamond">◆</span> CONTROL PLANE / 001</div>
+          <h1>Stay discoverable.<br><em>Even when you're not.</em></h1>
+          <p class="hero-subtitle">Register authenticated fallback destinations on a public database. When your primary site goes down, anyone with your verified publisher identity can find the way back.</p>
+          <div class="hero-actions"><a href="#publish-section" class="button button-primary">Register a service <span>↗</span></a><a href="/recover.html" class="button button-quiet">Explore recovery reader →</a></div>
+        </div>
+
+        <section class="metrics" aria-label="System properties">
+          <div class="metric"><span class="metric-label">NETWORK</span><strong>Arkiv Tiramisu</strong><span class="metric-sub" id="network-indicator">● Checking connection…</span></div>
+          <div class="metric"><span class="metric-label">DATA CONTROL</span><strong>Publisher signed</strong><span class="metric-sub">On-chain creator attribution</span></div>
+          <div class="metric"><span class="metric-label">READER</span><strong>Zero backend</strong><span class="metric-sub">Direct database access</span></div>
+        </section>
+
+        <section id="publish-section" class="section-grid">
+          <div class="section-heading">
+            <div class="eyebrow">01 / REGISTER</div><h2>Publish your<br>recovery manifest.</h2>
+            <p>A recovery manifest lists the destinations you authorize for your service. It is published by your wallet, not by a RelayLine server.</p>
+            <div class="notice"><strong>Trust begins before discovery.</strong><p>People must verify your publisher wallet through a trusted channel while your primary identity is accessible. A wallet signature does not verify your real-world organization.</p></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><div class="eyebrow">SERVICE MANIFEST</div><h3>New registration</h3></div><span class="status-flag">PUBLIC RECORD</span></div>
+            <div class="wallet-connector"><div class="wallet-symbol">◇</div><div><strong>Publisher wallet</strong><small id="publisher-address">Connect an EVM wallet to sign the record</small></div><button class="button button-secondary" type="button" id="connect-wallet">Connect wallet</button></div>
+            <form id="publisher-form" autocomplete="off">
+              <div class="form-row"><label for="service-id">Service identifier <span>REQUIRED</span></label><input id="service-id" type="text" pattern="[a-z0-9][a-z0-9_-]{0,62}" maxlength="63" required placeholder="e.g. independent-journal"></div>
+              <div class="form-row"><label for="revision">Manifest revision <span>INTEGER ≥ 1</span></label><input id="revision" type="number" min="1" max="9999999" step="1" value="1" required></div>
+              <div class="form-row"><label for="primary-url">Primary HTTPS endpoint <span>MAIN WEBSITE</span></label><input id="primary-url" type="url" required placeholder="https://primary.example.org"></div>
+              <div class="form-row"><label for="fallback-url">Recovery HTTPS endpoint <span>AUTHORIZED FALLBACK</span></label><input id="fallback-url" type="url" required placeholder="https://recovery.example.org"></div>
+              <div class="form-footer"><span>Immutable manifest · 30-day testnet expiry</span><button class="button button-primary" type="submit" id="publish-manifest" disabled>Sign & publish ↗</button></div>
+            </form>
+            <div class="action-row"><button class="text-button" id="verify-publication" type="button">↺ Verify published records directly</button></div>
+            <p id="publish-status" role="status" class="message" data-kind="neutral">No wallet connected. Transactions use test GLM.</p>
+            <div id="evidence" hidden class="evidence"></div>
+          </div>
+        </section>
+        <section class="foot-section"><div><div class="eyebrow">02 / VERIFY</div><h2>Recovery without<br>permission.</h2><p>Our independent reader fetches Arkiv records directly, checks the actual publisher wallet and makes authorized endpoints available—even if the RelayLine application backend isn't running.</p><a class="button button-secondary" href="/recover.html">Launch independent reader →</a></div><div class="diagram"><div class="diagram-node">YOUR PUBLISHER WALLET <span>01</span></div><div class="diagram-connector">│<br>▼</div><div class="diagram-node highlight">ARKIV DB-CHAIN <span>02</span></div><div class="diagram-connector">│<br>▼</div><div class="diagram-node">ANY COMPATIBLE READER <span>03</span></div></div></section>
+        <footer class="footer"><span>RelayLine · Open infrastructure for independent service continuity.</span><span>MIT licensed · Powered by Arkiv</span></footer>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/web/publisher.mjs"></script>
+</body>
+</html>
