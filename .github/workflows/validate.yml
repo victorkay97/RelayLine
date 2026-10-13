@@ -41,6 +41,16 @@ jobs:
             dist/
             dist-reader/
           retention-days: 7
+  hosted-smoke:
+    name: Public deployment HTTP checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run smoke:hosted
   tiramisu-read-only:
     name: Read-only Tiramisu connectivity
     runs-on: ubuntu-latest

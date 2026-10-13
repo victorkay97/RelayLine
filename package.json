@@ -23,7 +23,8 @@
     "revoke": "node scripts/revoke.mjs",
     "rotate": "node scripts/rotate.mjs",
     "build:reader": "node scripts/build-reader.mjs",
-    "demo:judge": "node scripts/demo-judge.mjs"
+    "demo:judge": "node scripts/demo-judge.mjs",
+    "smoke:hosted": "node scripts/smoke-hosted.mjs"
   },
   "dependencies": {
     "@arkiv-network/sdk": "0.8.1",
