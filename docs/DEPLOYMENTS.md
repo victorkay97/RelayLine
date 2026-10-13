@@ -46,3 +46,9 @@ Acceptance gates and evidence requirements: [Issue #2](https://github.com/victor
 The original independent Vercel project deployed the full multi-page build. The M7 build introduces a **reader-only static artifact** produced by `npm run build:reader` in `dist-reader/`, containing the direct-RPC client and no publisher HTML entry point. Vercel's `relayline-reader` project must use `npm run build:reader` and output `dist-reader` before this distinction can be claimed for its currently hosted release. Inspect the deployment's commit SHA and `READY` status after changing these settings.
 
 This release packaging change reduces coupling, but it does not guarantee service access if the independent reader's Vercel host or Arkiv RPC is down.
+
+## Reader-only deployment confirmed
+
+At 2026-10-13, the separate `relayline-reader` Vercel project was updated to **build command `npm run build:reader`, output directory `dist-reader`**. Deployment `dpl_6LM3NiAHEUGumRSdiaGXpGGn6wzV` of main commit `e315dabe9954fa1b6bda7b893d43af9fb69b1230` reported `READY`. The separate publisher Vercel project `dpl_2VgWdQEwM5YohP8MoSXMNCQtPBVv` for the same source commit also reported `READY`. An independent external HTTP smoke test is included in the CI workflow to confirm actual public HTTP 200 responses and expected HTML titles; only its actual logs can establish that check has succeeded.
+
+The reader build now produces `dist-reader/index.html` and `dist-reader/recover.html` with no publisher-console HTML entry point. Publishing and signed wallet flows are not tested by this read-only deployment smoke test.
