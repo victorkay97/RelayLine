@@ -33,3 +33,11 @@ Local `node --test` and `npm run demo:offline` validate **pure policy logic and 
 
 ## M5 monitoring status
 M5 code includes 10-minute observation expiry, on-chain creator policy and a controlled HTTPS probe. Offline/mocked tests will be recorded in CI. **Do not present these as evidence of actual funded monitor transactions** until their hashes exist.
+
+## FR-004 — Compound query and `createdBy()` — test pending observation
+
+Automated read-only probe: `npm run probe:friction`, pinned SDK `0.8.1`, Node 22. It compares the return of a typed compound query against the same query with `createdBy(dummyWallet)`, confirms the chain ID and checks that returned entities (if any) match the creator filter. The query uses a unique synthetic service ID and prints **counts only**, never third-party payloads.
+
+**Expected:** both queries execute against Tiramisu, produce a BigInt snapshot block, and the creator filter cannot yield records created by another wallet.
+**Actual:** [FILL FROM REAL GITHUB ACTION LOG AFTER THE JOB COMPLETES; do not invent pass/failure].
+**Reproduce:** `npm install && npm run probe:friction`.
