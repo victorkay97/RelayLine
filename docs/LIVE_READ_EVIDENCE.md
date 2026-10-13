@@ -24,3 +24,23 @@ From the completed GitHub Actions job, the command `npm run probe:rpc` returned:
 **Other job:** Offline trust policy tests: 9/9 passed; separate local recovery fixture passed and was explicitly marked `OFFLINE_FIXTURE_NOT_ARKIV`.
 
 **Next evidence:** G1 publish via funded test wallet; G2 read a real manifest; G3 adversarial second-wallet write; G4 live-manifest-backed fallback recovery. Store public transaction hashes/entity keys here when known. Do not commit wallet private keys.
+
+## Real SDK entity query — 2026-10-13 21:48:55 UTC
+
+**GitHub Actions run:** https://github.com/victorkay97/RelayLine/actions/runs/38473350225
+**Command:** `npm run probe:query` (actual `client.select().where().limit().fetch()` against Tiramisu)
+
+```json
+{
+  "result": "PASS",
+  "stage": "sdk_entity_query",
+  "query": "project = str(relayline-v1)",
+  "snapshotBlock": "539191",
+  "returnedEntities": 0,
+  "entityKeys": [],
+  "checkedAt": "2026-10-13T21:48:55.130Z"
+}
+```
+
+**Interpretation:** A real Arkiv SDK entity query successfully executed against Tiramisu at block 539191. No matching RelayLine entities existed in the result. This demonstrates the SDK query path works, **not** that any manifest has been published, read or authenticated yet.
+
