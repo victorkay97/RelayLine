@@ -9,7 +9,9 @@
 - [x] R3a — Browser-based direct-RPC reader with explicit wallet pinning and shared trust policy (build verification pending).
 - [ ] R3b — Deploy independent recovery reader separately and validate publisher-app outage.
 - [ ] R3c — Publish and version a minimal reusable read SDK.
-- [ ] R4 — Independent observation workers, evidence freshness, monitor trust, and full lifecycle handling.
+- [x] R4a — Monitoring observation schema, independent signer, exact-allowlist HTTPS operator probe and quorum evaluator implemented; tests pending GitHub CI.
+- [ ] R4b — Multiple distinct funded monitor wallets publish actual Tiramisu observations; independent reader displays live quorum results.
+- [ ] R4c — Independently hosted monitor agents with periodic execution and documented operational costs.
 - [ ] R5 — Revocation, safer identity rotation, RPC failover and adversarial security review.
 - [ ] R6 — End-to-end demo, live deployment, reproducibility package, submission video, and complete hackathon documentation.
 

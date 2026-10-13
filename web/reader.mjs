@@ -1,7 +1,8 @@
 import './styles.css';
-import { readPublicManifests, makePublicClient } from '../src/browser-arkiv.mjs';
+import { readPublicManifests, readPublicObservations } from '../src/browser-arkiv.mjs';
 import { selectTrustedManifest, normalizeAddress } from '../src/policy.mjs';
 import { byId, escapeHtml, status, short } from './dom.mjs';
+import { evaluateMonitorEvidence } from '../src/monitor-policy.mjs';
 
 // Recovery reader depends ONLY on public Arkiv RPC + independently built static assets.
 // It never talks to any RelayLine backend or accepts a wallet's display name as proof.
@@ -79,10 +80,34 @@ byId('recovery-form').addEventListener('submit', async event => {
         '. Do not open unverified links.</div>';
       status(recoveryStatus, 'No unambiguous trusted manifest.', 'bad');
     } else {
+      // Monitoring is optional, and must NEVER affect publisher-authenticated endpoint authorization.
+      // Each monitor must be pinned independently; with none configured, freshness is unknown.
+      let monitorResults = [];
+      const configuredMonitors = byId('trusted-monitors').value.split(',')
+        .map(x => x.trim()).filter(Boolean).map(normalizeAddress);
+      if (configuredMonitors.length) {
+        try {
+          const observationPage = await readPublicObservations(serviceId);
+          if (selected.expiresAt <= observationPage.headBlock) {
+            throw new Error('Manifest expired during separate observation query. Refresh.');
+          }
+          monitorResults = evaluateMonitorEvidence(observationPage.entities, {
+            manifest: selected.manifest, manifestKey: selected.key,
+            headBlock: observationPage.headBlock, trustedMonitorWallets: configuredMonitors, quorum: 2
+          });
+        } catch (error) {
+          // Do not claim monitors have verified health if the query failed.
+          monitorResults = selected.manifest.endpoints.map(ep => ({
+            endpoint_id: ep.id, status: 'unknown', trustedSources: 0
+          }));
+        }
+      }
       const endpoints = selected.manifest.endpoints.map(item => {
         return '<article class="endpoint"><div><span class="endpoint-role">' + escapeHtml(item.role) +
           '</span><h3>' + escapeHtml(item.id) + '</h3><span class="break">' +
-          escapeHtml(item.url) + '</span></div><a class="button button-secondary" rel="noopener noreferrer" target="_blank" href="' +
+          escapeHtml(item.url) + '</span><div class="monitor-status">Monitor status: ' +
+          escapeHtml(monitorResults.find(result => result.endpoint_id === item.id)?.status ?? 'not configured') +
+          '</div></div><a class="button button-secondary" rel="noopener noreferrer" target="_blank" href="' +
           escapeHtml(item.url) + '">Open ↗</a></article>';
       }).join('');
       const rejectionRows = decision.rejected.slice(0, 15).map(entry =>

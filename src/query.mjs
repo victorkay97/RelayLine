@@ -8,7 +8,7 @@ const SERVICE_ID = /^[a-z0-9][a-z0-9-_]{0,62}$/;
  * Database access shared by the Node CLI and the browser recovery reader.
  * Accepts an Arkiv public client; no proprietary API, no secret, no server.
  */
-export async function queryServiceManifests(client, serviceId, { creator, maxEntities = 2000 } = {}) {
+export async function queryServiceRecords(client, serviceId, { creator, maxEntities = 2000, kind } = {}) {
   if (typeof serviceId !== 'string' || !SERVICE_ID.test(serviceId)) throw new Error('Invalid service ID');
   if (!Number.isSafeInteger(maxEntities) || maxEntities < 1 || maxEntities > 10000) throw new Error('Invalid query limit');
   if (await client.getChainId() !== 7738577) throw new Error('Wrong network: expected Arkiv Tiramisu (7738577)');
@@ -17,9 +17,10 @@ export async function queryServiceManifests(client, serviceId, { creator, maxEnt
     attributes: true, payload: true
   }).where(
     eq('project', str('relayline-v1')),
-    eq('kind', str('manifest')),
     eq('service_id', str(serviceId))
-  ).limit(Math.min(200, maxEntities));
+  );
+  if (kind) query = query.where(eq('kind', str(kind)));
+  query = query.limit(Math.min(200, maxEntities));
   if (creator) query = query.createdBy(normalizeAddress(creator));
   let page = await query.fetch();
   const headBlock = page.blockNumber;
@@ -43,4 +44,9 @@ export async function queryServiceManifests(client, serviceId, { creator, maxEnt
     if (page.blockNumber !== headBlock) throw new Error('Query pagination snapshot changed');
   }
   return { headBlock, entities };
+}
+
+/** Legacy specific query for publisher/reader validation. */
+export function queryServiceManifests(client, serviceId, options = {}) {
+  return queryServiceRecords(client, serviceId, { ...options, kind: 'manifest' });
 }
