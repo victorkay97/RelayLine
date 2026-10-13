@@ -29,4 +29,5 @@ jobs:
           node-version: '22'
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm run probe:rpc
+      - run: npm run probe:query
       # Never store funded wallets as CI secrets or auto-publish on every PR.
