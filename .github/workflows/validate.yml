@@ -14,9 +14,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      # Trust-policy tests have no runtime dependencies and are safe without a wallet.
+      # SDK adapter tests import the installed Arkiv SDK, but require no wallet.
+      - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm test
       - run: npm run demo:offline
+  web-build:
+    name: Publisher and reader production build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - run: test -f dist/index.html && test -f dist/recover.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: relayline-static-pages
+          path: dist/
+          retention-days: 7
   tiramisu-read-only:
     name: Read-only Tiramisu connectivity
     runs-on: ubuntu-latest
