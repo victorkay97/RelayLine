@@ -81,6 +81,7 @@ test('publisher and reader have no automated axe critical/serious WCAG failures'
       .withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])
       .analyze();
     const meaningful=results.violations.filter(v=>v.impact==='critical'||v.impact==='serious');
+    if(meaningful.length) console.log('A11Y_DETAILS',route,JSON.stringify(meaningful.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary})).slice(0,20)}))));
     expect(meaningful.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length}))).toEqual([]);
   }
 });
