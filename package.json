@@ -29,7 +29,10 @@
   },
   "dependencies": {
     "@arkiv-network/sdk": "0.8.1",
-    "viem": "2.57.5"
+    "viem": "2.57.5",
+    "lucide": "1.55.0",
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/inter": "5.3.0"
   },
   "devDependencies": {
     "vite": "6.4.4"

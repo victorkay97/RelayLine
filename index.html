@@ -3,73 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#09171b">
-  <meta name="description" content="Publisher-authenticated continuity infrastructure. Register and verify independent recovery endpoints on Arkiv.">
-  <title>RelayLine — Publisher Console</title>
+  <meta name="theme-color" content="#091715">
+  <meta name="description" content="Keep your website discoverable through authenticated backup locations, even when your primary site is offline.">
+  <title>RelayLine — Protect your online presence</title>
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <a class="brand" href="/"><span class="logo-mark">R<span>↗</span></span><span>relayline<small>THE OPEN CONTINUITY NETWORK</small></span></a>
-      <div class="side-section">
-        <span class="side-label">WORKSPACE</span>
-        <a class="nav-item selected" href="/"><span>◈</span> Publisher console</a>
-        <a class="nav-item" href="/recover.html"><span>↗</span> Independent reader</a>
-      </div>
-      <div class="side-section">
-        <span class="side-label">DEVELOPER</span>
-        <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://github.com/victorkay97/RelayLine"><span>⌘</span> GitHub repository ↗</a>
-        <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://github.com/victorkay97/RelayLine/blob/main/docs/VALIDATION.md"><span>◇</span> Validation protocol ↗</a>
-        <a class="nav-item" target="_blank" rel="noopener noreferrer" href="https://docs.arkiv.network/networks/tiramisu/"><span>◎</span> Arkiv Tiramisu ↗</a>
-      </div>
-      <div class="side-bottom">
-        <div class="online-badge">● &nbsp;CENSORSHIP RESISTANCE</div>
-        <p>Discovery should outlive the service that published it.</p>
-        <span class="version">v0.1 · testnet preview</span>
-      </div>
-    </aside>
-    <main class="main">
-      <header class="topbar"><span><span class="crumb-muted">RelayLine</span> / Publisher console</span><div class="top-right"><span class="testnet-pill">TIRAMISU · TESTNET</span><span id="wallet-label" class="wallet-text">Not connected</span></div></header>
-      <div class="content">
-        <div class="hero-area">
-          <div class="eyebrow"><span class="tiny-diamond">◆</span> CONTROL PLANE / 001</div>
-          <h1>Stay discoverable.<br><em>Even when you're not.</em></h1>
-          <p class="hero-subtitle">Register authenticated fallback destinations on a public database. When your primary site goes down, anyone with your verified publisher identity can find the way back.</p>
-          <div class="hero-actions"><a href="#publish-section" class="button button-primary">Register a service <span>↗</span></a><a href="/recover.html" class="button button-quiet">Explore recovery reader →</a></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-container">
+      <a class="brand" href="/" aria-label="RelayLine home"><span class="brand-symbol" aria-hidden="true"><i data-lucide="network"></i></span><span class="brand-name">relayline<span class="brand-dot">.</span></span></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a href="/" aria-current="page"><i data-lucide="layout-dashboard"></i><span>Publisher</span></a>
+        <a href="https://relayline-reader.vercel.app/"><i data-lucide="compass"></i><span>Find a service</span></a>
+        <a class="nav-docs" href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer"><i data-lucide="github"></i><span>Open source</span></a>
+      </nav>
+      <span class="network-badge" title="This product uses the Arkiv Tiramisu testnet"><span class="pulse"></span><span>Arkiv testnet</span></span>
+    </div>
+  </header>
+  <main id="main" class="page-shell">
+    <section class="hero hero-publisher" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-line"></span> RELIABLE DISCOVERY, WITHOUT A GATEKEEPER</span>
+        <h1 id="page-title">Stay reachable.<br><span class="heading-soft">Even when your<br class="desktop-break"> site isn't.</span></h1>
+        <p>Give your audience a trusted way back when your primary website goes offline. Publish verified backup links that an independent reader can find directly on Arkiv.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#setup"><span>Set up recovery</span><i data-lucide="arrow-up-right"></i></a>
+          <a class="btn btn-link" href="https://relayline-reader.vercel.app/"><span>Try the recovery reader</span><i data-lucide="arrow-right"></i></a>
         </div>
-
-        <section class="metrics" aria-label="System properties">
-          <div class="metric"><span class="metric-label">NETWORK</span><strong>Arkiv Tiramisu</strong><span class="metric-sub" id="network-indicator">● Checking connection…</span></div>
-          <div class="metric"><span class="metric-label">DATA CONTROL</span><strong>Publisher signed</strong><span class="metric-sub">On-chain creator attribution</span></div>
-          <div class="metric"><span class="metric-label">READER</span><strong>Zero backend</strong><span class="metric-sub">Direct database access</span></div>
-        </section>
-
-        <section id="publish-section" class="section-grid">
-          <div class="section-heading">
-            <div class="eyebrow">01 / REGISTER</div><h2>Publish your<br>recovery manifest.</h2>
-            <p>A recovery manifest lists the destinations you authorize for your service. It is published by your wallet, not by a RelayLine server.</p>
-            <div class="notice"><strong>Trust begins before discovery.</strong><p>People must verify your publisher wallet through a trusted channel while your primary identity is accessible. A wallet signature does not verify your real-world organization.</p></div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><div><div class="eyebrow">SERVICE MANIFEST</div><h3>New registration</h3></div><span class="status-flag">PUBLIC RECORD</span></div>
-            <div class="wallet-connector"><div class="wallet-symbol">◇</div><div><strong>Publisher wallet</strong><small id="publisher-address">Connect an EVM wallet to sign the record</small></div><button class="button button-secondary" type="button" id="connect-wallet">Connect wallet</button></div>
-            <form id="publisher-form" autocomplete="off">
-              <div class="form-row"><label for="service-id">Service identifier <span>REQUIRED</span></label><input id="service-id" type="text" pattern="[a-z0-9][a-z0-9_-]{0,62}" maxlength="63" required placeholder="e.g. independent-journal"></div>
-              <div class="form-row"><label for="revision">Manifest revision <span>INTEGER ≥ 1</span></label><input id="revision" type="number" min="1" max="9999999" step="1" value="1" required></div>
-              <div class="form-row"><label for="primary-url">Primary HTTPS endpoint <span>MAIN WEBSITE</span></label><input id="primary-url" type="url" required placeholder="https://primary.example.org"></div>
-              <div class="form-row"><label for="fallback-url">Recovery HTTPS endpoint <span>AUTHORIZED FALLBACK</span></label><input id="fallback-url" type="url" required placeholder="https://recovery.example.org"></div>
-              <div class="form-footer"><span>Immutable manifest · 30-day testnet expiry</span><button class="button button-primary" type="submit" id="publish-manifest" disabled>Sign & publish ↗</button></div>
-            </form>
-            <div class="action-row"><button class="text-button" id="verify-publication" type="button">↺ Verify published records directly</button></div>
-            <p id="publish-status" role="status" class="message" data-kind="neutral">No wallet connected. Transactions use test GLM.</p>
-            <div id="evidence" hidden class="evidence"></div>
-          </div>
-        </section>
-        <section class="foot-section"><div><div class="eyebrow">02 / VERIFY</div><h2>Recovery without<br>permission.</h2><p>Our independent reader fetches Arkiv records directly, checks the actual publisher wallet and makes authorized endpoints available—even if the RelayLine application backend isn't running.</p><a class="button button-secondary" href="/recover.html">Launch independent reader →</a></div><div class="diagram"><div class="diagram-node">YOUR PUBLISHER WALLET <span>01</span></div><div class="diagram-connector">│<br>▼</div><div class="diagram-node highlight">ARKIV DB-CHAIN <span>02</span></div><div class="diagram-connector">│<br>▼</div><div class="diagram-node">ANY COMPATIBLE READER <span>03</span></div></div></section>
-        <footer class="footer"><span>RelayLine · Open infrastructure for independent service continuity.</span><span>MIT licensed · Powered by Arkiv</span></footer>
+        <div class="hero-note"><i data-lucide="shield-check"></i><span>Public infrastructure. Your wallet stays in your control.</span></div>
       </div>
-    </main>
-  </div>
+      <div class="hero-visual" aria-label="Illustration of a primary service going offline while the verified recovery route remains discoverable">
+        <div class="visual-topline"><span>RELAYLINE / HOW IT WORKS</span><span class="preview-tag">Conceptual flow</span></div>
+        <div class="route-row route-muted"><div class="route-glyph"><i data-lucide="globe-2"></i></div><div class="route-label"><span>01 / ORIGINAL WEBSITE</span><strong>Primary destination</strong></div><span class="route-pill route-down"><i data-lucide="alert-triangle"></i> May go offline</span></div>
+        <div class="route-rail" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="route-row route-focus"><div class="route-glyph"><i data-lucide="shield-check"></i></div><div class="route-label"><span>02 / PUBLIC RECOVERY RECORD</span><strong>Arkiv-verified publisher</strong></div><span class="route-pill"><i data-lucide="lock-keyhole"></i> Signed</span></div>
+        <div class="route-rail" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="route-row"><div class="route-glyph"><i data-lucide="external-link"></i></div><div class="route-label"><span>03 / ALTERNATIVE ROUTE</span><strong>Authorized fallback</strong></div><span class="route-pill route-green"><i data-lucide="arrow-up-right"></i> Discoverable</span></div>
+        <div class="visual-footer"><i data-lucide="fingerprint"></i><span>Verified origin, independent access. Endpoint availability is not guaranteed.</span></div>
+      </div>
+    </section>
+    <section class="value-strip" aria-label="Product principles">
+      <div><i data-lucide="fingerprint"></i><span><strong>Publisher-authenticated</strong><small>Records tied to a verified wallet</small></span></div>
+      <div><i data-lucide="network"></i><span><strong>Independently readable</strong><small>No RelayLine backend required</small></span></div>
+      <div><i data-lucide="clock-3"></i><span><strong>Time-aware records</strong><small>Old information isn't trusted forever</small></span></div>
+    </section>
+    <section id="setup" class="setup-section" aria-labelledby="setup-title">
+      <div class="section-heading">
+        <div><span class="eyebrow"><span class="eyebrow-line"></span> YOUR RECOVERY PLAN</span><h2 id="setup-title">Protect a service in three steps.</h2><p>No coding required. We'll guide you through what to publish, what it means, and how your visitors can find you.</p></div>
+        <div class="status-hint" role="status"><span class="status-dot"></span><span id="network-indicator">Checking Arkiv connection…</span></div>
+      </div>
+      <div class="setup-grid">
+        <aside class="journey-panel" aria-label="Setup progress">
+          <ol class="journey-list" id="journey-list">
+            <li data-journey="1" class="current"><span class="journey-count">01</span><span><strong>Name your service</strong><small>Choose a memorable identifier</small></span></li>
+            <li data-journey="2"><span class="journey-count">02</span><span><strong>Add backup locations</strong><small>Primary and recovery websites</small></span></li>
+            <li data-journey="3"><span class="journey-count">03</span><span><strong>Review and publish</strong><small>Approve using your test wallet</small></span></li>
+          </ol>
+          <div class="side-info"><i data-lucide="circle-help"></i><div><strong>New to Web3?</strong><p>You'll need an EVM wallet and free testnet GLM to publish. Readers never need a wallet.</p><a href="https://hub.arkiv.network/faucet" target="_blank" rel="noopener noreferrer">Testnet faucet <i data-lucide="arrow-up-right"></i></a></div></div>
+        </aside>
+        <div class="form-card">
+          <div class="form-card-top"><span class="overline" id="step-label">STEP 1 OF 3</span><span class="testnet-tag"><i data-lucide="activity"></i> Testnet preview</span></div>
+          <form id="publisher-form" novalidate>
+            <fieldset class="wizard-step" data-step="1">
+              <legend>Let's start with a name.</legend>
+              <p class="step-description">Choose the short name people will use to identify your service. It isn't a public identity proof—your wallet provides that later.</p>
+              <div class="field"><label for="service-id">Service ID <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="link-2"></i><input id="service-id" type="text" pattern="[a-z0-9][a-z0-9_-]{0,62}" minlength="1" maxlength="63" required placeholder="e.g. the-daily-brief" autocomplete="off" spellcheck="false" aria-describedby="service-help service-error"></div><p class="field-help" id="service-help">Lowercase letters, numbers, dashes and underscores. For example, <code>my-community</code>.</p><p class="field-error" id="service-error" role="alert" hidden></p></div>
+              <div class="quiet-callout"><i data-lucide="info"></i><span>Service IDs can be claimed by multiple wallets. Readers will only trust the wallet they've independently authenticated.</span></div>
+              <div class="step-actions"><span class="step-indicator"><span>01</span> / 03</span><button class="btn btn-primary" type="button" id="next-one">Continue <i data-lucide="arrow-right"></i></button></div>
+            </fieldset>
+            <fieldset class="wizard-step" data-step="2" hidden>
+              <legend>Where can people find you?</legend>
+              <p class="step-description">Your usual website comes first. Your backup must already exist and remain under your control.</p>
+              <div class="field"><label for="primary-url">Primary website <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="globe-2"></i><input id="primary-url" type="url" required placeholder="https://yourwebsite.com" autocomplete="url" aria-describedby="primary-help primary-error"></div><p class="field-help" id="primary-help">The website your audience normally visits.</p><p class="field-error" id="primary-error" role="alert" hidden></p></div>
+              <div class="field"><label for="fallback-url">Backup website <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="external-link"></i><input id="fallback-url" type="url" required placeholder="https://backup.yourwebsite.com" aria-describedby="fallback-help fallback-error"></div><p class="field-help" id="fallback-help">A separate, HTTPS location you control. It should remain reachable if your primary site fails.</p><p class="field-error" id="fallback-error" role="alert" hidden></p></div>
+              <div class="quiet-callout"><i data-lucide="shield-alert"></i><span>These addresses become publicly readable. Don't include access tokens, credentials or private URLs.</span></div>
+              <div class="step-actions"><button class="btn btn-quiet" type="button" id="back-two"><i data-lucide="arrow-left"></i> Back</button><button class="btn btn-primary" type="button" id="next-two">Review setup <i data-lucide="arrow-right"></i></button></div>
+            </fieldset>
+            <fieldset class="wizard-step" data-step="3" hidden>
+              <legend>Make it official.</legend>
+              <p class="step-description">Review your recovery route, connect a test wallet and approve publication. Nothing is published until you sign.</p>
+              <div class="review-card"><div class="review-title"><i data-lucide="clipboard-check"></i><span>Registration summary</span></div>
+                <dl><div><dt>Service</dt><dd id="review-service">—</dd></div><div><dt>Primary</dt><dd id="review-primary">—</dd></div><div><dt>Backup</dt><dd id="review-fallback">—</dd></div><div><dt>Version</dt><dd id="review-revision">1</dd></div><div><dt>Record lifetime</dt><dd>30 days</dd></div></dl>
+              </div>
+              <input type="hidden" id="revision" value="1">
+              <div class="wallet-panel"><div class="wallet-icon"><i data-lucide="wallet"></i></div><div class="wallet-details"><strong>Your publishing wallet</strong><small id="publisher-address">Connect a wallet to authorize this public record.</small></div><button id="connect-wallet" class="btn btn-outline" type="button">Connect wallet</button></div>
+              <div class="update-panel"><strong>Updating an existing service?</strong><p>After connecting the wallet that originally registered it, we can load the current record and prepare the next version.</p><button id="load-existing" type="button" class="btn btn-text"><i data-lucide="refresh-cw"></i> Load latest version</button><p id="load-status" class="subtle-msg" role="status"></p></div>
+              <label class="consent"><input id="publication-consent" type="checkbox" required><span>I understand this publishes public website addresses on a testnet. My wallet will ask me to approve the transaction.</span></label>
+              <div class="step-actions"><button class="btn btn-quiet" type="button" id="back-three"><i data-lucide="arrow-left"></i> Back</button><button class="btn btn-primary" id="publish-manifest" type="submit" disabled>Publish recovery plan <i data-lucide="arrow-up-right"></i></button></div>
+            </fieldset>
+          </form>
+          <div id="completion" class="completion" hidden role="region" aria-labelledby="complete-title">
+            <div class="completion-mark"><i data-lucide="check-circle-2"></i></div><span class="overline">PUBLICATION RESULT</span><h3 id="complete-title">Your recovery route is recorded.</h3><p id="completion-explainer">A transaction was returned. Verify direct retrieval before considering this configuration confirmed by an independent reader.</p>
+            <div id="evidence" class="receipt"></div>
+            <div class="completion-actions"><a class="btn btn-primary" id="open-reader" href="https://relayline-reader.vercel.app/">Open independent reader <i data-lucide="arrow-up-right"></i></a><button id="start-again" type="button" class="btn btn-quiet"><i data-lucide="plus"></i> Register another</button></div>
+          </div>
+          <p id="publish-status" class="form-message" role="status" aria-live="polite" data-kind="neutral">Complete the steps to prepare your recovery plan.</p>
+        </div>
+      </div>
+    </section>
+    <section class="explain-section" aria-labelledby="how-title">
+      <div class="explain-top"><div><span class="eyebrow"><span class="eyebrow-line"></span> UNDER THE HOOD</span><h2 id="how-title">Resilience with proof,<br>not promises.</h2></div><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Explore open source <i data-lucide="arrow-up-right"></i></a></div>
+      <div class="explain-grid"><article><div class="feature-icon"><i data-lucide="fingerprint"></i></div><h3>You control the record</h3><p>A wallet transaction attributes your recovery links to their creator—not to a central RelayLine account.</p></article><article><div class="feature-icon"><i data-lucide="compass"></i></div><h3>Readers verify directly</h3><p>Anyone who knows your trusted publisher wallet can query Arkiv without depending on this website.</p></article><article><div class="feature-icon"><i data-lucide="clock-3"></i></div><h3>Trust has limits</h3><p>Records expire, and a backup may fail too. We show the actual evidence and never guarantee reachability.</p></article></div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><span class="brand-name">relayline<span class="brand-dot">.</span></span><p>Open infrastructure for service continuity.</p><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer">MIT licensed <i data-lucide="arrow-up-right"></i></a></div></footer>
   <script type="module" src="/web/publisher.mjs"></script>
 </body>
 </html>
