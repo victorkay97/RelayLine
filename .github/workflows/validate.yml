@@ -1,0 +1,32 @@
+name: RelayLine validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline:
+    name: Offline policy tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Trust-policy tests have no runtime dependencies and are safe without a wallet.
+      - run: npm test
+      - run: npm run demo:offline
+  tiramisu-read-only:
+    name: Read-only Tiramisu connectivity
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: npm run probe:rpc
+      # Never store funded wallets as CI secrets or auto-publish on every PR.

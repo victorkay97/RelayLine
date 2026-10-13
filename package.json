@@ -1,0 +1,20 @@
+{
+  "name": "relayline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Independently verifiable service recovery on Arkiv",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "demo:offline": "node scripts/offline-demo.mjs",
+    "probe:rpc": "node scripts/probe-rpc.mjs",
+    "publish": "node scripts/publish.mjs",
+    "read": "node scripts/read.mjs"
+  },
+  "dependencies": {
+    "@arkiv-network/sdk": "^0.8.0",
+    "viem": "^2.0.0"
+  }
+}
