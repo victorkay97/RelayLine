@@ -17,7 +17,9 @@
     "read": "node scripts/read.mjs",
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "monitor:dry": "node scripts/monitor.mjs",
+    "monitor:run": "node scripts/monitor.mjs"
   },
   "dependencies": {
     "@arkiv-network/sdk": "^0.8.0",

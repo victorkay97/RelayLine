@@ -39,6 +39,7 @@
           <form id="recovery-form" autocomplete="off">
             <div class="form-row"><label for="recovery-service">Service identifier</label><input id="recovery-service" required maxlength="63" placeholder="e.g. independent-journal"></div>
             <div class="form-row"><label for="recovery-publisher">Expected publisher wallet</label><input id="recovery-publisher" required placeholder="0x… (40-character Ethereum address)" spellcheck="false"></div>
+            <div class="form-row"><label for="trusted-monitors">Optional trusted monitor wallets <span>COMMA-SEPARATED · QUORUM 2</span></label><input id="trusted-monitors" placeholder="0x… , 0x… (independently verified)" spellcheck="false"><p class="helper">Availability is unknown without independent monitor signatures. This field never controls which endpoints are authorized.</p></div>
             <div class="trust-actions"><button id="pin-publisher" type="button" class="button button-secondary">Pin authenticated publisher</button><button id="clear-pin" type="button" class="text-button">Forget pinned identity</button></div>
             <p id="pin-status" class="message" data-kind="neutral">No locally pinned wallet.</p>
             <div class="form-footer"><span>Public records only · no wallet prompts</span><button class="button button-primary" type="submit">Query Arkiv ↗</button></div>

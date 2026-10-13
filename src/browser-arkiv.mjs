@@ -3,6 +3,7 @@ import { tiramisu } from '@arkiv-network/sdk/chains';
 import { custom, http } from 'viem';
 import { queryServiceManifests } from './query.mjs';
 import { publishWithWallet } from './write.mjs';
+import { queryObservations } from './monitor-arkiv.mjs';
 
 const CHAIN_HEX = '0x7614d1';
 export const ARKIV_RPC_URL = 'https://rpc.tiramisu.db-chain.testnet.arkiv.network';
@@ -53,4 +54,9 @@ export async function publishFromBrowser({ session, manifest }) {
     publicClient: session.publicClient, walletClient: session.wallet,
     account: session.account, manifest
   });
+}
+
+/** Read independent monitor statements without the RelayLine backend. */
+export async function readPublicObservations(serviceId) {
+  return queryObservations(makePublicClient(), serviceId);
 }

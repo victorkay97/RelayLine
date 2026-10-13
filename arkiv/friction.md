@@ -22,3 +22,14 @@
 ## Provenance warning
 
 Local `node --test` and `npm run demo:offline` validate **pure policy logic and synthetic fixtures only**. They do not prove successful RPC communication, live transactions, or decentralized recovery. Never invent transaction hashes or live results.
+
+## FR-003 — Successful read-only Arkiv SDK entity query (verified)
+
+**Environment:** GitHub-hosted Ubuntu, Node 22, SDK 0.8.x, 2026-10-13 21:48:55 UTC.
+**Expected:** Public Tiramisu SDK `select().where(eq("project",str("relayline-v1"))).limit(5).fetch()` works without a funded wallet.
+**Observed:** PASS, block 539191, zero matching records, no query errors. Expected at this stage because no manifest exists yet.
+**Reproduction:** `npm install && npm run probe:query`; see GitHub Actions run https://github.com/victorkay97/RelayLine/actions/runs/38473350225.
+**Interpretation:** Successful query path, not evidence of Arkiv entity writes. No issue reported.
+
+## M5 monitoring status
+M5 code includes 10-minute observation expiry, on-chain creator policy and a controlled HTTPS probe. Offline/mocked tests will be recorded in CI. **Do not present these as evidence of actual funded monitor transactions** until their hashes exist.
