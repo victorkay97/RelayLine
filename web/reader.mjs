@@ -1,6 +1,7 @@
 import './styles.css';
-import { readPublicManifests, readPublicObservations } from '../src/browser-arkiv.mjs';
-import { selectTrustedManifest, normalizeAddress } from '../src/policy.mjs';
+import { readPublicServiceRecords } from '../src/browser-arkiv.mjs';
+import { normalizeAddress } from '../src/policy.mjs';
+import { resolveServiceState } from '../src/control-policy.mjs';
 import { byId, escapeHtml, status, short } from './dom.mjs';
 import { evaluateMonitorEvidence } from '../src/monitor-policy.mjs';
 
@@ -16,6 +17,25 @@ idField.value = params.get('service') ?? '';
 walletField.value = params.get('publisher') ?? '';
 
 function getPinKey(serviceId) { return 'relayline:v1:pinned:' + serviceId; }
+function getFenceKey(serviceId) { return 'relayline:v1:fence:' + serviceId; }
+function loadFence(serviceId) {
+  try {
+    const fence = JSON.parse(localStorage.getItem(getFenceKey(serviceId)) || '{}');
+    return {
+      minRevision: Number.isSafeInteger(fence.minRevision) && fence.minRevision >= 0 ? fence.minRevision : 0,
+      minEpoch: fence.minEpoch === 1 ? 1 : 0,
+      rememberedRevocations: Array.isArray(fence.revoked) ? fence.revoked.filter(x => /^0x[a-fA-F0-9]{64}$/.test(x)).slice(0,200) : []
+    };
+  } catch { return { minRevision: 0, minEpoch: 0, rememberedRevocations: [] }; }
+}
+function saveFence(serviceId, current, decision) {
+  const revoked = [...new Set([...current.rememberedRevocations, ...(decision.revokedKeys || [])])].slice(-200);
+  localStorage.setItem(getFenceKey(serviceId), JSON.stringify({
+    minRevision: Math.max(current.minRevision, decision.selected?.manifest.revision ?? 0),
+    minEpoch: Math.max(current.minEpoch, decision.epoch ?? 0),
+    revoked
+  }));
+}
 function existingPin() {
   const serviceId = idField.value.trim();
   return serviceId ? localStorage.getItem(getPinKey(serviceId)) : null;
@@ -46,6 +66,7 @@ byId('clear-pin').addEventListener('click', () => {
   if (!serviceId || !existingPin()) return;
   if (confirm('Forget the pinned publisher for ' + serviceId + '? You must authenticate a replacement out of band.')) {
     localStorage.removeItem(getPinKey(serviceId));
+    localStorage.removeItem(getFenceKey(serviceId)); // Explicit reset of rollback protections.
     refreshPin();
   }
 });
@@ -62,10 +83,16 @@ byId('recovery-form').addEventListener('submit', async event => {
     if (!pin) throw new Error('Pin an independently authenticated publisher wallet first.');
     if (pin !== entered) throw new Error('Entered wallet differs from pinned identity. Refusing silent identity change.');
     status(recoveryStatus, 'Querying Tiramisu directly. No application backend involved…');
-    const { entities, headBlock } = await readPublicManifests(serviceId);
-    const decision = selectTrustedManifest(entities, {
-      pinnedPublisher: pin, serviceId, headBlock
+    const { entities, headBlock } = await readPublicServiceRecords(serviceId);
+    const fence = loadFence(serviceId);
+    const decision = resolveServiceState(entities, {
+      pinnedPublisher: pin, serviceId, headBlock, ...fence
     });
+    // Persist known revocation evidence even when the last manifest was revoked.
+    // Remembering verified observations cannot prevent rollback for a brand new client.
+    if (decision.epoch !== undefined && !['invalid_root_rotation', 'conflicting_root_rotation'].includes(decision.issue)) {
+      saveFence(serviceId, fence, decision);
+    }
     const selected = decision.selected;
     const rejectCount = decision.rejected.length;
     const summary = [
@@ -87,13 +114,11 @@ byId('recovery-form').addEventListener('submit', async event => {
         .map(x => x.trim()).filter(Boolean).map(normalizeAddress);
       if (configuredMonitors.length) {
         try {
-          const observationPage = await readPublicObservations(serviceId);
-          if (selected.expiresAt <= observationPage.headBlock) {
-            throw new Error('Manifest expired during separate observation query. Refresh.');
-          }
-          monitorResults = evaluateMonitorEvidence(observationPage.entities, {
+          monitorResults = evaluateMonitorEvidence(entities.filter(
+            entry => entry.attributes?.kind?.value === 'observation'
+          ), {
             manifest: selected.manifest, manifestKey: selected.key,
-            headBlock: observationPage.headBlock, trustedMonitorWallets: configuredMonitors, quorum: 2
+            headBlock, trustedMonitorWallets: configuredMonitors, quorum: 2
           });
         } catch (error) {
           // Do not claim monitors have verified health if the query failed.
@@ -118,6 +143,7 @@ byId('recovery-form').addEventListener('submit', async event => {
         escapeHtml(pin) + '</code><br>Endpoints are publisher-authorized, <strong>not automatically proven reachable or safe.</strong></div>' +
         '<div class="evidence-row"><span>Selected entity</span><code>' + escapeHtml(selected.key) + '</code></div>' +
         '<div class="evidence-row"><span>Revision</span><code>' + selected.manifest.revision + '</code></div>' +
+        '<div class="evidence-row"><span>Signing epoch</span><code>' + decision.epoch + '</code></div>' +
         '<div class="evidence-row"><span>Expiry block</span><code>' + selected.expiresAt + '</code></div>' +
         '<div class="endpoint-list">' + endpoints + '</div>' +
         (rejectionRows ? '<details><summary>Rejected competing records (' + rejectCount + ')</summary>' + rejectionRows + '</details>' : '');

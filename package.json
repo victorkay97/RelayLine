@@ -19,7 +19,9 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "monitor:dry": "node scripts/monitor.mjs",
-    "monitor:run": "node scripts/monitor.mjs"
+    "monitor:run": "node scripts/monitor.mjs",
+    "revoke": "node scripts/revoke.mjs",
+    "rotate": "node scripts/rotate.mjs"
   },
   "dependencies": {
     "@arkiv-network/sdk": "^0.8.0",

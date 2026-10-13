@@ -1,7 +1,7 @@
 import { createPublicClient, createWalletClient } from '@arkiv-network/sdk';
 import { tiramisu } from '@arkiv-network/sdk/chains';
 import { custom, http } from 'viem';
-import { queryServiceManifests } from './query.mjs';
+import { queryServiceManifests, queryServiceRecords } from './query.mjs';
 import { publishWithWallet } from './write.mjs';
 import { queryObservations } from './monitor-arkiv.mjs';
 
@@ -59,4 +59,9 @@ export async function publishFromBrowser({ session, manifest }) {
 /** Read independent monitor statements without the RelayLine backend. */
 export async function readPublicObservations(serviceId) {
   return queryObservations(makePublicClient(), serviceId);
+}
+
+/** Read manifests AND root-signed controls in one chain query for consistent decisions. */
+export async function readPublicServiceRecords(serviceId) {
+  return queryServiceRecords(makePublicClient(), serviceId);
 }

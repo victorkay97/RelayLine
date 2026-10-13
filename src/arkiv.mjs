@@ -2,7 +2,7 @@ import { createPublicClient, createWalletClient } from '@arkiv-network/sdk';
 import { tiramisu } from '@arkiv-network/sdk/chains';
 import { http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { queryServiceManifests } from './query.mjs';
+import { queryServiceManifests, queryServiceRecords } from './query.mjs';
 import { publishWithWallet } from './write.mjs';
 
 export const RPC = process.env.ARKIV_RPC_URL ?? 'https://rpc.tiramisu.db-chain.testnet.arkiv.network';
@@ -33,4 +33,9 @@ export async function publishManifest({ privateKeyEnv, manifest, allowLoopback =
 
 export function readManifests(serviceId, opts = {}) {
   return queryServiceManifests(publicClient(), serviceId, opts);
+}
+
+/** Fetch all kinds in a single Arkiv snapshot for rotation, revocation and manifest selection. */
+export function readServiceRecords(serviceId, opts = {}) {
+  return queryServiceRecords(publicClient(), serviceId, opts);
 }

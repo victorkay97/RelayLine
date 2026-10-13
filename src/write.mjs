@@ -22,12 +22,29 @@ export async function publishWithWallet({ publicClient, walletClient, manifest, 
     expires: ExpirationTime.fromDays(30),
     flags: { readonly: true, permissionlessExtension: false }
   });
+  // SDK creation receipts guarantee entityKey + txHash, not an expiresAt field.
+  // Query a separate public client for independent read-back when possible.
+  // A receipt without read-back is explicitly marked "receipt_only".
+  let expiresAt = result.expiresAt?.toString() ?? null;
+  let verification = 'receipt_only';
+  if (result.entityKey && typeof publicClient.getEntity === 'function') {
+    try {
+      const entity = await publicClient.getEntity(result.entityKey);
+      if (entity && normalizeAddress(entity.creator) === creator) {
+        expiresAt = entity.expiresAt?.toString() ?? expiresAt;
+        verification = 'read_back';
+      }
+    } catch {
+      // The independently deployed reader can retry after RPC indexing catches up.
+    }
+  }
   return {
     creator,
     service_id: validated.service_id,
     revision: validated.revision,
     entityKey: result.entityKey,
     txHash: result.txHash,
-    expiresAt: result.expiresAt.toString()
+    expiresAt,
+    verification
   };
 }
