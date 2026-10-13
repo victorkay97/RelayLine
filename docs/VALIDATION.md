@@ -1,6 +1,6 @@
 # Tiramisu technical-validation gates
 
-**Status:** Live on-chain acceptance is pending; the offline policy tests pass. The submission must not claim that any live gate has passed without actual transaction references.
+**Status:** Real read-only Tiramisu RPC connectivity **PASS** in GitHub Actions (2026-10-13; chain 7738577, block 539118; see [evidence](./LIVE_READ_EVIDENCE.md)). Four live-manifest acceptance gates are still pending; the offline policy tests pass. The submission must not claim that any live gate has passed without actual transaction references.
 
 ## Prerequisites
 
