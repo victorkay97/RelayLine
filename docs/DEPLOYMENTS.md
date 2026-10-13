@@ -40,3 +40,9 @@ A successful frontend build and READY deployment do **not** establish that brows
 Do not use untrusted sites as live probe targets; do not enable automatic URL probing in the browser application (CORS prevents reliable cross-origin measurements). Do not commit private keys or publish any private content to Arkiv.
 
 Acceptance gates and evidence requirements: [Issue #2](https://github.com/victorkay97/RelayLine/issues/2), [validation instructions](./VALIDATION.md).
+
+## M7 reader-only artifact
+
+The original independent Vercel project deployed the full multi-page build. The M7 build introduces a **reader-only static artifact** produced by `npm run build:reader` in `dist-reader/`, containing the direct-RPC client and no publisher HTML entry point. Vercel's `relayline-reader` project must use `npm run build:reader` and output `dist-reader` before this distinction can be claimed for its currently hosted release. Inspect the deployment's commit SHA and `READY` status after changing these settings.
+
+This release packaging change reduces coupling, but it does not guarantee service access if the independent reader's Vercel host or Arkiv RPC is down.

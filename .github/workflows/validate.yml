@@ -18,6 +18,7 @@ jobs:
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm test
       - run: npm run demo:offline
+      - run: npm run demo:judge
   web-build:
     name: Publisher and reader production build
     runs-on: ubuntu-latest
@@ -28,11 +29,17 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run build
+      - run: npm run build:reader
       - run: test -f dist/index.html && test -f dist/recover.html
+      - run: test -f dist-reader/index.html && test -f dist-reader/recover.html
+      - run: test ! -f dist-reader/publisher.html
+      - run: npm ls @arkiv-network/sdk viem vite --depth=0
       - uses: actions/upload-artifact@v4
         with:
           name: relayline-static-pages
-          path: dist/
+          path: |
+            dist/
+            dist-reader/
           retention-days: 7
   tiramisu-read-only:
     name: Read-only Tiramisu connectivity
