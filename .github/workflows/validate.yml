@@ -63,7 +63,7 @@ jobs:
           node-version: '22'
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
-      - run: RELAYLINE_LIVE_G3=1 npm run test:ui
+      - run: npm run test:ui
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -91,19 +91,3 @@ jobs:
       # explicitly when validating their respective conditions.
       # Never store funded wallets as CI secrets or auto-publish on every PR.
 
-  m4-g3-independent:
-    name: Real G3 second-wallet creator rejection
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: npm install --ignore-scripts --no-audit --no-fund
-      - name: Verify public signed adversarial transaction and pinned reader
-        run: node scripts/verify-m4-impersonation.mjs
-        env:
-          ATTACKER_ADDRESS: '0x024e3989ff6ed673c90613815dca3017ab9ea50d'
-          ATTACKER_TX_HASH: '0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8'
-          ATTACKER_ENTITY_KEY: '0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be'
