@@ -53,3 +53,13 @@ Automated read-only probe: `npm run probe:friction`, pinned SDK `0.8.1`, Node 22
 **Reproduction:** `npm install && node scripts/verify-m4-publication.mjs` while record is active; see [G1/G2 workflow](https://github.com/victorkay97/RelayLine/actions/runs/38553133526). The controlled outage script `scripts/verify-m4-recovery.mjs` succeeds only when the primary test fixture is temporarily offline; see [G4 workflow](https://github.com/victorkay97/RelayLine/actions/runs/38553629942). The primary fixture was restored afterward.
 
 **Limitation:** This validates a controlled failed URL, not actual censorship. A separate attacker's real on-chain creation remains pending, as do monitor and control signed writes. No SDK bug is claimed from these successful tests.
+
+## FR-006 — Real impostor creator filtering (2026-10-14)
+
+**Environment:** Arkiv Tiramisu 7738577, two user-authorized test-only EVM wallets, SDK 0.8.1 verifier on GitHub-hosted Ubuntu Node 22.
+
+**Expected:** Another wallet can publish the same service identifier, but an independently authenticated and pinned publisher wallet must not be replaced by that record. The reader should expose a clear `untrusted_creator` rejection.
+
+**Observed:** **PASS**. Second-wallet transaction `0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8` in block 563832 created entity `0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be` with immutable creator `0x024e3989ff6ed673c90613815dca3017ab9ea50d`; service `relayline-demo-oct14`, revision **1**. The independent query at block 563943 found and rejected the entity for `untrusted_creator`, continuing to select the first legitimate entity. Browser E2E accepted the legitimate endpoints and listed the rejection on desktop, mobile and compact views.
+
+**Reproduce:** `ATTACKER_ADDRESS=0x024e3989ff6ed673c90613815dca3017ab9ea50d ATTACKER_TX_HASH=0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8 ATTACKER_ENTITY_KEY=0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be node scripts/verify-m4-impersonation.mjs`, while both entities are active. [Read-only verifier log](https://github.com/victorkay97/RelayLine/actions/runs/38557421557). [Hosted UI acceptance log](https://github.com/victorkay97/RelayLine/actions/runs/38557845347). This successful result does not establish an SDK defect or broader censorship resistance.

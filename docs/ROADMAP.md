@@ -2,13 +2,13 @@
 
 - [x] R0 — Initialize public MIT repository and document the trust model.
 - [x] R1a — Implement independent pure-policy verifier, offline tests and controlled offline recovery.
-- [ ] R1b — Validate Tiramisu RPC, real publisher write, independent read, attacker write and live recovery.
-- [x] R2a — Publisher console and browser wallet signing flows implemented (CI build passed; on-chain publishing unverified).
-- [ ] R2b — Live browser signing tested and confirmed on Tiramisu.
+- [x] R1b — Tiramisu RPC, real publisher write, independent read, second-wallet impersonation rejection, and controlled live recovery independently validated (G1–G4; see ONCHAIN_EVIDENCE.md).
+- [x] R2a — Publisher console and browser wallet signing flows implemented and built.
+- [x] R2b — Two live browser-wallet manifest registrations confirmed on Tiramisu (separate wallets and successful public transaction receipts).
 - [ ] R2c — Production publisher management: revocation, key recovery and approvals.
 - [x] R3a — Browser-based direct-RPC reader with explicit wallet pinning and shared trust policy (CI build passed).
 - [x] R3b1 — Deploy separately-hosted recovery reader in another Vercel project.
-- [ ] R3b2 — Prove publisher outage recovery using a LIVE on-chain manifest.
+- [x] R3b2 — Prove signed-manifest-backed fallback recovery during controlled primary-service HTTP outage; reader queries Arkiv without RelayLine backend. Full publisher-host outage not separately tested.
 - [ ] R3c — Publish and version a minimal reusable read SDK (implementation included in M7 branch; consumer example pending).
 - [x] R4a — Monitoring observation schema, independent signer, exact-allowlist HTTPS operator probe and quorum evaluator implemented; tests pending GitHub CI.
 - [ ] R4b — Multiple distinct funded monitor wallets publish actual Tiramisu observations; independent reader displays live quorum results.
@@ -19,7 +19,7 @@
 - [ ] R5c2 — Validate at least two trusted actual Tiramisu RPC providers, durable control replication, multi-hop recovery and independent audit.
 - [x] R6a — Publisher and independent-reader public Vercel deployments created.
 - [x] R6b — Reproducible synthetic judge demo, independent reader-only build, documented scoring evidence, video storyboard and Devfolio draft prepared (CI pending).
-- [ ] R6c — User-approved real publisher/attacker transactions and live recovery evidence.
+- [x] R6c — User-approved real publisher/attacker testnet transactions and controlled signed-manifest recovery evidence documented.
 - [ ] R6d — Record ≤3-minute real demo, check all Devfolio links and complete submission.
 
 The R1b gate is a hard prerequisite to claiming Arkiv integration works in a live environment. Timelines do not justify claiming a simulated test is on-chain.
