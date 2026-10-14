@@ -87,4 +87,5 @@ jobs:
       - run: npm run probe:query
       - run: npm run probe:friction
       - run: node scripts/verify-m4-publication.mjs
+      - run: node scripts/verify-m4-recovery.mjs
       # Never store funded wallets as CI secrets or auto-publish on every PR.
