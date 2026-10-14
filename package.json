@@ -26,7 +26,8 @@
     "demo:judge": "node scripts/demo-judge.mjs",
     "smoke:hosted": "node scripts/smoke-hosted.mjs",
     "probe:friction": "node scripts/probe-friction.mjs",
-    "test:ui": "playwright test"
+    "test:ui": "playwright test",
+    "smoke:m4": "node scripts/smoke-m4.mjs"
   },
   "dependencies": {
     "@arkiv-network/sdk": "0.8.1",
