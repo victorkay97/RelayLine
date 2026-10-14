@@ -51,6 +51,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm run smoke:hosted
+      - run: npm run smoke:m4
   ux-browser:
     name: Responsive UX, journeys and accessibility
     runs-on: ubuntu-latest
