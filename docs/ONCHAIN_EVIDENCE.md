@@ -27,7 +27,7 @@ The test checked **actual** `getTransactionReceipt()`, `getEntity()`, chain ID, 
 
 In the same [CI evidence](https://github.com/victorkay97/RelayLine/actions/runs/38553133526), `src/query.mjs` executed a fresh direct Arkiv query for the service, and `src/control-policy.mjs` resolved its publisher root. The selected entity key matched the provided real entity key exactly. One record was returned; no competing records yet. As a defensive negative control, a *different pinned wallet* did not accept the record. **This negative control is not a real attacker-wallet publication**.
 
-A direct hosted-browser recovery-reader interaction remains a useful additional browser validation; G2's direct Arkiv/CLI trust check is what is proven here.
+**Hosted browser G2 acceptance ALSO PASSED:** Playwright opened the separately deployed public reader at https://relayline-reader.vercel.app/, pinned the legitimate publisher in the UI, queried Arkiv directly, and confirmed the real selected entity key and fallback URL. Tested in three Chromium viewport configurations (desktop, 375px mobile, 320px compact) in [GitHub Actions run 38554197291](https://github.com/victorkay97/RelayLine/actions/runs/38554197291). The special live E2E test is gated behind `RELAYLINE_LIVE_M4=1` so the test suite does not break when the 30-day entity naturally expires.
 
 ## G4: Actual on-chain manifest-backed controlled outage recovery — PASS
 
