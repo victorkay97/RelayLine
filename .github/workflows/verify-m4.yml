@@ -1,0 +1,24 @@
+name: M4 real Tiramisu read-only verification
+on:
+  push:
+    paths:
+      - 'scripts/verify-m4-publication.mjs'
+      - '.github/workflows/verify-m4.yml'
+      - 'src/query.mjs'
+      - 'src/policy.mjs'
+      - 'src/control-policy.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-live-publication:
+    name: Verify G1/G2 real public entity and transaction
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: node scripts/verify-m4-publication.mjs

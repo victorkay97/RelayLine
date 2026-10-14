@@ -1,6 +1,6 @@
 # Tiramisu technical-validation gates
 
-**Status:** Real read-only Tiramisu RPC connectivity **PASS** in GitHub Actions (2026-10-13; chain 7738577, block 539118; see [evidence](./LIVE_READ_EVIDENCE.md)). Four live-manifest acceptance gates are still pending; the offline policy tests pass. The submission must not claim that any live gate has passed without actual transaction references.
+**Status (2026-10-14):** G1 real publisher write, G2 independent chain reader verification, and G4 signed-manifest-backed controlled outage recovery are **PASS** with actual public transaction/entity references. G3 attacker-wallet publication is **PENDING**. Source of truth: [ONCHAIN_EVIDENCE.md](./ONCHAIN_EVIDENCE.md).
 
 ## Prerequisites
 
@@ -14,10 +14,10 @@ With Node 22+, load the local test environment using `node --env-file=.env scrip
 
 | Gate | Exact evidence required | Current state |
 | --- | --- | --- |
-| G1 real publish | Tiramisu chain ID, block number, publisher address, entity key and transaction hash | NOT VERIFIED |
-| G2 independent read | Reader loads Tiramisu entity without RelayLine backend, matching publisher and payload | NOT VERIFIED |
+| G1 real publish | Tiramisu chain ID, block number, publisher address, entity key and transaction hash | **PASS** (block 562737) |
+| G2 independent read | Reader loads Tiramisu entity without RelayLine backend, matching publisher and payload | **PASS** (CI block 562847; hosted-browser test separate) |
 | G3 impersonation | Separate attacker wallet successfully writes a record; reader rejects it via actual creator | NOT VERIFIED |
-| G4 recovery | Primary synthetic website intentionally down; registered fallback working; live manifest read via Arkiv | NOT VERIFIED |
+| G4 recovery | Primary synthetic website intentionally down; registered fallback working; live manifest read via Arkiv | **PASS** (CI block 562972, primary HTTP 404, fallback HTTP 200) |
 
 ## Execution
 
@@ -38,3 +38,10 @@ With Node 22+, load the local test environment using `node --env-file=.env scrip
 - New publishers must establish the root-wallet identity out of band.
 - Production must implement revocation, key recovery/rotation, monitor verification, RPC failover, and hosted-probe SSRF defenses.
 - Max of 2,000 matching manifests accepted in this validation CLI; larger sets fail closed.
+
+## Current reproducible checks
+
+- `node scripts/verify-m4-publication.mjs`: read-only real transaction, entity, immutable creator, compound query and pinned trust policy. This permanent public test fixture expires at Arkiv block 1858737; do not interpret future expected expiry as a chain regression.
+- `node scripts/verify-m4-recovery.mjs`: read-only allowlisted fallback validation. **Only run while the controlled primary fixture is intentionally unavailable**, or the test correctly reports `primary` rather than `recovered`.
+- GitHub Actions logs: [G1/G2](https://github.com/victorkay97/RelayLine/actions/runs/38553133526) and [G4](https://github.com/victorkay97/RelayLine/actions/runs/38553629942).
+- User action for G3: a second, funded, test-only EVM account must approve a new `service_id=relayline-demo-oct14` record. A wallet's public address and transaction key are safe to share, never private keys.

@@ -1,6 +1,6 @@
 # RelayLine — judging evidence matrix
 
-**Prepared October 13, 2026; status is factual, NOT a prediction of score.**
+**Updated October 14, 2026; status is factual, NOT a prediction of score.**
 Canonical rubric: https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/blob/main/docs/scoring-rubric.md
 
 ## Hard-gate readiness
@@ -8,10 +8,10 @@ Canonical rubric: https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/b
 | Gate | Evidence | Status |
 | --- | --- | --- |
 | Public working deployment | [Publisher](https://relayline-vkalu2266-3185s-projects.vercel.app/), [separately deployed reader](https://relayline-reader.vercel.app/recover.html); Vercel projects READY | PARTIAL — browser-wallet and user-journey test pending |
-| Reproducibility | `docs/VALIDATION.md`, `docs/REPRODUCE.md` | PARTIAL — no live manifest to reproduce yet |
+| Reproducibility | `docs/VALIDATION.md`, `docs/REPRODUCE.md` | PARTIAL — first live manifest and controlled fallback verified; attacker G3 outstanding |
 | MIT public repo | [Repository](https://github.com/victorkay97/RelayLine) | PASS |
 | `/arkiv/schema.md` | [Data model](../arkiv/schema.md) | PRESENT; live entity examples pending |
-| Actual Tiramisu creation addresses | `docs/ONCHAIN_EVIDENCE.md` | **BLOCKED** until funded wallet creates a record |
+| Actual Tiramisu creation addresses | `docs/ONCHAIN_EVIDENCE.md` | **PASS** first real funded test wallet write in block 562737, actual public tx and key in ONCHAIN_EVIDENCE.md |
 | `/arkiv/friction.md` | [Developer report](../arkiv/friction.md) | PRESENT; add actual write results when available |
 | Demo video ≤3 minutes | `docs/DEMO.md` | SCRIPT READY; footage/video not recorded |
 | Devfolio required fields | `docs/DEVFOLIO_DRAFT.md` | DRAFT; user must submit |
@@ -37,7 +37,7 @@ The independent reader and the main application inspect the same shared, public,
 - `src/control-arkiv.mjs` and `src/control-policy.mjs`: 90-day root-signed rotations and revocations, local monotonic rollback checks.
 - `web/reader.mjs`: independent public queries, user-visible creator validation, endpoint authorization and optional monitoring evidence.
 
-**Note:** SDK read-only queries passed live on Tiramisu. The above *write implementations* are not yet proven live. Each user-visible feature must be demonstrated by real entity keys and transaction receipts before it is claimed in the submission.
+**Note:** SDK read-only queries and **one real wallet-signed manifest creation** are verified on Tiramisu (G1/G2). A controlled outage selected its on-chain fallback (G4). Monitoring/control write implementations are NOT yet proven live. Each user-visible feature must be demonstrated by real entity keys and transaction receipts before it is claimed in the submission.
 
 ## Criterion 4 — Friction report (25%)
 

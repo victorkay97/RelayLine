@@ -86,4 +86,7 @@ jobs:
       - run: npm run probe:rpc
       - run: npm run probe:query
       - run: npm run probe:friction
+      # Real M4 fixtures expire and the deliberate outage is temporary; rerun
+      # scripts/verify-m4-publication.mjs and scripts/verify-m4-recovery.mjs
+      # explicitly when validating their respective conditions.
       # Never store funded wallets as CI secrets or auto-publish on every PR.

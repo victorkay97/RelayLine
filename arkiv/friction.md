@@ -41,3 +41,15 @@ Automated read-only probe: `npm run probe:friction`, pinned SDK `0.8.1`, Node 22
 **Expected:** both queries execute against Tiramisu, produce a BigInt snapshot block, and the creator filter cannot yield records created by another wallet.
 **Actual (observed 2026-10-13 22:29:30 UTC):** PASS on chain `7738577`, first snapshot block `540409`, elapsed `636 ms`, SDK `0.8.1`; both queries returned **zero entities**, `hasNextPage=false`, and the filtered result contained no creator mismatches. The result proves query syntax, remote execution, page metadata and method wiring; **it does NOT prove that a positive matching `$creator` record is returned correctly**, since there are no matches yet. Evidence: https://github.com/victorkay97/RelayLine/actions/runs/38478108830, job `Read-only Tiramisu connectivity` (`probe:friction`). No SDK defect was observed. A funded publisher entity will allow positive-match verification later.
 **Reproduce:** `npm install && npm run probe:friction`.
+
+## FR-005 — First real wallet-signed manifest creation and independent recovery (2026-10-14)
+
+**Environment:** Arkiv Tiramisu chain 7738577, public publisher wallet `0x2d7cfff67d9e63e225e082371b205cb7518b5c24`; browser wallet authorization, public SDK 0.8.1 verifier on GitHub Actions.
+
+**Expected:** A signed read-only `manifest` write yields a successful transaction, 32-byte entity key, immutable creator matching signer, typed query consistency, readable public payload and active expiration. Separate client should retrieve entity and verify it with no RelayLine backend. After controlled primary failure, recovery should select registered fallback.
+
+**Observed:** **PASS**. Transaction `0x009368bc762eb37da627842823584a3d644d41db7278582106f7c9273637b7e1`, creation block 562737, entity key `0x2389c184908191a0b751396e135f64c1ceb3e2d827cbc5849d1a2ff442a7d2fc`, expiry block 1858737. Read-only verifier selected the exact on-chain entity at block 562847. During separately controlled primary HTTP 404 failure, the live on-chain manifest's fallback answered HTTP 200 and recovery was selected at query block 562972.
+
+**Reproduction:** `npm install && node scripts/verify-m4-publication.mjs` while record is active; see [G1/G2 workflow](https://github.com/victorkay97/RelayLine/actions/runs/38553133526). The controlled outage script `scripts/verify-m4-recovery.mjs` succeeds only when the primary test fixture is temporarily offline; see [G4 workflow](https://github.com/victorkay97/RelayLine/actions/runs/38553629942). The primary fixture was restored afterward.
+
+**Limitation:** This validates a controlled failed URL, not actual censorship. A separate attacker's real on-chain creation remains pending, as do monitor and control signed writes. No SDK bug is claimed from these successful tests.
