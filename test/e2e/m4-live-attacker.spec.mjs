@@ -19,5 +19,5 @@ test('live hosted recovery reader rejects separate-wallet counterfeit while reta
   await expect(result.locator('.rejections')).toContainText('0x2b47b2');
   const opened=result.locator('.endpoint-result a[href*="vercel.app"]');
   await expect(opened).toHaveCount(2);
-  await expect(result.locator('.endpoint-result')).not.toContainText('relayline-test-primary.vercel.app/offline');
+  await expect(result).not.toContainText('relayline-test-primary.vercel.app/offline');
 });
