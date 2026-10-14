@@ -63,7 +63,7 @@ jobs:
           node-version: '22'
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
-      - run: RELAYLINE_LIVE_M4=1 npm run test:ui
+      - run: npm run test:ui
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
