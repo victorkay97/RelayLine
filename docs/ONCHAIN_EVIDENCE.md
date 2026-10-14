@@ -43,11 +43,29 @@ Reader query snapshot block: **562972**.
 - This is a controlled unavailable-URL outage, **not proof of censorship, a true provider shutdown, global reachability or endpoint safety**. The publisher's real on-chain record was not modified for the test.
 - The primary fixture was subsequently restored via Vercel git deployment `dpl_BBug35JovgxMYJs3dTLEL9vSEPPM`, reporting `READY`. A follow-up HTTP test checks restoration.
 
-## G3: Second-wallet attack publication — PENDING
+## G3: Real second-wallet impersonation rejection — PASS
 
-No independently signed attacker entity has yet been received/verified. Do not treat the mismatched-pin negative control as a successful live G3.
+An independent read-only verifier checked the **actual second transaction**, its sender, signed entity's immutable `$creator`, schema, and public service query—not merely a browser screenshot.
 
-**Attacker evidence required:** second funded test-only wallet address, actual Tiramisu transaction hash, actual entity key and evidence that the reader scans the attacker's service record but rejects its immutable `$creator` while retaining the legitimate publisher record. Attackers should use a harmless owned HTTPS decoy, not an unrelated real site.
+| Attribute | Verified Arkiv chain value |
+| --- | --- |
+| Network | Tiramisu, chain ID `7738577` |
+| Second-wallet public address | `0x024e3989ff6ed673c90613815dca3017ab9ea50d` |
+| Transaction hash | `0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8` |
+| Transaction status | `success` |
+| Transaction block | `563832` |
+| Entity key | `0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be` |
+| Service ID claimed | `relayline-demo-oct14` |
+| Revision claimed | `1` |
+| Reader snapshot block | `563943` |
+| Rejection reason | `untrusted_creator` |
+| Legitimate entity retained | `0x2389c184908191a0b751396e135f64c1ceb3e2d827cbc5849d1a2ff442a7d2fc` |
+
+**CLI policy and chain evidence:** [GitHub Actions run 38557421557](https://github.com/victorkay97/RelayLine/actions/runs/38557421557). The real record was **signed by a distinct test-only wallet**, while the reader remained pinned to the independently verified legitimate publisher root. The reader explicitly rejected the counterfeit even though the impostor used the same service ID. The test does **not** claim to have tested a higher-revision impersonation: the observed attack revision was 1.
+
+**Hosted UI evidence:** [GitHub Actions run 38557845347](https://github.com/victorkay97/RelayLine/actions/runs/38557845347), Chromium desktop, 375px mobile, and 320px compact. Playwright visited the separately deployed reader, pinned the legitimate publisher, queried live Arkiv, expanded *rejected records*, found `untrusted_creator` for the attack key, confirmed only the legitimate two authorized destinations remained visible, and did not show the attacker’s deliberately unavailable `/offline` URL.
+
+The one-time browser acceptance test is preserved as `test/e2e/m4-live-attacker.spec.mjs` (opt-in `RELAYLINE_LIVE_G3=1`). The corresponding signer check is `scripts/verify-m4-impersonation.mjs`, with public identifiers provided through environment variables. Both records expire eventually; CI does **not** rerun this historical proof on every future commit.
 
 ## Additional M5/M6 signed test cases — PENDING
 
