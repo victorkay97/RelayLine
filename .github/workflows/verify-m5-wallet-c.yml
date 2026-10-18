@@ -18,3 +18,4 @@ jobs:
           node-version: '22'
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: node scripts/verify-m5-wallet-c.mjs
+      - run: node scripts/check-m5-quorum.mjs
