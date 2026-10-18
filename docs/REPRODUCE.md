@@ -25,16 +25,16 @@ npm run demo:judge
 
 The fixture launches an intentionally disabled loopback primary, an available local fallback, a forged publisher record, two synthetic monitor statements and a simulated signed revocation. Output explicitly identifies `OFFLINE_SIMULATION_NOT_LIVE_ARKIV`.
 
-## Real testnet recovery (waiting for a funded test wallet)
+## Real testnet recovery (M4–M6 evidence already recorded)
 
 1. Fund a new test-only wallet with test GLM via https://hub.arkiv.network/faucet; never publish its signing secret.
-2. Open the [publisher console](https://relayline-vkalu2266-3185s-projects.vercel.app/), connect a compatible wallet and approve a testnet manifest registration with one controlled working fallback.
+2. Open the [canonical publisher workspace](https://victorkay97.github.io/RelayLine/workspace.html), connect a compatible test-only wallet, and (only if actually testing a **new** publication) approve a manifest registration with one controlled working fallback. **The original M4 publisher transaction is already proven in ONCHAIN_EVIDENCE.md; new writes are not needed just for judges to examine its receipt.**
 3. Record **public** publisher address, transaction hash and entity key in `docs/ONCHAIN_EVIDENCE.md` after verifying them on the Tiramisu explorer.
 4. Open the separately hosted [independent reader](https://relayline-reader.vercel.app/recover.html). Authenticate the publisher wallet out-of-band before pinning. Query the service and compare the real returned entity key, creator, revision and expiry.
-5. Publish a forged higher-revision manifest using a **different** funded test-only wallet. Query again. The independent client must reject that record by its immutable creator.
-6. Disable the controlled primary server and run `node --env-file=.env scripts/read.mjs --probe` locally against a known HTTPS fallback, with the legitimate publisher pinned. It should select the authorized reachable fallback.
+5. Inspect the existing **real second-wallet impersonation transaction** and creator check in `docs/ONCHAIN_EVIDENCE.md`; the independent reader rejected that signed record as `untrusted_creator`. If you reproduce with fresh funded test wallets, use unique synthetic IDs and do not treat a forged display attribute as a legitimate creator.
+6. Examine the recorded **historical** G4 proof of a deliberately unavailable controlled primary (HTTP 404) and an authorized fallback (HTTP 200) in `docs/ONCHAIN_EVIDENCE.md`. To reproduce the outage anew, operate only synthetic HTTPS endpoints you control and follow the documented allowlist and probe rules; the primary has since been restored.
 
-The complete validation protocol and remaining gates are in `docs/VALIDATION.md` and GitHub Issue #2. Avoid private user or organization data in public Arkiv entities.
+The validation protocol and completed public transaction proofs are in `docs/VALIDATION.md` and `docs/ONCHAIN_EVIDENCE.md`. Expired M5 monitor evidence and revoked M6 state are historical, not currently reachable results. Final Devfolio readiness: `docs/SUBMISSION_HANDOFF.md`. Avoid private user or organization data in public Arkiv entities.
 
 ## Read-client independence
 
