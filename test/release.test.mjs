@@ -24,3 +24,8 @@ test('publisher controls exist only in workspace and docs is a production entry'
  assert.match(docs,/id="trust"/);
  assert.match(vite,/docs: resolve\(root, 'docs\.html'\)/);
 });
+
+test('noncanonical Vercel projects do not autodeploy from GitHub',async()=>{
+ const config=JSON.parse(await readFile('vercel.json','utf8'));
+ assert.equal(config.git?.deploymentEnabled,false);
+});
