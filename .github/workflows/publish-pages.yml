@@ -32,3 +32,31 @@ jobs:
           path: ./dist
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Live GitHub Pages navigation and content smoke test
+        env:
+          SITE: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          for route in index.html workspace.html recover.html; do
+            good=0
+            for attempt in $(seq 1 12); do
+              if curl -fsSL --max-time 25 "${SITE%/}/$route?version=${GITHUB_SHA}" -o "/tmp/relayline-$route"; then
+                good=1
+                break
+              fi
+              sleep 5
+            done
+            if [ "$good" -ne 1 ]; then echo "Could not fetch live $route"; exit 1; fi
+            echo "LIVE_OK $route"
+          done
+          grep -Fq 'href="./workspace.html"' /tmp/relayline-index.html
+          grep -Fq 'href="./recover.html"' /tmp/relayline-index.html
+          grep -Fq 'id="publisher-form"' /tmp/relayline-workspace.html
+          grep -Fq 'id="workspace-publish-close"' /tmp/relayline-workspace.html
+          grep -Fq 'href="./workspace.html"' /tmp/relayline-recover.html
+          grep -Fq 'href="./recover.html"' /tmp/relayline-workspace.html
+          if grep -E 'https?://[^"[:space:]]*vercel\.app' /tmp/relayline-index.html /tmp/relayline-workspace.html /tmp/relayline-recover.html; then
+            echo "ERROR: old Vercel link remains in canonical Pages HTML"
+            exit 1
+          fi
+          echo "PASS live Pages routes, publishing form, reader, and no legacy Vercel navigation"
