@@ -4,6 +4,10 @@ import { validateManifest, normalizeAddress } from '../src/policy.mjs';
 import { resolveServiceState } from '../src/control-policy.mjs';
 
 const $ = byId;
+const editId = new URLSearchParams(location.search).get('edit');
+if (editId && /^[a-z0-9][a-z0-9_-]{0,62}$/.test(editId)) { /* prefill ID only, never assert that a URL grants signing rights */
+  const serviceInput = byId('service-id'); if(serviceInput)serviceInput.value=editId;
+}
 const form = $('publisher-form');
 const message = $('publish-status');
 const publishButton = $('publish-manifest');
