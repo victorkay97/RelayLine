@@ -236,3 +236,58 @@ test('all Lucide icons render without empty placeholders on every public route',
  await expect(page.locator('.home-proof-details > div').nth(2).locator('svg')).toBeVisible();
  expect(errors).toEqual([]);
 });
+
+test('every route uses the same shared footer and header-only theme toggle', async ({page})=>{
+  const routes=['/','/workspace.html','/recover.html','/docs.html'];
+  let canonical;
+  for(const route of routes){
+    await page.goto(route);
+    const footer=page.locator('footer.site-footer');
+    await expect(footer).toHaveCount(1);
+    await expect(footer.locator('.footer-inner .footer-brand')).toHaveAttribute('href','./');
+    await expect(footer.locator('nav[aria-label="Footer navigation"] a')).toHaveCount(4);
+    await expect(footer.locator('.footer-links a')).toHaveText(['Workspace','Find a Service','Documentation','GitHub']);
+    await expect(footer.locator('.footer-bottom')).toContainText('Experimental Arkiv testnet prototype');
+    await expect(footer.locator('[data-theme-toggle]')).toHaveCount(0);
+    await expect(page.locator('.site-header [data-theme-toggle]')).toHaveCount(1);
+    const footerCopy=await footer.innerText();
+    if(canonical===undefined)canonical=footerCopy;
+    else expect(footerCopy).toBe(canonical);
+    const bounds=await footer.evaluate(node=>{
+      const r=node.getBoundingClientRect();
+      return {left:r.left,right:r.right,width:innerWidth,documentWidth:document.documentElement.scrollWidth};
+    });
+    expect(bounds.left).toBeGreaterThanOrEqual(-1);
+    expect(bounds.right).toBeLessThanOrEqual(bounds.width+1);
+    expect(bounds.documentWidth).toBeLessThanOrEqual(bounds.width+1);
+  }
+});
+
+test('docs table of contents stays sticky only while documentation is in view',async({page})=>{
+  await page.goto('/docs.html');
+  const sidebar=page.locator('.docs-sidebar');
+  const wide=page.viewportSize().width>680;
+  if(!wide){
+    await expect(sidebar).toHaveCSS('position','static');
+    return;
+  }
+  await expect(sidebar).toHaveCSS('position','sticky');
+  await expect(page.locator('.docs-shell')).toHaveCSS('overflow-x','visible');
+  await page.evaluate(()=>{
+    const container=document.querySelector('.docs-layout');
+    const top=container.getBoundingClientRect().top+scrollY;
+    window.scrollTo({top:top+430,behavior:'instant'});
+  });
+  await expect.poll(()=>sidebar.evaluate(n=>n.getBoundingClientRect().top)).toBeGreaterThanOrEqual(22);
+  const stickyTop=await sidebar.evaluate(n=>n.getBoundingClientRect().top);
+  expect(stickyTop).toBeLessThanOrEqual(26);
+  await page.evaluate(()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
+  const end=await page.evaluate(()=>{
+    const toc=document.querySelector('.docs-sidebar').getBoundingClientRect();
+    const footer=document.querySelector('.site-footer').getBoundingClientRect();
+    const content=document.querySelector('.docs-layout').getBoundingClientRect();
+    return {tocBottom:toc.bottom,footerTop:footer.top,contentBottom:content.bottom};
+  });
+  expect(end.tocBottom).toBeLessThanOrEqual(end.contentBottom+1);
+  expect(end.tocBottom).toBeLessThan(end.footerTop);
+});
