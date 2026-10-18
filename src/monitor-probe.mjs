@@ -42,7 +42,13 @@ export async function monitorProbe(urlText, {
   return new Promise((resolveProbe, rejectProbe) => {
     const req = requestImpl(url, {
       method: 'HEAD', timeout: timeoutMs, agent: false,
-      lookup: (_hostname, _options, callback) => callback(null, selectedIP, 4),
+      lookup: (_hostname, options, callback) => {
+        // Node 22+ can request { all: true } for autoSelectFamily. A scalar IP
+        // response in that mode causes ERR_INVALID_IP_ADDRESS (undefined).
+        // Honor the requested shape while retaining DNS pinning and TLS SNI.
+        if (options?.all) callback(null, [{ address: selectedIP, family: 4 }]);
+        else callback(null, selectedIP, 4);
+      },
       headers: { 'user-agent': 'RelayLine-Controlled-Monitor/0.1' }
     }, response => {
       response.resume();

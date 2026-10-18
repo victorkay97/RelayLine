@@ -102,3 +102,24 @@ test('DNS to private target is refused before outgoing HTTPS request',async()=>{
   }),/not entirely public/);
   assert.equal(called,false);
 });
+
+test('monitor DNS pinning handles Node 22 all:true and scalar lookup shapes',async()=>{
+  const url='https://primary.example.org/';
+  const result=await monitorProbe(url,{
+    approvedUrls:[url],
+    resolve:async()=>[{address:'8.8.8.8',family:4}],
+    requestImpl:(_url,options,onResponse)=>{
+      options.lookup('primary.example.org',{all:true},(error,answers)=>{
+        assert.equal(error,null);
+        assert.deepEqual(answers,[{address:'8.8.8.8',family:4}]);
+      });
+      options.lookup('primary.example.org',{all:false},(error,address,family)=>{
+        assert.equal(error,null);
+        assert.equal(address,'8.8.8.8');
+        assert.equal(family,4);
+      });
+      return {on(){return this;},end(){onResponse({statusCode:200,resume(){}});}};
+    }
+  });
+  assert.deepEqual(result,{status:'reachable',http_status:200});
+});
