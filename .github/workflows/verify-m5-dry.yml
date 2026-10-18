@@ -1,0 +1,29 @@
+name: M5 read-only live monitor preflight
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-m5-dry.yml'
+      - 'scripts/monitor.mjs'
+      - 'src/monitor-probe.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  monitor-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Probe registered HTTPS fallback, NO SIGNING OR WALLET SECRETS
+        run: node scripts/monitor.mjs
+        env:
+          ARKIV_RPC_URL: https://rpc.tiramisu.db-chain.testnet.arkiv.network
+          MONITOR_SERVICE_ID: relayline-demo-oct14
+          PINNED_PUBLISHER: '0x2d7cfff67d9e63e225e082371b205cb7518b5c24'
+          MONITOR_ENDPOINT_ID: fallback
+          MONITOR_APPROVED_URL: https://relayline-test-fallback.vercel.app/
+          MONITOR_PUBLISH: NO
