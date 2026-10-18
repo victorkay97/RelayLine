@@ -18,7 +18,7 @@ function readUrl(id,root){
  return u.toString();
 }
 function editorUrl(manifest){
- const u=new URL('/',location.origin);
+ const u=new URL('index.html',location.href);
  u.searchParams.set('edit',manifest.service_id);
  u.hash='setup';
  return u.toString();
