@@ -67,3 +67,14 @@ To publish a revocation or rotation from the test-only CLI, explicitly set `CONT
 ## Read-only RPC resilience
 
 The optional `ARKIV_RPC_URLS` (CLI) or `VITE_ARKIV_RPC_URLS` (browser build) can specify up to four vetted HTTPS RPC URLs. Read clients use viem fallback transport across configured endpoints. **Only one real endpoint is bundled; actual failover needs a separately verified second RPC.** Do not put API-key URLs or secrets into static builds.
+
+
+## Publisher Workspace (2026-10-18)
+
+Open `/workspace.html` on the publisher deployment and connect a testnet-compatible wallet. RelayLine queries public Arkiv Tiramisu manifests created by that **actual on-chain wallet** using a typed `project=relayline-v1`, `kind=manifest` query and immutable `createdBy(wallet)`; no RelayLine user database, email account or private key is involved. Query pagination uses a single snapshot and fails closed if a portfolio is too large to inspect safely.
+
+The workspace groups signed active manifests by service ID, independently resolves the current authorization state for every service, lists its latest verified primary/fallback destinations and offers links to update via the existing explicit wallet-signing wizard. User-visible counts are **service-manifest counts**, never invented uptime measurements. It also links to the independent reader and lets publishers copy a recovery URL. **A shared link is not identity proof**: the reader still requires explicit wallet pinning from an independently authenticated source.
+
+Important scope: this first portfolio query displays **current active manifests created by the connected wallet**, not an exhaustive historical transaction archive, and does not discover all accounts that may have rotated into the service from an unrelated root. Expired or deleted entities are absent from current queries. The service resolver must validate root-authorized rotation and revocation before assuming an editor is authorized. Connecting a wallet is a public read/discovery step, **not cryptographic login**; write operations require explicit wallet approval.
+
+Visual direction updated from dark pine/lime to **midnight indigo / persimmon**. The publisher and separately deployed reader share this visual foundation; the reader build remains read-only and excludes publisher signing code.
