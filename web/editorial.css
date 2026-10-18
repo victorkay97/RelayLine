@@ -243,3 +243,103 @@ html[data-theme] .overline{color:var(--muted);font-weight:670}
 
 html[data-theme] .journey-list li small{color:var(--muted)}
 html[data-theme] .side-info a{color:var(--rl-accent-text);font-weight:650}
+
+/* Shared, consistent footer: one layout for all four public pages. */
+html[data-theme] .site-footer{
+  background:var(--bg-2);
+  border-top:1px solid var(--border);
+}
+html[data-theme] .footer-inner{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:18px 28px;
+  max-width:1440px;
+  margin:0 auto;
+  padding:38px 55px 30px;
+  color:var(--muted);
+}
+html[data-theme] .footer-inner a{margin-left:0}
+html[data-theme] .footer-brand{flex:none}
+html[data-theme] .footer-inner .footer-brand .brand-name{
+  font-size:22px;
+  color:var(--text);
+}
+html[data-theme] .footer-inner p{
+  margin:0;
+  flex:1 1 245px;
+  min-width:0;
+  font-size:12px;
+  line-height:1.6;
+  color:var(--muted);
+}
+html[data-theme] .footer-links{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:12px 23px;
+  margin-left:auto;
+}
+html[data-theme] .footer-links a{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  white-space:nowrap;
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--text);
+  transition:color .2s;
+}
+html[data-theme] .footer-links a:hover,
+html[data-theme] .footer-bottom a:hover{color:var(--accent-strong)}
+html[data-theme] .footer-links svg{width:14px;height:14px}
+html[data-theme] .footer-bottom{
+  max-width:1330px;
+  margin:0 auto;
+  padding:19px 0 27px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px 25px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:10.5px;
+  letter-spacing:.1px;
+}
+html[data-theme] .footer-bottom a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+/* The ordinary .page-shell has overflow:hidden for visual cropping.
+   This is a scrolling ancestor and blocks CSS sticky. Only the docs shell
+   needs to allow overflow so the TOC can stick within .docs-layout. */
+html[data-theme] .docs-shell{overflow:visible}
+@media(min-width:681px){
+  html[data-theme] .docs-sidebar{
+    position:sticky;
+    top:24px;
+    max-height:calc(100dvh - 48px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:var(--border) transparent;
+  }
+}
+@media(max-width:1130px){
+  html[data-theme] .footer-inner{padding-left:35px;padding-right:35px}
+  html[data-theme] .footer-bottom{margin-left:35px;margin-right:35px}
+}
+@media(max-width:900px){
+  html[data-theme] .footer-inner{padding-left:25px;padding-right:25px}
+  html[data-theme] .footer-bottom{margin-left:25px;margin-right:25px}
+  html[data-theme] .footer-links{margin-left:0}
+}
+@media(max-width:680px){
+  html[data-theme] .footer-inner{padding:29px 18px 22px;gap:12px 20px}
+  html[data-theme] .footer-inner p{flex:1 1 190px;font-size:11.5px}
+  html[data-theme] .footer-links{flex:1 1 100%;justify-content:flex-start;gap:14px 19px;margin-top:6px}
+  html[data-theme] .footer-links a{font-size:11px}
+  html[data-theme] .footer-bottom{margin:0 18px;padding:18px 0 25px}
+  html[data-theme] .docs-sidebar{position:static;max-height:none;overflow:visible}
+}
+@media(max-width:395px){
+  html[data-theme] .footer-inner p{flex-basis:100%}
+}
