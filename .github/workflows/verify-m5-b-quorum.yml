@@ -1,0 +1,24 @@
+name: One-time live M5 B and two-wallet quorum
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-m5-b-quorum.yml'
+      - 'scripts/verify-m5-wallet-b.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-m5-b-and-quorum:
+    name: Independent signed observation and quorum snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Verify Wallet B signed transaction
+        run: node scripts/verify-m5-wallet-b.mjs
+      - name: Check Wallet B and C signed 2-of-2 quorum live
+        run: node scripts/check-m5-quorum.mjs
