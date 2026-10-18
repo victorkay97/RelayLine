@@ -1,4 +1,4 @@
-name: Publish RelayLine on GitHub Pages (Vercel quota fallback)
+name: Publish RelayLine on GitHub Pages
 on:
   workflow_dispatch:
   push:
@@ -25,7 +25,7 @@ jobs:
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm run build -- --base=/RelayLine/
       - name: Validate built publisher and reader pages
-        run: test -f dist/index.html && test -f dist/workspace.html && test -f dist/recover.html
+        run: test -f dist/index.html && test -f dist/workspace.html && test -f dist/recover.html && test -f dist/docs.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -37,7 +37,7 @@ jobs:
           SITE: ${{ steps.deployment.outputs.page_url }}
         run: |
           set -euo pipefail
-          for route in index.html workspace.html recover.html; do
+          for route in index.html workspace.html recover.html docs.html; do
             good=0
             for attempt in $(seq 1 12); do
               if curl -fsSL --max-time 25 "${SITE%/}/$route?version=${GITHUB_SHA}" -o "/tmp/relayline-$route"; then
@@ -51,12 +51,15 @@ jobs:
           done
           grep -Fq 'href="./workspace.html"' /tmp/relayline-index.html
           grep -Fq 'href="./recover.html"' /tmp/relayline-index.html
+           grep -Fq 'href="./docs.html"' /tmp/relayline-index.html
+           grep -Fq 'id="overview"' /tmp/relayline-docs.html
+           if grep -Fq 'id="publisher-form"' /tmp/relayline-index.html; then echo "ERROR: publisher wizard leaked onto landing page"; exit 1; fi
           grep -Fq 'id="publisher-form"' /tmp/relayline-workspace.html
           grep -Fq 'id="workspace-publish-close"' /tmp/relayline-workspace.html
           grep -Fq 'href="./workspace.html"' /tmp/relayline-recover.html
           grep -Fq 'href="./recover.html"' /tmp/relayline-workspace.html
-          if grep -E 'https?://[^"[:space:]]*vercel\.app' /tmp/relayline-index.html /tmp/relayline-workspace.html /tmp/relayline-recover.html; then
+          if grep -E 'https?://[^"[:space:]]*vercel\.app' /tmp/relayline-index.html /tmp/relayline-workspace.html /tmp/relayline-recover.html /tmp/relayline-docs.html; then
             echo "ERROR: old Vercel link remains in canonical Pages HTML"
             exit 1
           fi
-          echo "PASS live Pages routes, publishing form, reader, and no legacy Vercel navigation"
+          echo "PASS live Pages home, docs, workspace publishing, reader, and no legacy Vercel navigation"
