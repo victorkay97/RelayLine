@@ -1,0 +1,20 @@
+name: M6 actual successor-signed revocation proof
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-m6-revocation.yml'
+      - 'scripts/verify-m6-revocation.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-revocation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: node scripts/verify-m6-revocation.mjs
