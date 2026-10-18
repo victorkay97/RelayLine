@@ -108,7 +108,7 @@ test('wallet-led publisher workspace has clear disconnected state and no forced 
 test('GitHub Pages navigation stays within site and workspace publishes inline',async({page})=>{
  const errors=[];page.on('pageerror',err=>errors.push(err.message));
  await page.goto('/');
- const find=page.locator('.primary-nav a').filter({hasText:'Find a service'});
+ const find=page.locator('.primary-nav a').filter({hasText:/find a service/i});
  await expect(find).toHaveAttribute('href','./recover.html');
  await find.click();
  await expect(page).toHaveURL(/\/recover\.html$/);
@@ -158,7 +158,7 @@ test('public homepage offers two distinct paths with no publishing controls',asy
  await expect(page.locator('#publisher-form')).toHaveCount(0);
  await expect(page.locator('#setup')).toHaveCount(0);
  await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Home');
- await page.getByRole('link',{name:'Docs',exact:true}).click();
+ await page.getByRole('link',{name:'Documentation',exact:true}).click();
  await expect(page).toHaveURL(/\/docs\.html$/);
  await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Docs');
  await expect(page.getByRole('heading',{name:/build for continuity/i})).toBeVisible();
@@ -168,4 +168,51 @@ test('public homepage offers two distinct paths with no publishing controls',asy
  await page.locator('.brand').first().click();
  await expect(page).toHaveURL(/\/$/);
  expect(errors).toEqual([]);
+});
+
+test('editorial global navigation order and visual themes persist across public routes',async({page})=>{
+  const errors=[];page.on('pageerror',err=>errors.push(err.message));
+  const expected=['Home','Workspace','Find a Service','Documentation'];
+  await page.goto('/');
+  await expect(page.locator('.primary-nav a')).toHaveText(expected);
+  await expect(page.locator('.signal-diagram')).toBeVisible();
+  await expect(page.locator('.hero-home .hero-actions a')).toHaveCount(2);
+  await expect(page.locator('#publisher-form')).toHaveCount(0);
+  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+  await expect(page.locator('[data-theme-toggle]')).toHaveAttribute('aria-label','Switch to light mode');
+  await page.locator('[data-theme-toggle]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+  await expect(page.locator('[data-theme-toggle]')).toHaveAttribute('aria-label','Switch to dark mode');
+  const background=await page.locator('body').evaluate(node=>getComputedStyle(node).backgroundColor);
+  expect(background).toBe('rgb(247, 246, 242)');
+  for(const route of ['/workspace.html','/recover.html','/docs.html']){
+    await page.goto(route);
+    await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+    await expect(page.locator('.primary-nav a')).toHaveText(expected);
+    await expect(page.locator('[data-theme-toggle]')).toBeVisible();
+  }
+  await page.locator('[data-theme-toggle]').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+  expect(errors).toEqual([]);
+});
+
+test('light mode stays accessible and within the viewport',async({page})=>{
+  for(const route of ['/','/workspace.html','/recover.html','/docs.html']){
+    await page.goto(route);
+    await page.locator('[data-theme-toggle]').click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+    await expect(page.locator('[data-theme-toggle]')).toHaveAttribute('aria-label','Switch to dark mode');
+    if(route==='/recover.html'){
+      await expect(page.locator('#pin-publisher')).toHaveCSS('color','rgb(24, 24, 24)');
+      await expect(page.locator('#clear-pin')).toHaveCSS('color','rgb(24, 24, 24)');
+    }
+    const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
+    const errors=result.violations.filter(v=>v.impact==='critical'||v.impact==='serious');
+    if(errors.length)console.log('LIGHT_THEME_A11Y',route,JSON.stringify(errors.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary})).slice(0,20)}))));
+    expect(errors.map(v=>({id:v.id,nodes:v.nodes.length}))).toEqual([]);
+    const size=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth}));
+    expect(size.width).toBeLessThanOrEqual(size.viewport+1);
+  }
 });
