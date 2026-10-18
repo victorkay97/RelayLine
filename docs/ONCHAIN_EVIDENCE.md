@@ -96,3 +96,14 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - **Verified observation:** `fallback`, `reachable`, reported HTTP `200`, legitimate manifest key `0x2389c184908191a0b751396e135f64c1ceb3e2d827cbc5849d1a2ff442a7d2fc`.
 - **Independent CI evidence:** [GitHub Actions 39119771146](https://github.com/victorkay97/RelayLine/actions/runs/39119771146), verification snapshot block `734952`. Receipt success, transaction sender, immutable creator, typed payload, expiry and trusted manifest verified.
 - **Important caveat:** At block `734952`, Wallet C's previous observation (expiring block `734864`) had *already expired*, so only B counted and the actual `fallbackQuorumStatus` was `unknown`. The 2-of-2 real quorum is **NOT YET VERIFIED**. A new Wallet C observation while B remains active is required. Do not misrepresent these separate valid transactions as simultaneous quorum.
+
+## M5: Fresh Wallet C observation + real two-wallet agreement — PASS (2026-10-18)
+
+**Independent read-only proof:** [GitHub Actions run 39120257742](https://github.com/victorkay97/RelayLine/actions/runs/39120257742), timestamp `2026-10-18T10:41:57Z`, Arkiv Tiramisu snapshot block **735175**.
+
+- Wallet B: `0x024e3989ff6ed673c90613815dca3017ab9ea50d`, entity `0x2bc06c5c8dbcc7eb91f53f97bdcd5980e19b65575147f7618692ef64b5afd2e4`, expires at block **735202**. B's signed transaction was separately receipt/creator-verified [in run 39119771146](https://github.com/victorkay97/RelayLine/actions/runs/39119771146).
+- Wallet C: `0xe9949b46262a98210bd1e4ab9ac525ac055a2d1e`, newly signed observation entity `0xf95f0e612bdd2275a45d0a547056abcc48878a10ca164cad5ab5774dce70fcfc`, transaction hash reported by publisher CLI `0x02b58c5a5c66a2c8f62aa067aec0e2d9c66db3028199e545a22f29b5f82b3e54`, expires at block **735306**.
+- Both on-chain observations were simultaneously active on the **same** legitimate manifest `0x2389c184908191a0b751396e135f64c1ceb3e2d827cbc5849d1a2ff442a7d2fc`, endpoint `fallback`.
+- The genuine read-only evaluator returned `fallbackQuorumStatus="reachable"`, `verifiedReachableSigners=2`, `rejectedObservationCount=0`, `result="M5_2_OF_2_REACHABLE_QUORUM_CONFIRMED"`.
+- This establishes a verified **two-identity on-chain quorum at the recorded block**, *not* that these observations are still valid now, that monitoring is continuously running, or that the wallets were independently hosted or geographically separated.
+- CLI and policy proof: `scripts/check-m5-quorum.mjs`. A direct hosted-reader browser assertion specifically for this transient two-monitor quorum has not been archived; separate hosted reader onboarding/identity checks passed earlier in M4.
