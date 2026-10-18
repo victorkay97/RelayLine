@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,stat} from 'node:fs/promises';
-const required=['LICENSE','arkiv/schema.md','arkiv/friction.md',
+const required=['docs.html','web/home.mjs','web/docs.mjs','LICENSE','arkiv/schema.md','arkiv/friction.md',
  'docs/SECURITY.md','docs/REPRODUCE.md','docs/DEMO.md',
  'docs/DEVFOLIO_DRAFT.md','docs/ONCHAIN_EVIDENCE.md',
  'docs/JUDGING.md','src/query.mjs','src/policy.mjs'];
@@ -13,4 +13,14 @@ test('repository includes MIT licence and no fake chain write evidence',async()=
  assert.match(licence,/MIT License/);
  const evidence=await readFile('docs/ONCHAIN_EVIDENCE.md','utf8');
  assert.match(evidence,/pending/i);
+});
+
+
+test('publisher controls exist only in workspace and docs is a production entry',async()=>{
+ const [home,workspace,docs,vite]=await Promise.all(['index.html','workspace.html','docs.html','vite.config.mjs'].map(x=>readFile(x,'utf8')));
+ assert.doesNotMatch(home,/id="publisher-form"|id="setup"|web\/publisher\.mjs/);
+ assert.match(workspace,/id="publisher-form"/);
+ assert.match(home,/href="\.\/docs\.html"/);
+ assert.match(docs,/id="trust"/);
+ assert.match(vite,/docs: resolve\(root, 'docs\.html'\)/);
 });
