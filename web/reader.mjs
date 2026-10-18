@@ -29,6 +29,8 @@ dialog.innerHTML = `<div class="dialog-inner"><div class="dialog-icon"><i data-l
   <div class="dialog-actions"><button type="button" class="btn btn-quiet" id="cancel-trust">Go back</button>
   <button type="button" class="btn btn-primary" id="confirm-trust">Confirm</button></div></div>`;
 document.body.appendChild(dialog);
+// The dialog is injected after the shared icon bootstrap; paint its icon now.
+paintIcons();
 const confirmButton = dialog.querySelector('#confirm-trust');
 const cancelButton = dialog.querySelector('#cancel-trust');
 let confirmedAction = null;
