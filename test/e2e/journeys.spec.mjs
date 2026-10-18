@@ -98,3 +98,45 @@ test('wallet-led publisher workspace has clear disconnected state and no forced 
   await expect(page.locator('#workspace-list')).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+test('GitHub Pages navigation stays within site and workspace publishes inline',async({page})=>{
+ const errors=[];page.on('pageerror',err=>errors.push(err.message));
+ await page.goto('/');
+ const find=page.locator('.primary-nav a').filter({hasText:'Find a service'});
+ await expect(find).toHaveAttribute('href','./recover.html');
+ await find.click();
+ await expect(page).toHaveURL(/\/recover\.html$/);
+ await expect(page.getByRole('heading',{name:/find the way back/i})).toBeVisible();
+ await page.locator('.primary-nav a').filter({hasText:'Workspace'}).click();
+ await expect(page).toHaveURL(/\/workspace\.html$/);
+ await expect(page.locator('#setup')).toBeHidden();
+ await page.getByRole('link',{name:/publish new service/i}).click();
+ await expect(page.locator('#setup')).toBeVisible();
+ await page.locator('#service-id').fill('qa-test-service');
+ await page.locator('#next-one').click();
+ await expect(page.locator('[data-step="2"]')).toBeVisible();
+ await page.locator('#primary-url').fill('https://example.org/');
+ await page.locator('#fallback-url').fill('https://backup.example.org/');
+ await page.locator('#next-two').click();
+ await expect(page.locator('[data-step="3"]')).toBeVisible();
+ await expect(page.locator('#publish-manifest')).toBeDisabled();
+ await page.locator('#connect-wallet').click();
+ await expect(page.locator('#publish-status')).toContainText(/install an evm-compatible browser wallet/i);
+ await page.locator('#workspace-publish-close').click();
+ await expect(page.locator('#setup')).toBeHidden();
+ await expect(page.locator('#workspace-list')).toBeHidden();
+ expect(errors).toEqual([]);
+});
+
+test('on-site reader and publisher links remain coherent in mobile viewport',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ for(const path of ['/','/workspace.html','/recover.html']){
+   await page.goto(path);
+   const actual=await page.evaluate(()=>document.documentElement.scrollWidth);
+   expect(actual).toBeLessThanOrEqual(391);
+   for(const link of await page.locator('.primary-nav a').all()){
+     const href=await link.getAttribute('href');
+     if(href?.startsWith('https://'))expect(href).toMatch(/^https:\/\/github\.com\//);
+   }
+ }
+});

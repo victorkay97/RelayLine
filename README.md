@@ -4,7 +4,7 @@
 
 RelayLine helps users discover authorized recovery endpoints when a primary website becomes unavailable. Service publishers register versioned recovery manifests on Arkiv Tiramisu; an independent reader can query those entities directly without relying on RelayLine's hosted backend.
 
-> **Development status — October 13, 2026:** Live read-only Tiramisu RPC and SDK entity queries pass; offline policies are covered by automated tests. **Real wallet-signed RelayLine entity writes, a forged on-chain manifest, and live manifest-backed recovery have NOT been validated.** Do not confuse offline fixtures or a deployed UI with successful on-chain writes.
+> **Validated testnet prototype — October 18, 2026:** Real Arkiv publisher, second-wallet forgery rejection, controlled fallback, two-signature M5 quorum, and M6 authorized rotation/revocation have independently verified public evidence in [docs/ONCHAIN_EVIDENCE.md](docs/ONCHAIN_EVIDENCE.md). The production-style security model is still experimental; no independent audit or permanent-censorship-resistance guarantee.
 
 ## Initial release objective
 
@@ -24,7 +24,7 @@ A signed Arkiv record proves which wallet created it, **not** that it belongs to
 
 ## Source, testing and documentation
 
-The validation implementation will be proposed on a feature branch for review. The repository will include `arkiv/schema.md`, `arkiv/friction.md`, and separately documented local versus live-chain test evidence.
+The implementation is committed and continuously validated in CI. The repository includes `arkiv/schema.md`, `arkiv/friction.md`, and separately documented local versus live-chain test evidence.
 
 No wallet private keys should be shared in chat, issues, pull requests, CI logs, or committed files.
 
@@ -78,3 +78,8 @@ The workspace groups signed active manifests by service ID, independently resolv
 Important scope: this first portfolio query displays **current active manifests created by the connected wallet**, not an exhaustive historical transaction archive, and does not discover all accounts that may have rotated into the service from an unrelated root. Expired or deleted entities are absent from current queries. The service resolver must validate root-authorized rotation and revocation before assuming an editor is authorized. Connecting a wallet is a public read/discovery step, **not cryptographic login**; write operations require explicit wallet approval.
 
 Visual direction updated from dark pine/lime to **midnight indigo / persimmon**. The publisher and separately deployed reader share this visual foundation; the reader build remains read-only and excludes publisher signing code.
+
+
+## Canonical hosted application
+
+**GitHub Pages is the official navigable demo site for the October 2026 release:** [Home](https://victorkay97.github.io/RelayLine/), [Publisher Workspace](https://victorkay97.github.io/RelayLine/workspace.html), and [Find a service](https://victorkay97.github.io/RelayLine/recover.html). The workspace embeds the existing wallet-signed three-step publishing wizard so new publication and subsequent authenticated updates don't jump to an old Vercel deployment. All primary navigation and post-publish recovery links use the GitHub Pages origin. The separately deployed Vercel reader is retained as optional **independently hosted** verification; see [hosting, trust boundaries, and manual QA](docs/HOSTING.md).
