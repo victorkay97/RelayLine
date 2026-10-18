@@ -1,6 +1,6 @@
 # Independent monitors — M5
 
-**Implementation complete in code; live signed observations NOT YET VALIDATED.**
+**Live signer validation completed 2026-10-18:** Two distinct testnet wallet creators signed active observations for the same endpoint, and the independent policy evaluator confirmed 2-of-2 reachable quorum at block 735175 ([evidence](ONCHAIN_EVIDENCE.md)). This was a time-limited test, not continuous operation or geographically independent monitoring.
 
 ### Why monitor records exist
 
