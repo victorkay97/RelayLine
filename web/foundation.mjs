@@ -3,6 +3,7 @@ import '@fontsource-variable/inter/wght.css';
 import './styles.css';
 import './editorial.css';
 import './theme.mjs';
+import './navigation.mjs';
 import { paintIcons } from './icons.mjs';
 import { renderSiteFooter } from './site-footer.mjs';
 
