@@ -1,3 +1,4 @@
+import './workspace.css';
 import { paintIcons, byId, escapeHtml, status, short, switchBusy, copyText, describeError } from './foundation.mjs';
 import { connectPublisher, readPublicServiceRecords } from '../src/browser-arkiv.mjs';
 import { browserPublisherPortfolio } from '../src/portfolio.mjs';
