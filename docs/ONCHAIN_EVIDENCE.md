@@ -1,4 +1,6 @@
-# Verified public Tiramisu evidence — 2026-10-14
+# Verified public Tiramisu evidence — updated 2026-10-18
+
+**Current checkpoint:** M4 G1–G4 PASS; M5 two-wallet live 2-of-2 quorum PASS at historical snapshot block 735175; M6 root manifest, successor, signed rotation and successor-signed revocation/fail-closed reader all PASS. These are time-bounded testnet demonstrations, not claims of perpetual availability or production security certification. The final Devfolio submission and ≤3-minute demo video are separate outstanding deliverables.
 
 ## G1: Real publisher write — PASS
 
@@ -118,7 +120,7 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - **On-chain manifest entity:** `0x5a73279e0abe7a2ee450cf2457b7c2617e4a6e1024d03ca8e3a2a95d770b0f91`, expiry block **2031352**.
 - **Revision:** 1, `primary=https://relayline-test-primary.vercel.app/`, `fallback=https://relayline-test-fallback.vercel.app/`.
 - **Independent reader query:** block **735446**, correctly selected original root-signed manifest and returned `epoch=0`.
-- Wallet C successor revision 2, Wallet B signed rotation and Wallet C revocation are **NOT YET VERIFIED**. Avoid claiming all of M6 complete until separate signed receipts/reader transitions have been verified.
+- **Historical checkpoint:** At this initial publication, successor, rotation and revocation were pending; all were subsequently verified, as documented below.
 
 ## M6: Wallet C successor revision 2 — PASS before rotation (2026-10-18)
 
@@ -130,7 +132,7 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - On-chain successor entity: `0x42884b4c0edb63f3231b003f0ae669c3621c9016bb20b6871548ec13b18f05b1`, expires at block **2031627**.
 - Direct read-only Arkiv query at block **735698**: original Wallet B revision-1 entity `0x5a73279e0abe7a2ee450cf2457b7c2617e4a6e1024d03ca8e3a2a95d770b0f91` was still selected at epoch **0**. Wallet C revision-2 manifest was explicitly rejected as **`untrusted_creator`** before any authorization.
 - This is the correct, expected fail-closed state before Wallet B signs a successor rotation.
-- **Not yet established:** live root-signed rotation and successor-signed revocation. Record their actual public receipts and post-control reader decisions separately.
+- **Historical checkpoint:** Rotation and revocation had not yet occurred at this stage. They were subsequently performed and independently verified; see later sections.
 
 ## M6: Authorized publisher rotation — PASS (2026-10-18)
 
@@ -142,4 +144,27 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - Rotation authorizes Wallet C `0xe9949b46262a98210bd1e4ab9ac525ac055a2d1e`, epoch **1**, minimum manifest revision **2**.
 - Independent direct Arkiv query at block **736008** selected Wallet C's exact revision-2 entity `0x42884b4c0edb63f3231b003f0ae669c3621c9016bb20b6871548ec13b18f05b1`, `issue=null`, activeSigner Wallet C.
 - Before rotation this same revision was correctly rejected as `untrusted_creator`; the authorization *changed* the reader's decision without changing the out-of-band pinned root.
-- **Revocation of this active successor manifest has not yet been signed or verified.** Do not claim M6 fully complete until a separate real Wallet C signed revocation is confirmed and reader fails closed.
+- **Historical checkpoint:** At this snapshot the successor was active. Wallet C subsequently signed its revocation, and the reader failed closed as evidenced below.
+
+## M6: Successor-signed revocation and fail-closed read — PASS (2026-10-18)
+
+**Independent read-only verification:** [GitHub Actions run 39122663682](https://github.com/victorkay97/RelayLine/actions/runs/39122663682), Arkiv snapshot block **736262**, timestamp **2026-10-18T11:18:11Z**.
+
+| Check | Actual on-chain result |
+| --- | --- |
+| Chain | Arkiv Tiramisu, ID `7738577` |
+| Service ID | `relayline-m6-oct18` (isolated disposable security test) |
+| Active successor Wallet C / immutable revocation creator | `0xe9949b46262a98210bd1e4ab9ac525ac055a2d1e` |
+| Successful Wallet C revocation transaction | `0x4ed2e6e916d4d3f16960d02d7080f5da6d526657032a95349ecd706c089a5444` |
+| Transaction block | **736179** |
+| Revocation entity | `0x6b9c0e7fa75056b1f320778a208021f3a05be052d62cf695f24fdf7fd3a697a1` |
+| Signed revocation target | `0x42884b4c0edb63f3231b003f0ae669c3621c9016bb20b6871548ec13b18f05b1` (Wallet C manifest revision 2) |
+| Signed reason | `retired` |
+| Verified reader epoch / active signer | **1** / Wallet C |
+| Reader issue | **`latest_manifest_revoked`** |
+| Reader selected manifest | **`null`** (fail-closed) |
+| Original Wallet B manifest | Rejected as `untrusted_creator`; not silently restored |
+
+The verifier `scripts/verify-m6-revocation.mjs` checked actual receipt status and `from`, immutable `$creator`, typed `revocation` attributes, payload/target, original root-signed rotation, independent Arkiv query, and reader resolution after revocation. This is real transaction-backed behavior, **not** a mock. The earlier [rotation proof](https://github.com/victorkay97/RelayLine/actions/runs/39122093399) shows the exact same Wallet C manifest was accepted before revocation.
+
+**Limitations:** Control entities expire and may be removable by their owner; clients that have never observed the revocation are not universally rollback-resistant if those records disappear. A compromised trust root remains a separate concern. The demo therefore establishes *correct reader decisions at observed chain snapshots*, not permanent irrevocability or an external security audit. The M4/M5 legitimate service was deliberately untouched.
