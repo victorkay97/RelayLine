@@ -85,3 +85,16 @@ test('publisher and reader have no automated axe critical/serious WCAG failures'
     expect(meaningful.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.length}))).toEqual([]);
   }
 });
+
+
+test('wallet-led publisher workspace has clear disconnected state and no forced signing',async ({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/workspace.html');
+  await expect(page.getByRole('heading',{name:/everything you've published/i})).toBeVisible();
+  await expect(page.locator('#workspace-wallet-address')).toHaveText('Not connected');
+  await expect(page.locator('#workspace-refresh')).toBeDisabled();
+  await page.locator('#workspace-connect').click();
+  await expect(page.locator('#workspace-status')).toContainText(/install an evm-compatible browser wallet/i);
+  await expect(page.locator('#workspace-list')).toBeHidden();
+  expect(errors).toEqual([]);
+});
