@@ -107,3 +107,15 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - The genuine read-only evaluator returned `fallbackQuorumStatus="reachable"`, `verifiedReachableSigners=2`, `rejectedObservationCount=0`, `result="M5_2_OF_2_REACHABLE_QUORUM_CONFIRMED"`.
 - This establishes a verified **two-identity on-chain quorum at the recorded block**, *not* that these observations are still valid now, that monitoring is continuously running, or that the wallets were independently hosted or geographically separated.
 - CLI and policy proof: `scripts/check-m5-quorum.mjs`. A direct hosted-reader browser assertion specifically for this transient two-monitor quorum has not been archived; separate hosted reader onboarding/identity checks passed earlier in M4.
+
+## M6: Disposable root publisher manifest — PASS (2026-10-18)
+
+**Independent real Arkiv receipt/entity/direct-query verification:** [GitHub Actions run 39120846545](https://github.com/victorkay97/RelayLine/actions/runs/39120846545), 2026-10-18T10:50:59Z.
+
+- **Service ID:** `relayline-m6-oct18` (deliberately separate from the M4/M5 judging demonstration service).
+- **Original publisher wallet B / actual immutable creator:** `0x024e3989ff6ed673c90613815dca3017ab9ea50d`.
+- **Real successful transaction:** `0x4f18e712705275f1281bb5053623227e5ae7094281d971ac9017235a3a82e75d`, block **735352**.
+- **On-chain manifest entity:** `0x5a73279e0abe7a2ee450cf2457b7c2617e4a6e1024d03ca8e3a2a95d770b0f91`, expiry block **2031352**.
+- **Revision:** 1, `primary=https://relayline-test-primary.vercel.app/`, `fallback=https://relayline-test-fallback.vercel.app/`.
+- **Independent reader query:** block **735446**, correctly selected original root-signed manifest and returned `epoch=0`.
+- Wallet C successor revision 2, Wallet B signed rotation and Wallet C revocation are **NOT YET VERIFIED**. Avoid claiming all of M6 complete until separate signed receipts/reader transitions have been verified.
