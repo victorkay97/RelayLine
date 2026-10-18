@@ -2,11 +2,12 @@
 
 ## Canonical hackathon site: GitHub Pages
 
-- Publisher home: https://victorkay97.github.io/RelayLine/
+- Public landing page: https://victorkay97.github.io/RelayLine/
 - Publisher Workspace: https://victorkay97.github.io/RelayLine/workspace.html
 - Public recovery reader: https://victorkay97.github.io/RelayLine/recover.html
+- Documentation hub: https://victorkay97.github.io/RelayLine/docs.html
 
-**This GitHub Pages deployment is the canonical navigable application for the current release.** All primary product navigation, in-workspace "Publish new service" and "Edit signed record" actions, post-publish receipt links and public reader links stay on this origin. The Workspace includes the existing full three-step publisher wizard inline, with the same explicit EVM wallet approval, signed Arkiv transaction and current-record checks used on the publisher homepage.
+**This GitHub Pages deployment is the canonical navigable application for the current release.** All primary product navigation, in-workspace "Publish new service" and "Edit signed record" actions, post-publish receipt links and public reader links stay on this origin. The workspace exclusively hosts the three-step publishing wizard, with explicit EVM wallet approval, signed Arkiv transactions, and current-record checks. The public homepage has only Open workspace and Find a service as its primary calls to action.
 
 The application is built with `npm run build -- --base=/RelayLine/`; links within HTML and JS are relative to the current page (do not write links beginning at `/` for GitHub project Pages). The Pages workflow publishes the `dist` artifact automatically from `main`: `.github/workflows/publish-pages.yml`. Legacy Vercel publisher deployments cannot be retroactively changed without another Vercel deployment; the free-account deployment quota was reached on 2026-10-18. Existing Vercel links may remain in previously distributed content but **are not the canonical navigation for this release**.
 
@@ -23,10 +24,11 @@ The separately hosted, read-only Vercel reader `https://relayline-reader.vercel.
 
 ## Manual verification checklist
 
-1. Open canonical GitHub Pages home; click Workspace and Find a service. Verify **both remain under `victorkay97.github.io/RelayLine/`**.
+1. Open canonical GitHub Pages home; verify a centered hero with exactly two main actions (Open workspace and Find a service), no publishing form, and working Home / Find a service / Docs / Workspace navigation. Verify all routes remain under `victorkay97.github.io/RelayLine/`.
 2. In Workspace click Publish new service. Verify that the on-page wizard opens without redirecting anywhere, including during a validation error.
 3. Fill service, primary and backup URLs; check review displays the values. Only actual approved wallet signing may publish. Do not create unnecessary testnet writes during UI QA.
 4. If you have an already authorized wallet-connected record, choose Edit signed record and verify the known destinations and next revision prefill in the same on-page wizard. The final write must still check Arkiv and ask for wallet approval.
 5. Connect Wallet B and refresh the portfolio: expect `relayline-demo-oct14` marked wallet-signed record, and `relayline-m6-oct18` revoked (with historical URLs and no copy-reader-link action).
 6. Confirm publisher and reader share the new midnight-indigo, lavender and persimmon theme across hero illustration, dialog, form, cards and footer.
-7. The separately hosted Vercel reader is optional, and should not be a primary navigation destination.
+7. Open `/docs.html`, follow each sidebar anchor, and check the GitHub protocol/security/judging links.
+8. The separately hosted Vercel reader is optional, and should not be a primary navigation destination.
