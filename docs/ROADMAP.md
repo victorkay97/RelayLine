@@ -10,16 +10,17 @@
 - [x] R3b1 — Deploy separately-hosted recovery reader in another Vercel project.
 - [x] R3b2 — Prove signed-manifest-backed fallback recovery during controlled primary-service HTTP outage; reader queries Arkiv without RelayLine backend. Full publisher-host outage not separately tested.
 - [ ] R3c — Publish and version a minimal reusable read SDK (implementation included in M7 branch; consumer example pending).
-- [x] R4a — Monitoring observation schema, independent signer, exact-allowlist HTTPS operator probe and quorum evaluator implemented; tests pending GitHub CI.
+- [x] R4a — Monitoring observation schema, independent signer, exact-allowlist HTTPS operator probe and quorum evaluator implemented; tests and live 2-of-2 evidence verified in CI.
 - [x] R4b1 — Multiple funded test-wallet identities published actual Tiramisu observations; direct independent Arkiv reader/evaluator observed 2-of-2 reachable quorum at block 735175 (archived in ONCHAIN_EVIDENCE.md).
 - [ ] R4b2 — Capture a dedicated hosted-browser UI quorum demonstration (time-limited signed observations); do not claim ongoing monitoring service.
 - [ ] R4c — Independently hosted monitor agents with periodic execution and documented operational costs.
-- [x] R5a — Immutable publisher revocations, pinned-root single-hop rotation, local revision/epoch rollback fences and adversarial tests implemented; live signing pending.
-- [ ] R5b — Validate real revocation and successor writes on Tiramisu; document and review key compromise recovery.
+- [x] R5a — Publisher revocation, pinned-root single-hop rotation, rollback-fence code and adversarial tests implemented; live signed control transactions verified.
+- [x] R5b1 — Validate disposable Wallet B root, Wallet C successor manifest, Wallet B signed epoch-1 rotation, Wallet C signed revocation and fail-closed direct read on live Tiramisu (see ONCHAIN_EVIDENCE.md).
+- [ ] R5b2 — Independently review key-compromise recovery, deletion of control entities, cross-device rollback fences and production resilience; the live demo does not constitute a security audit.
 - [x] R5c1 — Configurable (not presumed) multi-RPC public read fallback implemented, tested with no secret-bearing URLs.
 - [ ] R5c2 — Validate at least two trusted actual Tiramisu RPC providers, durable control replication, multi-hop recovery and independent audit.
 - [x] R6a — Publisher and independent-reader public Vercel deployments created.
-- [x] R6b — Reproducible synthetic judge demo, independent reader-only build, documented scoring evidence, video storyboard and Devfolio draft prepared (CI pending).
+- [x] R6b — Reproducible synthetic judge demo, independent reader-only build, documented scoring evidence, video storyboard and Devfolio draft prepared (CI builds/tests passed).
 - [x] R6c — User-approved real publisher/attacker testnet transactions and controlled signed-manifest recovery evidence documented.
 - [ ] R6d — Record ≤3-minute real demo, check all Devfolio links and complete submission.
 

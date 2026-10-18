@@ -44,11 +44,11 @@ With Node 22+, load the local test environment using `node --env-file=.env scrip
 - `node scripts/verify-m4-publication.mjs`: read-only real transaction, entity, immutable creator, compound query and pinned trust policy. This permanent public test fixture expires at Arkiv block 1858737; do not interpret future expected expiry as a chain regression.
 - `node scripts/verify-m4-recovery.mjs`: read-only allowlisted fallback validation. **Only run while the controlled primary fixture is intentionally unavailable**, or the test correctly reports `primary` rather than `recovered`.
 - GitHub Actions logs: [G1/G2](https://github.com/victorkay97/RelayLine/actions/runs/38553133526) and [G4](https://github.com/victorkay97/RelayLine/actions/runs/38553629942).
-- User action for G3: a second, funded, test-only EVM account must approve a new `service_id=relayline-demo-oct14` record. A wallet's public address and transaction key are safe to share, never private keys.
+- G3 was completed with a real second funded test wallet and independent immutable-creator rejection. Public addresses, transaction hashes and entity keys are in ONCHAIN_EVIDENCE.md; never share private keys.
 
 ## G3 signed identity impersonation evidence (complete)
 
 - Attacker wallet `0x024e3989ff6ed673c90613815dca3017ab9ea50d`, real transaction `0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8` and entity key `0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be`.
 - [Independent on-chain proof](https://github.com/victorkay97/RelayLine/actions/runs/38557421557) (receipt, creator, payload, direct query and `untrusted_creator` rejection).
 - [Hosted browser proof](https://github.com/victorkay97/RelayLine/actions/runs/38557845347) (desktop/mobile/compact acceptance).
-- All four M4 gates G1–G4 verified using real testnet publication records and a controlled primary outage. This is **not** production security certification, broad censorship resilience proof, or a replacement for untested signed M5/M6 controls.
+- All four M4 gates G1–G4 verified using real testnet publication records and a controlled primary outage. M5 two-wallet live quorum and M6 single-hop rotation / revocation were **subsequently verified** on 2026-10-18 with real transaction-backed evidence (ONCHAIN_EVIDENCE.md). This is **not** production security certification or broad censorship-resilience proof.
