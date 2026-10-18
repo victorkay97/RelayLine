@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101126">
+  <meta name="description" content="Guides, protocol notes, security limits, and hackathon evidence for RelayLine's Arkiv-powered service recovery.">
+  <title>RelayLine Docs — Guides, protocol and evidence</title>
+</head>
+<body class="docs-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-container">
+      <a class="brand" href="./" aria-label="RelayLine home"><span class="brand-symbol" aria-hidden="true"><i data-lucide="network"></i></span><span class="brand-name">relayline<span class="brand-dot">.</span></span></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a href="./"><i data-lucide="house"></i><span>Home</span></a>
+        <a href="./recover.html"><i data-lucide="compass"></i><span>Find a service</span></a>
+        <a href="./docs.html" aria-current="page"><i data-lucide="book-open"></i><span>Docs</span></a>
+        <a href="./workspace.html"><i data-lucide="layout-dashboard"></i><span>Workspace</span></a>
+      </nav>
+      <span class="network-badge" title="This product currently uses the Arkiv Tiramisu testnet"><span class="pulse"></span><span>Arkiv testnet</span></span>
+    </div>
+  </header>
+  <main id="main" class="page-shell docs-shell">
+    <header class="docs-intro">
+      <span class="eyebrow"><span class="eyebrow-line"></span> RELAYLINE / DOCUMENTATION</span>
+      <h1>Build for continuity.<br><span class="heading-soft">Understand the trust.</span></h1>
+      <p>Everything you need to publish a recovery record, discover authorized destinations, and evaluate RelayLine's security model and hackathon evidence.</p>
+      <div class="docs-intro-actions"><a class="btn btn-primary" href="./workspace.html">Open workspace <i data-lucide="arrow-up-right"></i></a><a class="btn btn-outline" href="./recover.html">Find a service <i data-lucide="compass"></i></a></div>
+    </header>
+    <div class="docs-layout">
+      <aside class="docs-sidebar" aria-label="Documentation sections">
+        <div class="docs-sidebar-title">ON THIS PAGE</div>
+        <nav aria-label="Documentation contents">
+          <a href="#overview">Overview</a>
+          <a href="#getting-started">Getting started</a>
+          <a href="#publishing">Publishing a service</a>
+          <a href="#discovery">Finding a service</a>
+          <a href="#trust">Trust and verification</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#evidence">Hackathon evidence</a>
+          <a href="#limitations">Known limitations</a>
+        </nav>
+        <div class="docs-sidebar-extra"><i data-lucide="github"></i><span>Full technical documents live in the <a href="https://github.com/victorkay97/RelayLine/tree/main/docs" target="_blank" rel="noopener noreferrer">open-source repository</a>.</span></div>
+      </aside>
+      <div class="docs-content">
+        <section id="overview" class="docs-section">
+          <span class="docs-section-index">01 / INTRODUCTION</span><h2>What is RelayLine?</h2>
+          <p>RelayLine is an experimental service-recovery prototype on the Arkiv Tiramisu testnet. A publisher signs a public manifest describing the service's primary and alternate HTTPS destinations. A separate reader can later query Arkiv directly for the publisher's currently authorized recovery record.</p>
+          <div class="docs-callout"><i data-lucide="info"></i><span>The reader requires a <strong>service ID</strong> and a <strong>publisher wallet confirmed through an independent trusted source</strong>. RelayLine does not currently provide a globally verified directory of businesses or websites.</span></div>
+        </section>
+        <section id="getting-started" class="docs-section">
+          <span class="docs-section-index">02 / QUICK START</span><h2>Getting started</h2>
+          <div class="docs-choice-grid">
+            <article><div class="docs-choice-icon"><i data-lucide="wallet"></i></div><h3>For publishers</h3><p>Use an EVM-compatible wallet on Arkiv Tiramisu. You'll need test GLM to approve a publication transaction.</p><a href="./workspace.html">Open your workspace <i data-lucide="arrow-up-right"></i></a></article>
+            <article><div class="docs-choice-icon"><i data-lucide="compass"></i></div><h3>For readers</h3><p>No connected wallet is required. Bring a service ID and a publisher wallet address you have independently authenticated.</p><a href="./recover.html">Open recovery reader <i data-lucide="arrow-up-right"></i></a></article>
+          </div>
+          <p class="docs-small">To obtain testnet tokens, use the <a href="https://hub.arkiv.network/faucet" target="_blank" rel="noopener noreferrer">official Arkiv faucet</a>. Never provide a private key or seed phrase to RelayLine or another website.</p>
+        </section>
+        <section id="publishing" class="docs-section">
+          <span class="docs-section-index">03 / PUBLISHING</span><h2>Publish or update a service</h2>
+          <ol class="docs-steps"><li><strong>Connect your publishing wallet.</strong> The workspace queries public Arkiv records created by the connected account.</li><li><strong>Select “Publish new service”.</strong> Enter a service ID, primary HTTPS URL, and alternate HTTPS URL in the workspace's guided three-step flow.</li><li><strong>Review and approve.</strong> A wallet transaction is required; no record is written until you explicitly authorize it.</li><li><strong>Verify the result.</strong> Check the transaction and use the independent recovery reader to confirm that the latest record can be retrieved.</li></ol>
+          <p>To update an existing active record, use its <strong>Edit signed record</strong> action. This is subject to the current authorization and revision checks; connecting a wallet by itself does not establish ownership of any service name.</p>
+          <a class="docs-deep-link" href="https://github.com/victorkay97/RelayLine/blob/main/docs/PROTOCOL.md" target="_blank" rel="noopener noreferrer">Read the publication protocol <i data-lucide="arrow-up-right"></i></a>
+        </section>
+        <section id="discovery" class="docs-section">
+          <span class="docs-section-index">04 / RECOVERY</span><h2>Find an authorized route</h2>
+          <ol class="docs-steps"><li><strong>Enter the service ID.</strong> Use the identifier provided by the service publisher.</li><li><strong>Authenticate the publisher out-of-band.</strong> Obtain the publisher's wallet address through a trusted channel, not solely through an unverified recovery link.</li><li><strong>Pin and verify the wallet.</strong> The reader applies the current authorization policy to public Arkiv records.</li><li><strong>Inspect the destinations.</strong> Check the signed primary and alternate URLs, control records, and any available independent observation evidence.</li></ol>
+          <p>A link carrying <code>?service=</code> and <code>?publisher=</code> values can prefill the reader. Those values are convenience parameters, <strong>not</strong> publisher identity proof.</p>
+        </section>
+        <section id="trust" class="docs-section">
+          <span class="docs-section-index">05 / TRUST MODEL</span><h2>Verification is not endorsement</h2>
+          <p>An Arkiv creator signature associates a public record with a signing wallet. It does not prove that the wallet belongs to a particular company or controls a domain name. Readers must independently trust a publisher root wallet, and verify applicable revision, rotation, expiry and revocation conditions.</p>
+          <p>When monitoring evidence is missing, reachability remains unknown. Disputed observations aren't proof of censorship, and a valid fallback URL may be unreachable.</p>
+          <a class="docs-deep-link" href="https://github.com/victorkay97/RelayLine/blob/main/docs/SECURITY.md" target="_blank" rel="noopener noreferrer">Read the security model <i data-lucide="arrow-up-right"></i></a>
+        </section>
+        <section id="architecture" class="docs-section">
+          <span class="docs-section-index">06 / ARCHITECTURE</span><h2>Designed for independent reading</h2>
+          <div class="docs-architecture" role="img" aria-label="A wallet signs a manifest to Arkiv. An independent reader separately queries Arkiv and verifies the publisher wallet before showing recovery destinations.">
+            <div><i data-lucide="wallet"></i><strong>Publisher wallet</strong><small>Signed write</small></div><span class="docs-architecture-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span><div><i data-lucide="database"></i><strong>Arkiv</strong><small>Public records</small></div><span class="docs-architecture-arrow" aria-hidden="true"><i data-lucide="arrow-left"></i></span><div><i data-lucide="scan-eye"></i><strong>Reader</strong><small>Independent query</small></div>
+          </div>
+          <p>The hosted GitHub Pages experience contains both the publisher workspace and the reader. The reader's code queries public Arkiv RPC rather than a RelayLine application backend. A separately hosted read-only reader can additionally demonstrate host separation, but the GitHub Pages reader alone does not survive an outage of its own host.</p>
+          <a class="docs-deep-link" href="https://github.com/victorkay97/RelayLine/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer">Read the technical architecture <i data-lucide="arrow-up-right"></i></a>
+        </section>
+        <section id="evidence" class="docs-section">
+          <span class="docs-section-index">07 / VALIDATION</span><h2>Reproduce the hackathon demo</h2>
+          <p>The repository includes test commands, direct-chain evidence, threat-model notes, and reproduction guidance. Review the records before making security or availability claims based on the prototype.</p>
+          <div class="docs-links"><a href="https://github.com/victorkay97/RelayLine/blob/main/docs/JUDGING.md" target="_blank" rel="noopener noreferrer"><i data-lucide="clipboard-check"></i><span><strong>Judging guide</strong><small>What to test and what to expect</small></span><i data-lucide="arrow-up-right"></i></a><a href="https://github.com/victorkay97/RelayLine/blob/main/docs/ONCHAIN_EVIDENCE.md" target="_blank" rel="noopener noreferrer"><i data-lucide="file-check-2"></i><span><strong>On-chain evidence</strong><small>Transactions and verification records</small></span><i data-lucide="arrow-up-right"></i></a><a href="https://github.com/victorkay97/RelayLine/blob/main/docs/REPRODUCE.md" target="_blank" rel="noopener noreferrer"><i data-lucide="terminal"></i><span><strong>Reproduction steps</strong><small>Run the checks from the repository</small></span><i data-lucide="arrow-up-right"></i></a></div>
+        </section>
+        <section id="limitations" class="docs-section">
+          <span class="docs-section-index">08 / IMPORTANT NOTES</span><h2>Known limitations</h2>
+          <p>RelayLine is a <strong>testnet prototype, not an independently audited production recovery service</strong>. Records can expire or be removed; new readers may lack past revocation history; public RPC availability is an external dependency; and service reachability is not automatically established by a wallet signature.</p>
+          <p>These limits are part of the model we want judges and developers to inspect. For full explanations, see <a href="https://github.com/victorkay97/RelayLine/blob/main/docs/SECURITY.md" target="_blank" rel="noopener noreferrer">Security</a> and <a href="https://github.com/victorkay97/RelayLine/blob/main/docs/MONITORING.md" target="_blank" rel="noopener noreferrer">Monitoring</a>.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><a class="brand" href="./" aria-label="RelayLine home"><span class="brand-name">relayline<span class="brand-dot">.</span></span></a><p>Documentation and evidence for a transparent prototype.</p><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer">View source <i data-lucide="arrow-up-right"></i></a></div></footer>
+  <script type="module" src="/web/docs.mjs"></script>
+</body>
+</html>

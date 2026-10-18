@@ -7,7 +7,7 @@ Canonical rubric: https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/b
 
 | Gate | Evidence | Status |
 | --- | --- | --- |
-| Public working deployment | [Publisher](https://relayline-vkalu2266-3185s-projects.vercel.app/), [separately deployed reader](https://relayline-reader.vercel.app/recover.html); Vercel projects READY | PARTIAL — first browser-wallet write and real hosted reader acceptance passed; further browser/device coverage pending |
+| Public working deployment | [GitHub Pages home](https://victorkay97.github.io/RelayLine/), [workspace](https://victorkay97.github.io/RelayLine/workspace.html), [reader](https://victorkay97.github.io/RelayLine/recover.html), [docs](https://victorkay97.github.io/RelayLine/docs.html); optional [independently hosted reader](https://relayline-reader.vercel.app/recover.html) | PARTIAL — first browser-wallet write and real hosted reader acceptance passed; further browser/device coverage pending |
 | Reproducibility | `docs/VALIDATION.md`, `docs/REPRODUCE.md` | PASS — G1/G2/G3/G4 live Arkiv proofs in ONCHAIN_EVIDENCE.md; full third-party reproducibility subject to expiry |
 | MIT public repo | [Repository](https://github.com/victorkay97/RelayLine) | PASS |
 | `/arkiv/schema.md` | [Data model](../arkiv/schema.md) | PRESENT; live entity examples pending |
@@ -22,7 +22,7 @@ Canonical rubric: https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/b
 
 ## Criterion 1 — Why Censorship Resistance? (25%)
 
-Service operators and their audience are vulnerable to an operator/hosting-provider single point of failure. RelayLine allows an unrelated, independent reader to query publisher-attributable alternative endpoints without calling the original application backend. The user must obtain a publisher wallet through an authenticated channel before failure. A separate Vercel deployment and a runnable CLI demonstrate the independence boundary. That does **not** mean the Arkiv network or fallback endpoint cannot become inaccessible.
+Service operators and their audience are vulnerable to an operator/hosting-provider single point of failure. RelayLine allows an unrelated, independent reader to query publisher-attributable alternative endpoints without calling the original application backend. The user must obtain a publisher wallet through an authenticated channel before failure. An optionally separate read-only Vercel deployment and a runnable CLI demonstrate the hosting-independence boundary; the canonical GitHub Pages reader shares a host with the workspace, though it queries Arkiv without the publisher backend. That does **not** mean the Arkiv network or fallback endpoint cannot become inaccessible.
 
 ## Criterion 2 — Why Arkiv? (25%)
 

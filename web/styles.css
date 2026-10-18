@@ -284,3 +284,7 @@ input[aria-invalid=true]{border-color:#da9187}
 .workspace-publish-control{display:flex;justify-content:flex-end;margin-bottom:12px}
 .workspace-setup .form-card{background:linear-gradient(150deg,#1D203D,#171932)}
 .workspace-setup .journey-panel{background:#20233D}
+
+/* Four consistent public navigation destinations at every breakpoint. */
+@media(max-width:680px){.primary-nav{gap:3px}.primary-nav>a{font-size:11px;padding:9px 5px;gap:4px;min-width:0}.primary-nav>a svg{display:none}}
+@media(max-width:395px){.primary-nav>a{font-size:10.3px;padding:9px 3px}.nav-container{gap:10px}}

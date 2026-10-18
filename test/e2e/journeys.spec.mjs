@@ -3,11 +3,12 @@ import AxeBuilder from '@axe-core/playwright';
 
 const ROOT = '0x1111111111111111111111111111111111111111';
 
-test('publisher follows a guided setup with validation and no hidden signing', async ({page})=>{
+test('workspace publisher follows guided setup with validation and no hidden signing', async ({page})=>{
   const errors=[];
   page.on('pageerror',err=>errors.push(err.message));
-  await page.goto('/');
-  await expect(page.getByRole('heading',{name:/stay reachable/i})).toBeVisible();
+  await page.goto('/workspace.html');
+  await expect(page.getByRole('heading',{name:/everything you've published/i})).toBeVisible();
+  await page.getByRole('link',{name:/publish new service/i}).click();
   await expect(page.getByText('STEP 1 OF 3')).toBeVisible();
   await page.getByRole('button',{name:/continue/i}).click();
   await expect(page.locator('#service-error')).toBeVisible();
@@ -23,7 +24,7 @@ test('publisher follows a guided setup with validation and no hidden signing', a
   await expect(page.locator('#review-service')).toHaveText('my-community');
   await expect(page.locator('#review-fallback')).toContainText('backup.example.org');
   await expect(page.locator('#publish-manifest')).toBeDisabled();
-  await page.getByRole('button',{name:/connect wallet/i}).click();
+  await page.locator('#connect-wallet').click();
   await expect(page.locator('#publish-status')).toContainText(/install.*wallet/i);
   await expect(page.locator('#publish-manifest')).toBeDisabled();
   await expect(page.locator('#completion')).toBeHidden();
@@ -75,8 +76,13 @@ test('self-hosted typography and Lucide SVG icons render',async ({page})=>{
 });
 
 test('publisher and reader have no automated axe critical/serious WCAG failures',async ({page})=>{
-  for(const route of ['/','/recover.html']){
+  for(const route of ['/','/recover.html','/workspace.html','/docs.html']){
     await page.goto(route);
+    // Vite imports CSS from JS; wait for final button styling before axe pixel sampling.
+    if(route==='/recover.html'){
+      await expect(page.locator('#pin-publisher')).toHaveCSS('color','rgb(239, 234, 255)');
+      await expect(page.locator('#clear-pin')).toHaveCSS('color','rgb(239, 234, 255)');
+    }
     const results=await new AxeBuilder({page})
       .withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])
       .analyze();
@@ -130,7 +136,7 @@ test('GitHub Pages navigation stays within site and workspace publishes inline',
 
 test('on-site reader and publisher links remain coherent in mobile viewport',async({page})=>{
  await page.setViewportSize({width:390,height:844});
- for(const path of ['/','/workspace.html','/recover.html']){
+ for(const path of ['/','/workspace.html','/recover.html','/docs.html']){
    await page.goto(path);
    const actual=await page.evaluate(()=>document.documentElement.scrollWidth);
    expect(actual).toBeLessThanOrEqual(391);
@@ -139,4 +145,27 @@ test('on-site reader and publisher links remain coherent in mobile viewport',asy
      if(href?.startsWith('https://'))expect(href).toMatch(/^https:\/\/github\.com\//);
    }
  }
+});
+
+
+test('public homepage offers two distinct paths with no publishing controls',async({page})=>{
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.goto('/');
+ await expect(page.getByRole('heading',{name:/stay reachable/i})).toBeVisible();
+ await expect(page.locator('.hero-home .hero-actions a')).toHaveCount(2);
+ await expect(page.locator('.hero-home .hero-actions a').first()).toHaveAttribute('href','./workspace.html');
+ await expect(page.locator('.hero-home .hero-actions a').last()).toHaveAttribute('href','./recover.html');
+ await expect(page.locator('#publisher-form')).toHaveCount(0);
+ await expect(page.locator('#setup')).toHaveCount(0);
+ await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Home');
+ await page.getByRole('link',{name:'Docs',exact:true}).click();
+ await expect(page).toHaveURL(/\/docs\.html$/);
+ await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Docs');
+ await expect(page.getByRole('heading',{name:/build for continuity/i})).toBeVisible();
+ await page.locator('.docs-sidebar').getByRole('link',{name:'Trust and verification'}).click();
+ await expect(page).toHaveURL(/docs\.html#trust$/);
+ await expect(page.locator('#trust')).toBeVisible();
+ await page.locator('.brand').first().click();
+ await expect(page).toHaveURL(/\/$/);
+ expect(errors).toEqual([]);
 });

@@ -7,9 +7,10 @@ export default defineConfig({
     target: 'es2022',
     rollupOptions: {
       input: {
-        console: resolve(root, 'index.html'),
+        home: resolve(root, 'index.html'),
         workspace: resolve(root, 'workspace.html'),
-        recover: resolve(root, 'recover.html')
+        recover: resolve(root, 'recover.html'),
+        docs: resolve(root, 'docs.html')
       }
     }
   }
