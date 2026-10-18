@@ -6,8 +6,8 @@
 <a class="brand" href="./" aria-label="RelayLine home"><span class="brand-symbol"><i data-lucide="network"></i></span><span class="brand-name">relayline<span class="brand-dot">.</span></span></a>
 <nav class="primary-nav" aria-label="Primary navigation">
 <a href="./workspace.html" aria-current="page"><i data-lucide="layout-dashboard"></i><span>Workspace</span></a>
-<a href="./index.html#setup"><i data-lucide="plus-circle"></i><span>Publish service</span></a>
-<a href="https://relayline-reader.vercel.app/"><i data-lucide="compass"></i><span>Find a service</span></a>
+<a href="#setup" data-open-publisher><i data-lucide="plus-circle"></i><span>Publish service</span></a>
+<a href="./recover.html"><i data-lucide="compass"></i><span>Find a service</span></a>
 <a class="nav-docs" href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer"><i data-lucide="github"></i><span>Open source</span></a>
 </nav><span class="network-badge"><span class="pulse"></span> Arkiv testnet</span></div></header>
 <main id="main" class="page-shell workspace-shell">
@@ -16,14 +16,70 @@
 <h1>Everything you've published.<br><span class="heading-soft">One place to manage it.</span></h1>
 <p>Connect your testnet wallet to find signed recovery records. View the actual Arkiv state, update an authorized service, or create a reader link that your audience can authenticate separately.</p>
 </div><div class="workspace-connect"><span class="overline">YOUR WALLET</span><p id="workspace-wallet-address">Not connected</p><button class="btn btn-primary" id="workspace-connect" type="button"><i data-lucide="wallet"></i> Connect wallet</button><button class="btn btn-quiet" id="workspace-disconnect" type="button" hidden>Disconnect view</button></div></section>
-<div class="workspace-toolbar"><div class="workspace-metrics"><div><strong id="metric-total">—</strong><span>Discovered services</span></div><div><strong id="metric-active">—</strong><span>Valid under this wallet</span></div><div><strong id="metric-review">—</strong><span>Needs review</span></div></div><a class="btn btn-outline" href="./index.html#setup"><i data-lucide="plus"></i> Publish new service</a></div>
+<div class="workspace-toolbar"><div class="workspace-metrics"><div><strong id="metric-total">—</strong><span>Discovered services</span></div><div><strong id="metric-active">—</strong><span>Valid under this wallet</span></div><div><strong id="metric-review">—</strong><span>Needs review</span></div></div><a class="btn btn-outline" href="#setup" data-open-publisher><i data-lucide="plus"></i> Publish new service</a></div>
 <p id="workspace-status" class="form-message" data-kind="neutral" aria-live="polite">Connect your wallet to load records directly from Arkiv.</p>
 <section class="workspace-services" aria-labelledby="workspace-services-title">
 <div class="workspace-title"><div><span class="eyebrow">YOUR SERVICE PORTFOLIO</span><h2 id="workspace-services-title">Published services</h2></div><button id="workspace-refresh" class="btn btn-quiet" type="button" disabled><i data-lucide="refresh-cw"></i> Refresh</button></div>
 <div class="workspace-filter"><label for="workspace-search">Find by service ID</label><input id="workspace-search" type="search" placeholder="Search your services" autocomplete="off"></div>
-<div id="workspace-empty" class="workspace-empty"><i data-lucide="layers-3"></i><h3>Your service collection starts here.</h3><p>Connect a wallet to discover what it has published on Arkiv. No RelayLine account or private database required.</p><a class="btn btn-primary" href="./index.html#setup">Publish a service <i data-lucide="arrow-up-right"></i></a></div>
+<div id="workspace-empty" class="workspace-empty"><i data-lucide="layers-3"></i><h3>Your service collection starts here.</h3><p>Connect a wallet to discover what it has published on Arkiv. No RelayLine account or private database required.</p><a class="btn btn-primary" href="#setup" data-open-publisher>Publish a service <i data-lucide="arrow-up-right"></i></a></div>
 <div id="workspace-list" class="workspace-list" hidden></div>
 </section>
+<section id="setup" class="setup-section workspace-setup" hidden aria-labelledby="setup-title">
+      <div class="workspace-publish-control"><button type="button" class="btn btn-quiet" id="workspace-publish-close"><i data-lucide="x"></i> Close publishing panel</button></div>
+      <div class="section-heading">
+        <div><span class="eyebrow"><span class="eyebrow-line"></span> YOUR RECOVERY PLAN</span><h2 id="setup-title">Publish from your workspace.</h2><p>Complete the existing three-step publication flow here. Your wallet must approve any write to Arkiv.</p></div>
+        <div class="status-hint" role="status"><span class="status-dot"></span><span id="network-indicator">Checking Arkiv connection…</span></div>
+      </div>
+      <div class="setup-grid">
+        <aside class="journey-panel" aria-label="Setup progress">
+          <ol class="journey-list" id="journey-list">
+            <li data-journey="1" class="current"><span class="journey-count">01</span><span><strong>Name your service</strong><small>Choose a memorable identifier</small></span></li>
+            <li data-journey="2"><span class="journey-count">02</span><span><strong>Add backup locations</strong><small>Primary and recovery websites</small></span></li>
+            <li data-journey="3"><span class="journey-count">03</span><span><strong>Review and publish</strong><small>Approve using your test wallet</small></span></li>
+          </ol>
+          <div class="side-info"><i data-lucide="circle-help"></i><div><strong>New to Web3?</strong><p>You'll need an EVM wallet and free testnet GLM to publish. Readers never need a wallet.</p><a href="https://hub.arkiv.network/faucet" target="_blank" rel="noopener noreferrer">Testnet faucet <i data-lucide="arrow-up-right"></i></a></div></div>
+        </aside>
+        <div class="form-card">
+          <div class="form-card-top"><span class="overline" id="step-label">STEP 1 OF 3</span><span class="testnet-tag"><i data-lucide="activity"></i> Testnet preview</span></div>
+          <form id="publisher-form" novalidate>
+            <fieldset class="wizard-step" data-step="1">
+              <legend>Let's start with a name.</legend>
+              <p class="step-description">Choose the short name people will use to identify your service. It isn't a public identity proof—your wallet provides that later.</p>
+              <div class="field"><label for="service-id">Service ID <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="link-2"></i><input id="service-id" type="text" pattern="[a-z0-9][a-z0-9_-]{0,62}" minlength="1" maxlength="63" required placeholder="e.g. the-daily-brief" autocomplete="off" spellcheck="false" aria-describedby="service-help service-error"></div><p class="field-help" id="service-help">Lowercase letters, numbers, dashes and underscores. For example, <code>my-community</code>.</p><p class="field-error" id="service-error" role="alert" hidden></p></div>
+              <div class="quiet-callout"><i data-lucide="info"></i><span>Service IDs can be claimed by multiple wallets. Readers will only trust the wallet they've independently authenticated.</span></div>
+              <div class="step-actions"><span class="step-indicator"><span>01</span> / 03</span><button class="btn btn-primary" type="button" id="next-one">Continue <i data-lucide="arrow-right"></i></button></div>
+            </fieldset>
+            <fieldset class="wizard-step" data-step="2" hidden>
+              <legend>Where can people find you?</legend>
+              <p class="step-description">Your usual website comes first. Your backup must already exist and remain under your control.</p>
+              <div class="field"><label for="primary-url">Primary website <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="globe-2"></i><input id="primary-url" type="url" required placeholder="https://yourwebsite.com" autocomplete="url" aria-describedby="primary-help primary-error"></div><p class="field-help" id="primary-help">The website your audience normally visits.</p><p class="field-error" id="primary-error" role="alert" hidden></p></div>
+              <div class="field"><label for="fallback-url">Backup website <span class="required">Required</span></label><div class="input-wrap"><i data-lucide="external-link"></i><input id="fallback-url" type="url" required placeholder="https://backup.yourwebsite.com" aria-describedby="fallback-help fallback-error"></div><p class="field-help" id="fallback-help">A separate, HTTPS location you control. It should remain reachable if your primary site fails.</p><p class="field-error" id="fallback-error" role="alert" hidden></p></div>
+              <div class="quiet-callout"><i data-lucide="shield-alert"></i><span>These addresses become publicly readable. Don't include access tokens, credentials or private URLs.</span></div>
+              <div class="step-actions"><button class="btn btn-quiet" type="button" id="back-two"><i data-lucide="arrow-left"></i> Back</button><button class="btn btn-primary" type="button" id="next-two">Review setup <i data-lucide="arrow-right"></i></button></div>
+            </fieldset>
+            <fieldset class="wizard-step" data-step="3" hidden>
+              <legend>Make it official.</legend>
+              <p class="step-description">Review your recovery route, connect a test wallet and approve publication. Nothing is published until you sign.</p>
+              <div class="review-card"><div class="review-title"><i data-lucide="clipboard-check"></i><span>Registration summary</span></div>
+                <dl><div><dt>Service</dt><dd id="review-service">—</dd></div><div><dt>Primary</dt><dd id="review-primary">—</dd></div><div><dt>Backup</dt><dd id="review-fallback">—</dd></div><div><dt>Version</dt><dd id="review-revision">1</dd></div><div><dt>Record lifetime</dt><dd>30 days</dd></div></dl>
+              </div>
+              <input type="hidden" id="revision" value="1">
+              <div class="wallet-panel"><div class="wallet-icon"><i data-lucide="wallet"></i></div><div class="wallet-details"><strong>Your publishing wallet</strong><small id="publisher-address">Connect a wallet to authorize this public record.</small></div><button id="connect-wallet" class="btn btn-outline" type="button">Connect wallet</button></div>
+              <div class="update-panel"><strong>Updating an existing service?</strong><p>After connecting the wallet that originally registered it, we can load the current record and prepare the next version.</p><button id="load-existing" type="button" class="btn btn-text"><i data-lucide="refresh-cw"></i> Load latest version</button><p id="load-status" class="subtle-msg" role="status"></p></div>
+              <label class="consent"><input id="publication-consent" type="checkbox" required><span>I understand this publishes public website addresses on a testnet. My wallet will ask me to approve the transaction.</span></label>
+              <div class="step-actions"><button class="btn btn-quiet" type="button" id="back-three"><i data-lucide="arrow-left"></i> Back</button><button class="btn btn-primary" id="publish-manifest" type="submit" disabled>Publish recovery plan <i data-lucide="arrow-up-right"></i></button></div>
+            </fieldset>
+          </form>
+          <div id="completion" class="completion" hidden role="region" aria-labelledby="complete-title">
+            <div class="completion-mark"><i data-lucide="check-circle-2"></i></div><span class="overline">PUBLICATION RESULT</span><h3 id="complete-title">Your recovery route is recorded.</h3><p id="completion-explainer">A transaction was returned. Verify direct retrieval before considering this configuration confirmed by an independent reader.</p>
+            <div id="evidence" class="receipt"></div>
+            <div class="completion-actions"><a class="btn btn-outline" href="./workspace.html">View my services <i data-lucide="layout-dashboard"></i></a><a class="btn btn-primary" id="open-reader" href="https://relayline-reader.vercel.app/">Open independent reader <i data-lucide="arrow-up-right"></i></a><button id="start-again" type="button" class="btn btn-quiet"><i data-lucide="plus"></i> Register another</button></div>
+          </div>
+          <p id="publish-status" class="form-message" role="status" aria-live="polite" data-kind="neutral">Complete the steps to prepare your recovery plan.</p>
+        </div>
+      </div>
+    </section>
+
 <section class="workspace-footnote"><i data-lucide="shield-check"></i><div><strong>Wallet connection is not ownership of every service name.</strong><p>A wallet-signed record does not establish ownership of a service name. Readers authenticate the pinned root independently. A rotated publisher can act only after its signed root-authorized rotation is verified. Metrics describe manifest records, not live site uptime; no endpoint is automatically probed.</p></div></section>
 </main><footer class="site-footer"><div class="footer-inner"><span class="brand-name">relayline<span class="brand-dot">.</span></span><p>Independent discovery. Verifiable publishers.</p><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer">MIT licensed <i data-lucide="arrow-up-right"></i></a></div></footer>
-<script type="module" src="/web/workspace.mjs"></script></body></html>
+<script type="module" src="/web/workspace.mjs"></script><script type="module" src="/web/publisher.mjs"></script></body></html>
