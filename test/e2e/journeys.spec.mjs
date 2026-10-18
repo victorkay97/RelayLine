@@ -83,6 +83,10 @@ test('publisher and reader have no automated axe critical/serious WCAG failures'
       await expect(page.locator('#pin-publisher')).toHaveCSS('color','rgb(245, 244, 240)');
       await expect(page.locator('#clear-pin')).toHaveCSS('color','rgb(245, 244, 240)');
     }
+    await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+    await expect(page.locator('.btn-primary').first()).toHaveCSS('color','rgb(32, 18, 13)');
+    await expect(page.locator('.btn-primary').first()).toHaveCSS('background-color','rgb(255, 170, 142)');
+    await page.evaluate(()=>document.fonts.ready.then(()=>true));
     const results=await new AxeBuilder({page})
       .withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])
       .analyze();
