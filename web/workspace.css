@@ -1,0 +1,45 @@
+/* Workspace surface and distinctive ultraviolet / persimmon brand accents. */
+.workspace-page{background:var(--bg)}
+.workspace-shell{padding-bottom:110px}
+.workspace-header{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.7fr);align-items:center;gap:7%;padding:76px 0 52px}
+.workspace-header h1{font-size:clamp(41px,4.5vw,70px);letter-spacing:-3.4px;line-height:1.06;margin:20px 0 22px;font-weight:560}
+.workspace-header>div>p{max-width:640px;color:var(--muted)}
+.workspace-connect{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:29px;box-shadow:var(--shadow);min-width:0}
+.workspace-connect p{font-size:13px;overflow-wrap:anywhere;margin:16px 0 24px;font-weight:600}
+.workspace-connect button{width:100%;margin-top:8px}
+.workspace-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 0 52px}
+.workspace-metrics{display:grid;grid-template-columns:repeat(3,minmax(110px,1fr));gap:13px;flex:1;max-width:770px}
+.workspace-metrics>div{border:1px solid var(--border);background:var(--panel);border-radius:14px;padding:21px 23px;display:flex;flex-direction:column;gap:4px}
+.workspace-metrics strong{font-family:'Geist Variable',sans-serif;font-size:30px;line-height:1.18;font-weight:620}
+.workspace-metrics span{font-size:11px;color:var(--muted)}
+.workspace-title{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}
+.workspace-title h2{font-size:32px;letter-spacing:-1.1px;margin:8px 0 0}
+.workspace-filter{margin:8px 0 20px;display:flex;align-items:center;gap:14px}
+.workspace-filter label{font-size:12px;color:var(--muted)}
+.workspace-filter input{background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:12px 14px;width:min(330px,100%);min-height:44px}
+.workspace-empty{border:1px dashed var(--border);border-radius:19px;padding:65px 26px;text-align:center;background:var(--panel)}
+.workspace-empty>svg{width:30px;height:30px;color:var(--accent);margin-bottom:17px}
+.workspace-empty h3{font-size:23px}
+.workspace-empty p{font-size:13px;color:var(--muted);max-width:530px;margin:0 auto 24px}
+.workspace-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.portfolio-card{border:1px solid var(--border);border-radius:19px;padding:24px;background:var(--panel);min-width:0;display:flex;flex-direction:column;gap:20px}
+.portfolio-card-head{display:flex;align-items:center;gap:15px}
+.portfolio-card-head h3{margin:4px 0 0;font-size:21px;overflow-wrap:anywhere}
+.portfolio-avatar{background:var(--panel-2);border-radius:12px;display:grid;place-items:center;width:46px;height:46px;color:var(--accent);flex:none}
+.portfolio-avatar svg{width:22px;height:22px}
+.portfolio-status{margin-left:auto;border-radius:99px;padding:7px 10px;font-size:10px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.portfolio-status.is-active{color:var(--good);border-color:var(--good);background:rgba(96,240,188,.06)}
+.portfolio-lines{display:grid;gap:12px}
+.portfolio-lines>div{display:grid;gap:3px;min-width:0}
+.portfolio-lines span,.portfolio-facts{font-size:11px;color:var(--muted)}
+.portfolio-lines strong{font-size:12px;font-weight:560;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.portfolio-facts{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--border-soft);padding-top:16px}
+.portfolio-actions{display:flex;gap:9px;flex-wrap:wrap}
+.portfolio-actions .btn{padding:10px 12px;font-size:11px;min-height:42px}
+.portfolio-warning{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
+.workspace-footnote{display:flex;align-items:flex-start;gap:15px;margin-top:35px;max-width:860px;color:var(--muted)}
+.workspace-footnote>svg{width:24px;height:24px;color:var(--accent)}
+.workspace-footnote strong{font-size:12px;color:var(--text)}
+.workspace-footnote p{font-size:11px;margin:5px 0}
+@media(max-width:900px){.workspace-header{grid-template-columns:1fr;padding:52px 0 35px;gap:25px}.workspace-list{grid-template-columns:1fr}.workspace-toolbar{flex-direction:column;align-items:stretch}.workspace-metrics{max-width:none}.workspace-connect{max-width:550px}}
+@media(max-width:590px){.workspace-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace-metrics>div{padding:14px 10px}.workspace-metrics strong{font-size:24px}.workspace-metrics span{font-size:10px}.workspace-title{align-items:center;flex-wrap:wrap}.portfolio-card{padding:17px}.portfolio-card-head{flex-wrap:wrap}.portfolio-status{margin-left:0}}

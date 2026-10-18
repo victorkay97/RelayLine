@@ -5,7 +5,8 @@
 - [x] R1b — Tiramisu RPC, real publisher write, independent read, second-wallet impersonation rejection, and controlled live recovery independently validated (G1–G4; see ONCHAIN_EVIDENCE.md).
 - [x] R2a — Publisher console and browser wallet signing flows implemented and built.
 - [x] R2b — Two live browser-wallet manifest registrations confirmed on Tiramisu (separate wallets and successful public transaction receipts).
-- [ ] R2c — Production publisher management: revocation, key recovery and approvals.
+- [x] R2c1 — Publisher Workspace v1: wallet-connected read-only portfolio, verified current root authorization, new/update flow, shareable reader links, responsive dashboard and new indigo/persimmon theme.
+- [ ] R2c2 — Production account/identity proofs, successor-rotation discovery across unrelated wallets, complete historical index and polished in-browser management of revocation and key recovery.
 - [x] R3a — Browser-based direct-RPC reader with explicit wallet pinning and shared trust policy (CI build passed).
 - [x] R3b1 — Deploy separately-hosted recovery reader in another Vercel project.
 - [x] R3b2 — Prove signed-manifest-backed fallback recovery during controlled primary-service HTTP outage; reader queries Arkiv without RelayLine backend. Full publisher-host outage not separately tested.

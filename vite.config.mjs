@@ -8,6 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         console: resolve(root, 'index.html'),
+        workspace: resolve(root, 'workspace.html'),
         recover: resolve(root, 'recover.html')
       }
     }
