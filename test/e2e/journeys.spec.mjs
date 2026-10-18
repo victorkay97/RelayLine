@@ -24,7 +24,7 @@ test('workspace publisher follows guided setup with validation and no hidden sig
   await expect(page.locator('#review-service')).toHaveText('my-community');
   await expect(page.locator('#review-fallback')).toContainText('backup.example.org');
   await expect(page.locator('#publish-manifest')).toBeDisabled();
-  await page.getByRole('button',{name:/connect wallet/i}).click();
+  await page.locator('#connect-wallet').click();
   await expect(page.locator('#publish-status')).toContainText(/install.*wallet/i);
   await expect(page.locator('#publish-manifest')).toBeDisabled();
   await expect(page.locator('#completion')).toBeHidden();
