@@ -14,12 +14,12 @@ let session=null, items=[], loading=false, generation=0;
 
 function alertStatus(message,kind='neutral'){status($('workspace-status'),message,kind)}
 function readUrl(id,root){
- const u=new URL('https://relayline-reader.vercel.app/');
+ const u=new URL('recover.html',location.href);
  u.searchParams.set('service',id);u.searchParams.set('publisher',root);
  return u.toString();
 }
 function editorUrl(manifest){
- const u=new URL('index.html',location.href);
+ const u=new URL('workspace.html',location.href);
  u.searchParams.set('edit',manifest.service_id);
  u.hash='setup';
  return u.toString();
@@ -47,7 +47,7 @@ function renderedCards(){
     <div class="portfolio-card-head"><div class="portfolio-avatar"><i data-lucide="globe-2"></i></div><div><span class="overline">SERVICE ID</span><h3>${escapeHtml(item.id)}</h3></div><span class="portfolio-status ${active?'is-active':'is-review'}">${escapeHtml(badge)}</span></div>
     <div class="portfolio-lines"><div><span>${revoked?'Previous primary (revoked)':'Primary destination'}</span><strong title="${escapeHtml(primary)}">${escapeHtml(primary)}</strong></div><div><span>${revoked?'Previous backup (revoked)':'Recovery destination'}</span><strong title="${escapeHtml(fallback)}">${escapeHtml(fallback)}</strong></div></div>
     <div class="portfolio-facts"><span>Revision ${escapeHtml(selected?.manifest?.revision??item.manifest?.revision??'—')}</span><span>Created by ${escapeHtml(short(session.account))}</span></div>
-    <div class="portfolio-actions">${active?`<a class="btn btn-primary" href="${escapeHtml(editorUrl(selected.manifest))}">Manage service <i data-lucide="arrow-up-right"></i></a>`:''}<a class="btn btn-quiet" href="${escapeHtml(share)}" target="_blank" rel="noopener noreferrer">${revoked?'Inspect revocation':'Open reader'}</a>${!revoked?`<button class="btn btn-quiet" type="button" data-share="${escapeHtml(item.id)}"><i data-lucide="copy"></i> Copy reader link</button>`:'' }</div>
+    <div class="portfolio-actions">${active?`<a class="btn btn-primary" href="${escapeHtml(editorUrl(selected.manifest))}">Edit signed record <i data-lucide="arrow-up-right"></i></a>`:''}<a class="btn btn-quiet" href="${escapeHtml(share)}" target="_blank" rel="noopener noreferrer">${revoked?'Inspect revocation':'Open reader'}</a>${!revoked?`<button class="btn btn-quiet" type="button" data-share="${escapeHtml(item.id)}"><i data-lucide="copy"></i> Copy reader link</button>`:'' }</div>
     <p class="portfolio-warning">${escapeHtml(item.issue)}</p>
    </article>`;
  }).join('');
@@ -135,3 +135,28 @@ if(globalThis.ethereum?.on){
  globalThis.ethereum.on('chainChanged',()=>reset('Wallet network changed. Reconnect using Arkiv Tiramisu.'));
 }
 renderedCards();
+
+/* On-page publisher wizard: no hop to the separate legacy Vercel app. */
+const publisherPanel=$('setup');
+function openPublisherPanel(){
+  publisherPanel.hidden=false;
+  // The existing publisher module owns wallet approval, validation and safe writes.
+  paintIcons();
+}
+for(const control of document.querySelectorAll('[data-open-publisher]')){
+  control.addEventListener('click',openPublisherPanel);
+}
+window.addEventListener('hashchange',()=>{
+  if(location.hash==='#setup')openPublisherPanel();
+});
+$('workspace-publish-close').addEventListener('click',()=>{
+  publisherPanel.hidden=true;
+  if(location.hash==='#setup'){
+    const url=new URL(location.href);url.hash='';
+    history.replaceState(null,'',url);
+  }
+  document.getElementById('workspace-services-title').scrollIntoView({block:'start',behavior:'smooth'});
+});
+if(location.hash==='#setup'||new URLSearchParams(location.search).has('edit')){
+  openPublisherPanel();
+}
