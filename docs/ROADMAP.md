@@ -11,7 +11,8 @@
 - [x] R3b2 — Prove signed-manifest-backed fallback recovery during controlled primary-service HTTP outage; reader queries Arkiv without RelayLine backend. Full publisher-host outage not separately tested.
 - [ ] R3c — Publish and version a minimal reusable read SDK (implementation included in M7 branch; consumer example pending).
 - [x] R4a — Monitoring observation schema, independent signer, exact-allowlist HTTPS operator probe and quorum evaluator implemented; tests pending GitHub CI.
-- [ ] R4b — Multiple distinct funded monitor wallets publish actual Tiramisu observations; independent reader displays live quorum results.
+- [x] R4b1 — Multiple funded test-wallet identities published actual Tiramisu observations; direct independent Arkiv reader/evaluator observed 2-of-2 reachable quorum at block 735175 (archived in ONCHAIN_EVIDENCE.md).
+- [ ] R4b2 — Capture a dedicated hosted-browser UI quorum demonstration (time-limited signed observations); do not claim ongoing monitoring service.
 - [ ] R4c — Independently hosted monitor agents with periodic execution and documented operational costs.
 - [x] R5a — Immutable publisher revocations, pinned-root single-hop rotation, local revision/epoch rollback fences and adversarial tests implemented; live signing pending.
 - [ ] R5b — Validate real revocation and successor writes on Tiramisu; document and review key compromise recovery.
