@@ -72,3 +72,18 @@ The one-time browser acceptance test is preserved as `test/e2e/m4-live-attacker.
 Monitor A/B independent wallet observations, root-signed revocation and one-hop rotation still require user-approved test-only transaction(s). The automated mock tests and architecture are not substitutes for a live receipt.
 
 **Privacy/security:** no signing secrets or seed phrases are included here. The only wallet address shown is a public on-chain testnet identity.
+
+## M5: First live signed monitor observation — Wallet C PASS (2026-10-18)
+
+**Result:** One actual signed `reachable` observation was independently verified. **M5 quorum of two has not yet passed**; current status with only C trusted is `unknown`.
+
+- Monitor wallet C (on-chain immutable creator): `0xe9949b46262a98210bd1e4ab9ac525ac055a2d1e`.
+- Real successful tx: `0xa0fc444931ba33b720ee3ea4a30e827952c8e9e5411c67d22fffa536a7d58031` at block `734564`.
+- Observation entity: `0xaf1ce413b2274736ce1d180421fae1a066934e4abc6407e66e2cb85fc5862b90`.
+- Active at observed snapshot block `734658`; expires at block `734864` (a short-lived monitoring record; do not imply it is still live later).
+- Service: `relayline-demo-oct14`, endpoint ID `fallback`, URL `https://relayline-test-fallback.vercel.app/`.
+- Signed manifest key `0x2389c184908191a0b751396e135f64c1ceb3e2d827cbc5849d1a2ff442a7d2fc` correctly matched the legitimate root-publisher record.
+- Observation: `reachable`, reported HTTP 200, 1 recognized trusted signer, **2-of-2 quorum remains `unknown`**.
+- Actual independent RPC/CI evidence: [M5 Wallet C GitHub Actions run 39119115149](https://github.com/victorkay97/RelayLine/actions/runs/39119115149); read-only verifier: `scripts/verify-m5-wallet-c.mjs`.
+
+Wallet B must publish an observation while C's record is still unexpired; otherwise both must publish again close together. A valid signer observation is not objective proof of worldwide reachability or censorship resistance.
