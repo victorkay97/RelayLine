@@ -237,3 +237,6 @@ html[data-theme] .explain-grid p{color:var(--muted)}
  html[data-theme] .signal-diagram-heading,html[data-theme] .signal-diagram-foot{font-size:8px}
 }
 @media(prefers-reduced-motion:reduce){html[data-theme] .signal-wire-main{animation:none!important}}
+
+/* Tiny labels remain readable in both appearances. */
+html[data-theme] .overline{color:var(--muted);font-weight:670}
