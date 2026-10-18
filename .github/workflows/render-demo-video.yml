@@ -1,0 +1,41 @@
+name: Render RelayLine demo MP4 draft (actual UI and testnet facts)
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/make-demo-video.mjs'
+      - '.github/workflows/render-demo-video.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  make-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install packages and browser
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Start actual publisher/workspace browser build
+        run: |
+          nohup npm run dev -- --port 4173 > /tmp/relayline-demo-vite.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/workspace.html >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/relayline-demo-vite.log
+          exit 1
+      - name: Generate ≤180-second silent MP4 draft
+        run: node scripts/make-demo-video.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RelayLine-actual-UI-demo-MP4-draft
+          path: |
+            demo-video/RelayLine-demo-draft.mp4
+            demo-video/frames/
+          retention-days: 5
