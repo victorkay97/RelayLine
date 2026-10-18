@@ -30,7 +30,7 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run build
       - run: npm run build:reader
-      - run: test -f dist/index.html && test -f dist/recover.html
+      - run: test -f dist/index.html && test -f dist/recover.html && test -f dist/workspace.html
       - run: test -f dist-reader/index.html && test -f dist-reader/recover.html
       - run: test ! -f dist-reader/publisher.html
       - run: npm ls @arkiv-network/sdk viem vite --depth=0
