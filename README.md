@@ -28,9 +28,9 @@ The implementation is committed and continuously validated in CI. The repository
 
 No wallet private keys should be shared in chat, issues, pull requests, CI logs, or committed files.
 
-## Browser publisher console and independent reader
+## Public landing page, publisher workspace and independent reader
 
-The **publisher console** is a static, client-side wallet application. It requests a compatible EVM wallet, switches to Arkiv Tiramisu, validates a public recovery manifest and asks the wallet to sign `createEntity`. **No wallet private key is handled by the web application or RelayLine servers.**
+The **publisher workspace** at `workspace.html` is a static, client-side wallet application. It requests a compatible EVM wallet, switches to Arkiv Tiramisu, validates a public recovery manifest and asks the wallet to sign `createEntity`. **No wallet private key is handled by the web application or RelayLine servers.**
 
 The **independent recovery reader** is a separately built static entry page (`recover.html`). It calls the Arkiv public RPC directly, requires an explicitly pinned publisher wallet and applies the same auditable trust policy as the CLI. It displays authorized endpoints but does **not** claim browser-based cross-origin reachability.
 
@@ -41,13 +41,13 @@ npm run build
 npm run dev
 ```
 
-Open `http://localhost:5173/` for publishing and `http://localhost:5173/recover.html` for reading. To demonstrate independence, deploy the generated reader and shared assets on a different host from the publisher console. The reader must not depend on RelayLine's application backend.
+Open `http://localhost:5173/` for the public landing page, `http://localhost:5173/workspace.html` for publishing, `http://localhost:5173/recover.html` for reading, and `http://localhost:5173/docs.html` for documentation. To demonstrate independence, deploy the generated reader and shared assets on a different host from the publisher console. The reader must not depend on RelayLine's application backend.
 
-Writing requires a wallet funded with **test GLM** through Arkiv's official faucet. **Live publisher writes and reader authentication remain unverified until transaction evidence is recorded.** Offline unit tests and a successful read-only Arkiv query are not equivalent to publishing.
+Writing requires a wallet funded with **test GLM** through Arkiv's official faucet. **Real testnet transaction evidence is documented in `docs/ONCHAIN_EVIDENCE.md`.** Offline tests and successful read-only queries alone are not equivalent to publishing.
 
 See `docs/VALIDATION.md`, `docs/LIVE_READ_EVIDENCE.md`, and [open live validation gates](https://github.com/victorkay97/RelayLine/issues/2).
 
-## M5 independent monitoring and M6 control records (code-complete, chain writes unverified)
+## M5 independent monitoring and M6 control records
 
 The reader can apply a quorum of independently pinned monitor wallets to short-lived observation entities. A monitor process can probe one explicitly operator-allowlisted HTTPS endpoint and optionally sign the result using a test-only wallet. Health can be `reachable`, `unreachable`, `disputed`, `unknown` or `not_configured`. It is never proof of censorship.
 
@@ -57,12 +57,15 @@ To publish a revocation or rotation from the test-only CLI, explicitly set `CONT
 
 ## Hackathon judging and independent reproduction
 
-- Publisher console: https://relayline-beta.vercel.app/
+- Canonical public landing page: https://victorkay97.github.io/RelayLine/
+- Wallet-connected publisher workspace: https://victorkay97.github.io/RelayLine/workspace.html
+- Public recovery reader: https://victorkay97.github.io/RelayLine/recover.html
+- Documentation hub: https://victorkay97.github.io/RelayLine/docs.html
 - Independently hosted read-only client: https://relayline-reader.vercel.app/
 - Run `npm run build:reader` to produce a standalone `dist-reader/` static site.
 - Run `npm run demo:judge` for an explicit **offline synthetic** failure/recovery, attacker, monitor and revocation demonstration.
 - Read `docs/JUDGING.md`, `docs/REPRODUCE.md`, `docs/DEMO.md` and `docs/ONCHAIN_EVIDENCE.md`.
-- The mandatory demo video and real Arkiv creation-transaction evidence are still pending.
+- Real testnet creation-transaction evidence is documented in `docs/ONCHAIN_EVIDENCE.md`; confirm the current video-submission status separately.
 
 ## Read-only RPC resilience
 
@@ -82,4 +85,7 @@ Visual direction updated from dark pine/lime to **midnight indigo / persimmon**.
 
 ## Canonical hosted application
 
-**GitHub Pages is the official navigable demo site for the October 2026 release:** [Home](https://victorkay97.github.io/RelayLine/), [Publisher Workspace](https://victorkay97.github.io/RelayLine/workspace.html), and [Find a service](https://victorkay97.github.io/RelayLine/recover.html). The workspace embeds the existing wallet-signed three-step publishing wizard so new publication and subsequent authenticated updates don't jump to an old Vercel deployment. All primary navigation and post-publish recovery links use the GitHub Pages origin. The separately deployed Vercel reader is retained as optional **independently hosted** verification; see [hosting, trust boundaries, and manual QA](docs/HOSTING.md).
+**GitHub Pages is the official navigable demo site for the October 2026 release:** [Home](https://victorkay97.github.io/RelayLine/), [Publisher Workspace](https://victorkay97.github.io/RelayLine/workspace.html), [Find a service](https://victorkay97.github.io/RelayLine/recover.html), and [Documentation](https://victorkay97.github.io/RelayLine/docs.html). The workspace embeds the existing wallet-signed three-step publishing wizard so new publication and subsequent authenticated updates don't jump to an old Vercel deployment. All primary navigation and post-publish recovery links use the GitHub Pages origin. The separately deployed Vercel reader is retained as optional **independently hosted** verification; see [hosting, trust boundaries, and manual QA](docs/HOSTING.md).
+
+
+The homepage has **no publisher wizard**: its two primary routes lead to Workspace and Find a service. Wallet-backed listing creation and updates remain exclusively inside the workspace; the static docs hub links to technical specifications, trust boundaries, and judging evidence.
