@@ -4,6 +4,7 @@ import './styles.css';
 import './editorial.css';
 import './theme.mjs';
 import { paintIcons } from './icons.mjs';
+import { renderSiteFooter } from './site-footer.mjs';
 
 export { paintIcons };
 export function byId(id){return document.getElementById(id)}
@@ -51,5 +52,9 @@ export function describeError(error){
     return 'The Arkiv network could not be reached reliably. Check your connection, then retry. No recovery information has been assumed.';
   return String(message).slice(0,320);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',paintIcons,{once:true});
-else paintIcons();
+function initializeSite(){
+  renderSiteFooter();
+  paintIcons();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initializeSite,{once:true});
+else initializeSite();
