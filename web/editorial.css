@@ -240,3 +240,6 @@ html[data-theme] .explain-grid p{color:var(--muted)}
 
 /* Tiny labels remain readable in both appearances. */
 html[data-theme] .overline{color:var(--muted);font-weight:670}
+
+html[data-theme] .journey-list li small{color:var(--muted)}
+html[data-theme] .side-info a{color:var(--rl-accent-text);font-weight:650}
