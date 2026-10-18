@@ -80,8 +80,8 @@ test('publisher and reader have no automated axe critical/serious WCAG failures'
     await page.goto(route);
     // Vite imports CSS from JS; wait for final button styling before axe pixel sampling.
     if(route==='/recover.html'){
-      await expect(page.locator('#pin-publisher')).toHaveCSS('color','rgb(239, 234, 255)');
-      await expect(page.locator('#clear-pin')).toHaveCSS('color','rgb(239, 234, 255)');
+      await expect(page.locator('#pin-publisher')).toHaveCSS('color','rgb(245, 244, 240)');
+      await expect(page.locator('#clear-pin')).toHaveCSS('color','rgb(245, 244, 240)');
     }
     const results=await new AxeBuilder({page})
       .withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])
@@ -158,9 +158,9 @@ test('public homepage offers two distinct paths with no publishing controls',asy
  await expect(page.locator('#publisher-form')).toHaveCount(0);
  await expect(page.locator('#setup')).toHaveCount(0);
  await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Home');
- await page.getByRole('link',{name:'Documentation',exact:true}).click();
+ await page.locator('.primary-nav').getByRole('link',{name:'Documentation',exact:true}).click();
  await expect(page).toHaveURL(/\/docs\.html$/);
- await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Docs');
+ await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Documentation');
  await expect(page.getByRole('heading',{name:/build for continuity/i})).toBeVisible();
  await page.locator('.docs-sidebar').getByRole('link',{name:'Trust and verification'}).click();
  await expect(page).toHaveURL(/docs\.html#trust$/);
