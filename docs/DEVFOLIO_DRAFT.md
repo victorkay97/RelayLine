@@ -1,6 +1,6 @@
 # RelayLine — Devfolio submission working draft
 
-**DRAFT — NOT SUBMITTED.** Official questions:
+**DRAFT — NOT SUBMITTED. The user must complete the live Devfolio form and confirm its receipt.** Official questions:
 https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/blob/main/docs/submission-checklist.md
 
 ## Standard Devfolio fields
@@ -15,13 +15,13 @@ https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/blob/main/docs/subm
 
 **Tracks:** Censorship Resistance (primary). Other tracks must be individually justified before selection.
 
-**Project demo video:** [PENDING — <=3-minute real Tiramisu video]
+**Project demo video:** [PENDING — public watchable URL for a reviewed ≤3-minute final recording]. A 165-second **silent** GitHub Actions draft exists ([run 39125577473](https://github.com/victorkay97/RelayLine/actions/runs/39125577473)); it is not the reviewed final video. See [submission handoff](SUBMISSION_HANDOFF.md) for the final shot sequence.
 
 **Public GitHub repository:** https://github.com/victorkay97/RelayLine
 
 ## Arkiv-specific answers
 
-**1. Live app URL:** https://relayline-vkalu2266-3185s-projects.vercel.app/ and independent reader https://relayline-reader.vercel.app/recover.html . Check externally accessible routes again before submitting.
+**1. Live app URL:** https://victorkay97.github.io/RelayLine/ . Workspace: https://victorkay97.github.io/RelayLine/workspace.html ; public Arkiv reader: https://victorkay97.github.io/RelayLine/recover.html ; docs: https://victorkay97.github.io/RelayLine/docs.html . Optional *separately hosted*, older-UI read-only reader: https://relayline-reader.vercel.app/ . Use the GitHub Pages URL as the canonical entry point and check all live routes before submitting.
 
 **2. Any team member holds Indian nationality?** [TEAM MEMBER MUST CONFIRM — DO NOT ASSUME]
 
@@ -43,7 +43,7 @@ https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/blob/main/docs/subm
 
 **11. Other:** N/A unless selected.
 
-**12. Time from start to first Arkiv entity write:** first confirmed real write was **2026-10-14**, transaction block **562737** (public transaction in ONCHAIN_EVIDENCE.md). **Team must calculate actual elapsed duration from its genuine starting timestamp; do not invent it.**
+**12. Time from start to first Arkiv entity write:** choose the **actual form category** (**≤2 hours**, **2–24 hours**, **more than a day**) from verified project-start time. First confirmed real write occurred 2026-10-14 in block 562737. **Team must confirm start time rather than guessing elapsed hours.**
 
 **13. LLMs used:** OpenAI GPT-6 through ChatGPT as a development assistant. [ADD OTHER LLMs ONLY IF ACTUALLY USED]
 
@@ -64,3 +64,6 @@ Private keys, seed phrases, secret API keys, personal addresses, confidential us
 ### Deadlines
 
 October 18, 2026 at 23:59 **BST = Nigeria time (WAT)**. Keep the published site accessible through October 23 and avoid rewriting Git history after the deadline.
+
+
+**Final next step:** Use [SUBMISSION_HANDOFF.md](SUBMISSION_HANDOFF.md) for a verified link pack, remaining blockers, and ≤3-minute video plan. The canonical organizer checklist is https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/blob/main/docs/submission-checklist.md .
