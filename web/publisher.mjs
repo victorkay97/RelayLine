@@ -232,7 +232,7 @@ form.addEventListener('submit', async event => {
       '<div class="receipt-row"><span>'+escapeHtml(label)+'</span><code>'+escapeHtml(value)+'</code>'+
       '<button type="button" class="copy-mini" data-copy="'+escapeHtml(value)+'" aria-label="Copy '+escapeHtml(label)+'"><i data-lucide="copy"></i></button></div>'
     ).join('');
-    const url=new URL('https://relayline-reader.vercel.app/');
+    const url=new URL('recover.html',location.href);
     url.searchParams.set('service',manifest.service_id);
     url.searchParams.set('publisher',lastEvidence.creator);
     $('open-reader').href=url.href;
