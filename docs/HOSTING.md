@@ -28,7 +28,7 @@ The separately hosted, read-only Vercel reader `https://relayline-reader.vercel.
 2. In Workspace click Publish new service. Verify that the on-page wizard opens without redirecting anywhere, including during a validation error.
 3. Fill service, primary and backup URLs; check review displays the values. Only actual approved wallet signing may publish. Do not create unnecessary testnet writes during UI QA.
 4. If you have an already authorized wallet-connected record, choose Edit signed record and verify the known destinations and next revision prefill in the same on-page wizard. The final write must still check Arkiv and ask for wallet approval.
-5. Connect Wallet B and refresh the portfolio: expect `relayline-demo-oct14` marked wallet-signed record, and `relayline-m6-oct18` revoked (with historical URLs and no copy-reader-link action).
-6. Confirm publisher and reader share the new midnight-indigo, lavender and persimmon theme across hero illustration, dialog, form, cards and footer.
+5. Connect the actual original **M4 publisher wallet** to inspect its currently active manifests; Wallet B is a **different** test wallet used as M4 impostor, M5 monitor and M6 root. A revoked M6 service must not be advertised as a usable recovery route. Portfolio results are limited to currently queryable records created by that connected wallet.
+6. Confirm all GitHub Pages routes use the new monochrome editorial design with restrained persimmon accents, a persistent light/dark switcher, a consistent shared footer, and a hamburger menu at ≤900px.
 7. Open `/docs.html`, follow each sidebar anchor, and check the GitHub protocol/security/judging links.
 8. The separately hosted Vercel reader is optional, and should not be a primary navigation destination.
