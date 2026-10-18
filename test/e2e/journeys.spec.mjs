@@ -201,7 +201,7 @@ test('editorial global navigation order and visual themes persist across public 
 test('light mode stays accessible and within the viewport',async({page})=>{
   for(const route of ['/','/workspace.html','/recover.html','/docs.html']){
     await page.goto(route);
-    await page.locator('[data-theme-toggle]').click();
+    if(await page.locator('html').getAttribute('data-theme')==='dark')await page.locator('[data-theme-toggle]').click();
     await expect(page.locator('html')).toHaveAttribute('data-theme','light');
     await expect(page.locator('[data-theme-toggle]')).toHaveAttribute('aria-label','Switch to dark mode');
     if(route==='/recover.html'){
