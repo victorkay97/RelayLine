@@ -119,3 +119,15 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - **Revision:** 1, `primary=https://relayline-test-primary.vercel.app/`, `fallback=https://relayline-test-fallback.vercel.app/`.
 - **Independent reader query:** block **735446**, correctly selected original root-signed manifest and returned `epoch=0`.
 - Wallet C successor revision 2, Wallet B signed rotation and Wallet C revocation are **NOT YET VERIFIED**. Avoid claiming all of M6 complete until separate signed receipts/reader transitions have been verified.
+
+## M6: Wallet C successor revision 2 — PASS before rotation (2026-10-18)
+
+**Independent proof:** [GitHub Actions run 39121384917](https://github.com/victorkay97/RelayLine/actions/runs/39121384917), 2026-10-18T10:59:22Z.
+
+- Service: `relayline-m6-oct18`; manifest revision 2.
+- Actual Wallet C immutable creator: `0xe9949b46262a98210bd1e4ab9ac525ac055a2d1e`.
+- Signed successful transaction: `0x6a25114101fa702d0514c97fb5310ef67e3ad8a56360e0093e49a7e88c959148`, block **735627**.
+- On-chain successor entity: `0x42884b4c0edb63f3231b003f0ae669c3621c9016bb20b6871548ec13b18f05b1`, expires at block **2031627**.
+- Direct read-only Arkiv query at block **735698**: original Wallet B revision-1 entity `0x5a73279e0abe7a2ee450cf2457b7c2617e4a6e1024d03ca8e3a2a95d770b0f91` was still selected at epoch **0**. Wallet C revision-2 manifest was explicitly rejected as **`untrusted_creator`** before any authorization.
+- This is the correct, expected fail-closed state before Wallet B signs a successor rotation.
+- **Not yet established:** live root-signed rotation and successor-signed revocation. Record their actual public receipts and post-control reader decisions separately.
