@@ -267,3 +267,14 @@ input[aria-invalid=true]{border-color:#da9187}
 .btn-outline{color:#EAE6FF;background:#292B51;border-color:#65658F}
 .btn-quiet{color:#EAE6FF;background:#262849;border-color:#515379}
 .portfolio-status.is-active{color:#A9E7D3;border-color:#528F88}
+
+/* Brand V2 finish: remove leftover forest-green footer and success callout. */
+.site-footer{background:#0D0F24;border-top-color:#353756}
+.footer-inner{color:#A9A8CA}
+.footer-inner .brand-name{color:#F7F5FF}
+.footer-inner a{color:#DDD4FF}
+.form-message{background:#222544;border-color:#414365;color:#C4BFDF}
+.form-message[data-kind=good]{background:#202C42;border-color:#527F85;color:#BBE7DF}
+.form-message[data-kind=bad]{background:#3A2436;border-color:#86516C;color:#FFC1C5}
+.form-message[data-kind=busy]{background:#332C46;border-color:#81709C;color:#E5D8FA}
+@media(max-width:680px){.primary-nav{border-top-color:#414365}.value-strip>div{border-bottom-color:#414365!important}}
