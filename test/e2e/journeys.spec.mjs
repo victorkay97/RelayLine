@@ -2,6 +2,13 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const ROOT = '0x1111111111111111111111111111111111111111';
+async function expandNavigationIfCompact(page){
+  const toggle=page.locator('[data-menu-toggle]');
+  if(await toggle.isVisible()){
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded','true');
+  }
+}
 
 test('workspace publisher follows guided setup with validation and no hidden signing', async ({page})=>{
   const errors=[];
@@ -56,11 +63,13 @@ test('recovery refuses an unpinned issuer then explicitly stores and resets trus
 
 test('responsive layout never overflows horizontally and navigation stays available',async ({page})=>{
   await page.goto('/');
+  await expandNavigationIfCompact(page);
   await expect(page.locator('.primary-nav a[aria-current]')).toBeVisible();
   await expect(page.locator('.site-header')).toBeVisible();
   const a=await page.evaluate(()=>({actual:document.documentElement.scrollWidth,viewport:innerWidth}));
   expect(a.actual).toBeLessThanOrEqual(a.viewport+1);
   await page.goto('/recover.html');
+  await expandNavigationIfCompact(page);
   await expect(page.locator('.primary-nav a[aria-current]')).toBeVisible();
   const b=await page.evaluate(()=>({actual:document.documentElement.scrollWidth,viewport:innerWidth}));
   expect(b.actual).toBeLessThanOrEqual(b.viewport+1);
@@ -112,11 +121,13 @@ test('wallet-led publisher workspace has clear disconnected state and no forced 
 test('GitHub Pages navigation stays within site and workspace publishes inline',async({page})=>{
  const errors=[];page.on('pageerror',err=>errors.push(err.message));
  await page.goto('/');
+ await expandNavigationIfCompact(page);
  const find=page.locator('.primary-nav a').filter({hasText:/find a service/i});
  await expect(find).toHaveAttribute('href','./recover.html');
  await find.click();
  await expect(page).toHaveURL(/\/recover\.html$/);
  await expect(page.getByRole('heading',{name:/find the way back/i})).toBeVisible();
+ await expandNavigationIfCompact(page);
  await page.locator('.primary-nav a').filter({hasText:'Workspace'}).click();
  await expect(page).toHaveURL(/\/workspace\.html$/);
  await expect(page.locator('#setup')).toBeHidden();
@@ -162,6 +173,7 @@ test('public homepage offers two distinct paths with no publishing controls',asy
  await expect(page.locator('#publisher-form')).toHaveCount(0);
  await expect(page.locator('#setup')).toHaveCount(0);
  await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Home');
+ await expandNavigationIfCompact(page);
  await page.locator('.primary-nav').getByRole('link',{name:'Documentation',exact:true}).click();
  await expect(page).toHaveURL(/\/docs\.html$/);
  await expect(page.locator('.primary-nav a[aria-current]')).toContainText('Documentation');
@@ -290,4 +302,81 @@ test('docs table of contents stays sticky only while documentation is in view',a
   });
   expect(end.tocBottom).toBeLessThanOrEqual(end.contentBottom+1);
   expect(end.tocBottom).toBeLessThan(end.footerTop);
+});
+
+test('workspace status and portfolio heading have a clear vertical boundary',async({page})=>{
+  for(const width of [390,1280]){
+    await page.setViewportSize({width,height:850});
+    await page.goto('/workspace.html');
+    await expect(page.locator('#workspace-status')).toBeVisible();
+    await expect(page.locator('.workspace-services')).toBeVisible();
+    const gap=await page.evaluate(()=>{
+      const status=document.querySelector('#workspace-status').getBoundingClientRect();
+      const section=document.querySelector('.workspace-services').getBoundingClientRect();
+      return Math.round(section.top-status.bottom);
+    });
+    expect(gap).toBeGreaterThanOrEqual(width<=680?32:44);
+    const bounds=await page.evaluate(()=>({actual:document.documentElement.scrollWidth,viewport:innerWidth}));
+    expect(bounds.actual).toBeLessThanOrEqual(bounds.viewport+1);
+  }
+});
+
+test('compact navigation opens, closes and keeps four routes usable',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/');
+  const toggle=page.locator('[data-menu-toggle]');
+  const nav=page.locator('#primary-navigation');
+  await expect(toggle).toBeVisible();
+  await expect(toggle).toHaveAttribute('aria-expanded','false');
+  await expect(toggle).toHaveAttribute('aria-controls','primary-navigation');
+  await expect(toggle).toHaveAttribute('aria-label','Open navigation menu');
+  await expect(nav).toBeHidden();
+  await toggle.click();
+  await expect(nav).toBeVisible();
+  await expect(toggle).toHaveAttribute('aria-expanded','true');
+  await expect(toggle).toHaveAttribute('aria-label','Close navigation menu');
+  await expect(nav.locator('a')).toHaveText(['Home','Workspace','Find a Service','Documentation']);
+  await expect(nav.locator('a').first().locator('svg')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(nav).toBeHidden();
+  await expect(toggle).toBeFocused();
+  await toggle.click();
+  await page.locator('main h1').click();
+  await expect(nav).toBeHidden();
+  await toggle.click();
+  await nav.getByRole('link',{name:'Workspace'}).click();
+  await expect(page).toHaveURL(/\/workspace\.html$/);
+  await expect(page.locator('#primary-navigation')).toBeHidden();
+  await expect(page.locator('[data-menu-toggle]')).toHaveAttribute('aria-expanded','false');
+  await page.setViewportSize({width:1024,height:800});
+  await expect(page.locator('[data-menu-toggle]')).toBeHidden();
+  await expect(page.locator('#primary-navigation')).toBeVisible();
+  await page.setViewportSize({width:800,height:800});
+  await expect(page.locator('[data-menu-toggle]')).toBeVisible();
+  await expect(page.locator('#primary-navigation')).toBeHidden();
+  await page.locator('[data-menu-toggle]').click();
+  await expect(page.locator('#primary-navigation')).toBeVisible();
+  await page.setViewportSize({width:1024,height:800});
+  await expect(page.locator('#primary-navigation')).toBeVisible();
+  await page.setViewportSize({width:390,height:844});
+  await expect(page.locator('#primary-navigation')).toBeHidden();
+});
+
+test('mobile navigation has no horizontal overflow across routes and themes',async({page})=>{
+  for(const width of [320,390,800]){
+    await page.setViewportSize({width,height:800});
+    for(const route of ['/','/workspace.html','/recover.html','/docs.html']){
+      await page.goto(route);
+      for(const theme of ['dark','light']){
+        if(await page.locator('html').getAttribute('data-theme')!==theme)
+          await page.locator('[data-theme-toggle]').click();
+        await page.locator('[data-menu-toggle]').click();
+        await expect(page.locator('#primary-navigation')).toBeVisible();
+        const bounds=await page.evaluate(()=>({actual:document.documentElement.scrollWidth,viewport:innerWidth}));
+        expect(bounds.actual).toBeLessThanOrEqual(bounds.viewport+1);
+        await page.keyboard.press('Escape');
+        await expect(page.locator('#primary-navigation')).toBeHidden();
+      }
+    }
+  }
 });
