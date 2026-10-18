@@ -15,6 +15,15 @@ The application is built with `npm run build -- --base=/RelayLine/`; links withi
 
 The separately hosted, read-only Vercel reader `https://relayline-reader.vercel.app/` remains online as an **optional, physically separate deployment** for a stronger demonstration of not depending on the publisher host. Its UI is a previously deployed version until a future Vercel deployment is possible. The Pages-hosted `/recover.html` is independently querying Arkiv without RelayLine backend and has the same trust-policy source code, **but shares an origin and hosting provider with the publisher UI**; avoid calling this particular copy independently hosted or host-fault tolerant.
 
+
+## Legacy Vercel housekeeping — stable deployments retained
+
+`vercel.json` now contains `git.deploymentEnabled: false`. Per Vercel's documented Git configuration, this **disables future automatic Git deployments** for Vercel projects sourcing the repository. Existing deployments, including the separately hosted reader and controlled test URLs used in historical verification, are **not deleted or redeployed**. This does not affect the GitHub Pages workflow, which remains canonical.
+
+Vercel may still show failed historical GitHub commit statuses from the account's build-rate limit; those cannot be retroactively converted to passing checks. The setting is reversible by changing `git.deploymentEnabled` back to `true` and merging it when Vercel deployment capacity is available.
+
+After judging and when old evidence URLs are no longer needed, a repo admin may disconnect each noncanonical Vercel project's Git link in **Vercel → Project → Settings → Git**. This is distinct from suspending its served deployment or deleting the project; preserve the independent reader and original proof endpoints until the evidence retention window is over.
+
 ## Trust and test data warnings
 
 - Readers still require publisher identity obtained from an independently authenticated source. `?service=` and `?publisher=` URL parameters are a convenience, **never proof of authentic service ownership**.
