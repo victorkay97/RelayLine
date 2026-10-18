@@ -47,7 +47,7 @@ function renderedCards(){
     <div class="portfolio-card-head"><div class="portfolio-avatar"><i data-lucide="globe-2"></i></div><div><span class="overline">SERVICE ID</span><h3>${escapeHtml(item.id)}</h3></div><span class="portfolio-status ${active?'is-active':'is-review'}">${escapeHtml(badge)}</span></div>
     <div class="portfolio-lines"><div><span>${revoked?'Previous primary (revoked)':'Primary destination'}</span><strong title="${escapeHtml(primary)}">${escapeHtml(primary)}</strong></div><div><span>${revoked?'Previous backup (revoked)':'Recovery destination'}</span><strong title="${escapeHtml(fallback)}">${escapeHtml(fallback)}</strong></div></div>
     <div class="portfolio-facts"><span>Revision ${escapeHtml(selected?.manifest?.revision??item.manifest?.revision??'—')}</span><span>Created by ${escapeHtml(short(session.account))}</span></div>
-    <div class="portfolio-actions">${active?`<a class="btn btn-primary" href="${escapeHtml(editorUrl(selected.manifest))}">Edit signed record <i data-lucide="arrow-up-right"></i></a>`:''}<a class="btn btn-quiet" href="${escapeHtml(share)}" target="_blank" rel="noopener noreferrer">${revoked?'Inspect revocation':'Open reader'}</a>${!revoked?`<button class="btn btn-quiet" type="button" data-share="${escapeHtml(item.id)}"><i data-lucide="copy"></i> Copy reader link</button>`:'' }</div>
+    <div class="portfolio-actions">${active?`<button class="btn btn-primary" type="button" data-edit="${escapeHtml(item.id)}">Edit signed record <i data-lucide="arrow-up-right"></i></button>`:''}<a class="btn btn-quiet" href="${escapeHtml(share)}" target="_blank" rel="noopener noreferrer">${revoked?'Inspect revocation':'Open reader'}</a>${!revoked?`<button class="btn btn-quiet" type="button" data-share="${escapeHtml(item.id)}"><i data-lucide="copy"></i> Copy reader link</button>`:'' }</div>
     <p class="portfolio-warning">${escapeHtml(item.issue)}</p>
    </article>`;
  }).join('');
@@ -123,6 +123,26 @@ disconnect.addEventListener('click',()=>reset('Workspace view disconnected. Wall
 refresh.addEventListener('click',load);
 search.addEventListener('input',renderedCards);
 list.addEventListener('click',async event=>{
+ const edit=event.target.closest('[data-edit]');
+ if(edit && session){
+   const item=items.find(x=>x.id===edit.dataset.edit && x.status==='active');
+   if(!item?.decision?.selected) return alertStatus('This record is not verified for editing. Refresh the portfolio.','bad');
+   const manifest=item.decision.selected.manifest;
+   if(manifest.revision>=9999999) return alertStatus('Maximum revision reached.','bad');
+   // The existing wallet-signing wizard owns validation and safety checks.
+   $('completion').hidden=true; $('publisher-form').hidden=false;
+   $('publisher-form').reset();
+   $('service-id').value=item.id;
+   $('primary-url').value=manifest.endpoints.find(x=>x.role==='primary')?.url||'';
+   $('fallback-url').value=manifest.endpoints.find(x=>x.role==='fallback')?.url||'';
+   $('revision').value=String(manifest.revision+1);
+   $('next-one').click();
+   $('load-status').textContent='Prefilled from the verified record. Review endpoints; the wallet and current revision will be checked again before signing.';
+   openPublisherPanel();
+   location.hash='setup';
+   $('setup').scrollIntoView({block:'start',behavior:'smooth'});
+   return;
+ }
  const button=event.target.closest('[data-share]');
  if(!button||!session)return;
  const id=button.dataset.share;
