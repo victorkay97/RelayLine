@@ -4,6 +4,7 @@ import { connectPublisher, readPublicServiceRecords } from '../src/browser-arkiv
 import { browserPublisherPortfolio } from '../src/portfolio.mjs';
 import { normalizeAddress, validateManifest } from '../src/policy.mjs';
 import { resolveServiceState } from '../src/control-policy.mjs';
+import { classifyPortfolioDecision } from './workspace-state.mjs';
 
 const $=byId;
 const walletText=$('workspace-wallet-address'), connect=$('workspace-connect');
@@ -39,14 +40,15 @@ function renderedCards(){
    const end=selected?.manifest?.endpoints||[];
    const primary=end.find(x=>x.role==='primary')?.url||item.manifest?.endpoints.find(x=>x.role==='primary')?.url||'—';
    const fallback=end.find(x=>x.role==='fallback')?.url||item.manifest?.endpoints.find(x=>x.role==='fallback')?.url||'—';
-   const badge=active?'Authorized manifest':item.status==='rotated'?'Authority transferred':'Review required';
+   const revoked=item.status==='revoked';
+   const badge=active?'Wallet-signed record':revoked?'Latest record revoked':item.status==='rotated'?'Authority transferred':'Review required';
    const share=readUrl(item.id,session.account);
    return `<article class="portfolio-card">
     <div class="portfolio-card-head"><div class="portfolio-avatar"><i data-lucide="globe-2"></i></div><div><span class="overline">SERVICE ID</span><h3>${escapeHtml(item.id)}</h3></div><span class="portfolio-status ${active?'is-active':'is-review'}">${escapeHtml(badge)}</span></div>
-    <div class="portfolio-lines"><div><span>Primary destination</span><strong title="${escapeHtml(primary)}">${escapeHtml(primary)}</strong></div><div><span>Recovery destination</span><strong title="${escapeHtml(fallback)}">${escapeHtml(fallback)}</strong></div></div>
+    <div class="portfolio-lines"><div><span>${revoked?'Previous primary (revoked)':'Primary destination'}</span><strong title="${escapeHtml(primary)}">${escapeHtml(primary)}</strong></div><div><span>${revoked?'Previous backup (revoked)':'Recovery destination'}</span><strong title="${escapeHtml(fallback)}">${escapeHtml(fallback)}</strong></div></div>
     <div class="portfolio-facts"><span>Revision ${escapeHtml(selected?.manifest?.revision??item.manifest?.revision??'—')}</span><span>Created by ${escapeHtml(short(session.account))}</span></div>
-    <div class="portfolio-actions">${active?`<a class="btn btn-primary" href="${escapeHtml(editorUrl(selected.manifest))}">Manage service <i data-lucide="arrow-up-right"></i></a>`:''}<a class="btn btn-quiet" href="${escapeHtml(share)}" target="_blank" rel="noopener noreferrer">Open reader</a><button class="btn btn-quiet" type="button" data-share="${escapeHtml(item.id)}"><i data-lucide="copy"></i> Copy recovery link</button></div>
-    <p class="portfolio-warning">${active?'Only publish an update after confirming current authority; never distribute an unverified wallet link as identity proof.':escapeHtml(item.issue)}</p>
+    <div class="portfolio-actions">${active?`<a class="btn btn-primary" href="${escapeHtml(editorUrl(selected.manifest))}">Manage service <i data-lucide="arrow-up-right"></i></a>`:''}<a class="btn btn-quiet" href="${escapeHtml(share)}" target="_blank" rel="noopener noreferrer">${revoked?'Inspect revocation':'Open reader'}</a>${!revoked?`<button class="btn btn-quiet" type="button" data-share="${escapeHtml(item.id)}"><i data-lucide="copy"></i> Copy reader link</button>`:'' }</div>
+    <p class="portfolio-warning">${escapeHtml(item.issue)}</p>
    </article>`;
  }).join('');
  paintIcons();
@@ -78,11 +80,8 @@ async function load(){
      try{
        const {entities,headBlock:at}=await readPublicServiceRecords(id);
        const decision=resolveServiceState(entities,{pinnedPublisher:mine,serviceId:id,headBlock:at});
-       const active=decision.selected&&normalizeAddress(decision.activeSigner)===normalizeAddress(mine);
-       const rotated=decision.epoch>0&&normalizeAddress(decision.activeSigner||mine)!==normalizeAddress(mine);
-       return {id,manifest:group[0].manifest,decision,status:active?'active':rotated?'rotated':'review',
-         issue:rotated?'This service was rotated to a successor signer. The previous wallet cannot edit it.':
-           decision.issue?'Arkiv reader: '+decision.issue:'This wallet is not authorized to update the selected revision.'};
+       const state=classifyPortfolioDecision(decision,mine);
+       return {id,manifest:group[0].manifest,decision,...state};
      }catch(error){
        return{id,manifest:group[0].manifest,decision:null,status:'review',issue:'Could not verify current authority: '+describeError(error)};
      }
@@ -93,7 +92,7 @@ async function load(){
    $('metric-active').textContent=String(out.filter(x=>x.status==='active').length);
    $('metric-review').textContent=String(out.filter(x=>x.status!=='active').length);
    renderedCards();
-   alertStatus('Read '+records.length+' signed manifest records; verified '+out.length+' service IDs. This is not a live uptime check.','good');
+   alertStatus('Read '+records.length+' signed manifest records across '+out.length+' service IDs. Wallet signatures do not prove the globally trusted publisher, and these counts are not uptime checks.','good');
  }catch(error){
    if(token!==generation)return;
    items=[];renderedCards();
@@ -128,7 +127,7 @@ list.addEventListener('click',async event=>{
  if(!button||!session)return;
  const id=button.dataset.share;
  // Disclosure: URI parameters are NOT identity proof, show in accompanying guidance.
- try{await copyText(readUrl(id,session.account));alertStatus('Recovery link copied. Share your verified wallet address independently, before an outage.','good')}
+ try{await copyText(readUrl(id,session.account));alertStatus('Reader link copied. Its wallet parameter is not identity proof: recipients must independently authenticate the publisher first.','good')}
  catch(error){alertStatus(describeError(error),'bad')}
 });
 if(globalThis.ethereum?.on){
