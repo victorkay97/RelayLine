@@ -6,6 +6,10 @@ on:
       - 'scripts/make-demo-video.mjs'
       - '.github/workflows/render-demo-video.yml'
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/make-demo-video.mjs'
+      - '.github/workflows/render-demo-video.yml'
 permissions:
   contents: read
 jobs:
@@ -30,6 +34,11 @@ jobs:
           done
           cat /tmp/relayline-demo-vite.log
           exit 1
+      - name: Install FFmpeg encoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffmpeg -version | head -n 1
       - name: Generate ≤180-second silent MP4 draft
         run: node scripts/make-demo-video.mjs
       - uses: actions/upload-artifact@v4
