@@ -87,3 +87,12 @@ Monitor A/B independent wallet observations, root-signed revocation and one-hop 
 - Actual independent RPC/CI evidence: [M5 Wallet C GitHub Actions run 39119115149](https://github.com/victorkay97/RelayLine/actions/runs/39119115149); read-only verifier: `scripts/verify-m5-wallet-c.mjs`.
 
 Wallet B must publish an observation while C's record is still unexpired; otherwise both must publish again close together. A valid signer observation is not objective proof of worldwide reachability or censorship resistance.
+
+## M5: Second live signer Wallet B — PASS; 2-of-2 overlap pending (2026-10-18)
+
+- **Actual sender / creator:** `0x024e3989ff6ed673c90613815dca3017ab9ea50d`.
+- **Confirmed transaction hash:** `0x2652079f383f1221f1e5c23afc5d3d265de8b6f99f44a4e4dceaa2b5edb9a555`, block `734902`.
+- **Observation entity:** `0x2bc06c5c8dbcc7eb91f53f97bdcd5980e19b65575147f7618692ef64b5afd2e4` (created block `734902`, expiry block `735202`).
+- **Verified observation:** `fallback`, `reachable`, reported HTTP `200`, legitimate manifest key `0x2389c184908191a0b751396e135f64c1ceb3e2d827cbc5849d1a2ff442a7d2fc`.
+- **Independent CI evidence:** [GitHub Actions 39119771146](https://github.com/victorkay97/RelayLine/actions/runs/39119771146), verification snapshot block `734952`. Receipt success, transaction sender, immutable creator, typed payload, expiry and trusted manifest verified.
+- **Important caveat:** At block `734952`, Wallet C's previous observation (expiring block `734864`) had *already expired*, so only B counted and the actual `fallbackQuorumStatus` was `unknown`. The 2-of-2 real quorum is **NOT YET VERIFIED**. A new Wallet C observation while B remains active is required. Do not misrepresent these separate valid transactions as simultaneous quorum.
