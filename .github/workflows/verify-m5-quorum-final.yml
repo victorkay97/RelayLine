@@ -1,0 +1,21 @@
+name: M5 fresh two-wallet live quorum proof
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/verify-m5-quorum-final.yml'
+      - 'scripts/check-m5-quorum.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-tiramisu-check:
+    name: Direct Arkiv snapshot of trusted B/C quorum
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: node scripts/check-m5-quorum.mjs
