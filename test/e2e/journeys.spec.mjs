@@ -78,16 +78,10 @@ test('self-hosted typography and Lucide SVG icons render',async ({page})=>{
 test('publisher and reader have no automated axe critical/serious WCAG failures',async ({page})=>{
   for(const route of ['/','/recover.html','/workspace.html','/docs.html']){
     await page.goto(route);
-    if(route==='/recover.html' && page.viewportSize().width<=320){
-      const debug=await page.locator('#pin-publisher').evaluate(node=>{
-        const chain=[];
-        for(let element=node;element&&chain.length<10;element=element.parentElement){
-          const css=getComputedStyle(element);
-          chain.push({tag:element.tagName,id:element.id,classes:element.className,disabled:element.matches(':disabled'),opacity:css.opacity,color:css.color,background:css.backgroundColor,filter:css.filter,visibility:css.visibility});
-        }
-        return chain;
-      });
-      console.log('RECOVERY_CONTRAST_DEBUG',JSON.stringify(debug));
+    // Vite imports CSS from JS; wait for final button styling before axe pixel sampling.
+    if(route==='/recover.html'){
+      await expect(page.locator('#pin-publisher')).toHaveCSS('color','rgb(239, 234, 255)');
+      await expect(page.locator('#clear-pin')).toHaveCSS('color','rgb(239, 234, 255)');
     }
     const results=await new AxeBuilder({page})
       .withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])
