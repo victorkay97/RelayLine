@@ -69,7 +69,7 @@ The one-time browser acceptance test is preserved as `test/e2e/m4-live-attacker.
 
 ## Additional M5/M6 signed test cases — PENDING
 
-Monitor A/B independent wallet observations, root-signed revocation and one-hop rotation still require user-approved test-only transaction(s). The automated mock tests and architecture are not substitutes for a live receipt.
+Monitor B/C observations were subsequently proven with a real 2-of-2 quorum on 2026-10-18 (see M5 section below). Root-signed revocation and one-hop rotation still require user-approved, signed live testnet transactions. The automated tests are not substitutes for those receipts.
 
 **Privacy/security:** no signing secrets or seed phrases are included here. The only wallet address shown is a public on-chain testnet identity.
 
