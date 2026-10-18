@@ -1,6 +1,8 @@
 import '@fontsource-variable/geist/wght.css';
 import '@fontsource-variable/inter/wght.css';
 import './styles.css';
+import './editorial.css';
+import './theme.mjs';
 import { paintIcons } from './icons.mjs';
 
 export { paintIcons };

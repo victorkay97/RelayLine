@@ -1,15 +1,16 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101126"><meta name="description" content="Manage Arkiv-published recovery services from your wallet."><title>RelayLine — Publisher workspace</title></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090909"><meta name="description" content="Manage Arkiv-published recovery services from your wallet."><title>RelayLine — Publisher workspace</title><script>(function(){try{var choice=localStorage.getItem('relayline:visual-theme');document.documentElement.dataset.theme=choice==='light'?'light':'dark'}catch(_){document.documentElement.dataset.theme='dark'}})();</script>
+</head>
 <body class="workspace-page"><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="nav-container">
 <a class="brand" href="./" aria-label="RelayLine home"><span class="brand-symbol"><i data-lucide="network"></i></span><span class="brand-name">relayline<span class="brand-dot">.</span></span></a>
 <nav class="primary-nav" aria-label="Primary navigation">
 <a href="./"><i data-lucide="house"></i><span>Home</span></a>
-<a href="./recover.html"><i data-lucide="compass"></i><span>Find a service</span></a>
-<a href="./docs.html"><i data-lucide="book-open"></i><span>Docs</span></a>
 <a href="./workspace.html" aria-current="page"><i data-lucide="layout-dashboard"></i><span>Workspace</span></a>
-</nav><span class="network-badge"><span class="pulse"></span> Arkiv testnet</span></div></header>
+<a href="./recover.html"><i data-lucide="compass"></i><span>Find a Service</span></a>
+<a href="./docs.html"><i data-lucide="book-open"></i><span>Documentation</span></a>
+</nav><div class="header-tools"><span class="network-badge"><span class="pulse"></span> Arkiv testnet</span></div></header>
 <main id="main" class="page-shell workspace-shell">
 <section class="workspace-header"><div>
 <span class="eyebrow"><span class="eyebrow-line"></span> PUBLISHER WORKSPACE</span>
@@ -81,5 +82,5 @@
     </section>
 
 <section class="workspace-footnote"><i data-lucide="shield-check"></i><div><strong>Wallet connection is not ownership of every service name.</strong><p>A wallet-signed record does not establish ownership of a service name. Readers authenticate the pinned root independently. A rotated publisher can act only after its signed root-authorized rotation is verified. Metrics describe manifest records, not live site uptime; no endpoint is automatically probed.</p></div></section>
-</main><footer class="site-footer"><div class="footer-inner"><span class="brand-name">relayline<span class="brand-dot">.</span></span><p>Independent discovery. Verifiable publishers.</p><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer">MIT licensed <i data-lucide="arrow-up-right"></i></a></div></footer>
+</main><footer class="site-footer"><div class="footer-inner"><span class="brand-name">relayline<span class="brand-dot">.</span></span><button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to light mode" title="Toggle light and dark appearance"><i data-lucide="sun"></i><span data-theme-label>Light</span></button></div><p>Independent discovery. Verifiable publishers.</p><a href="https://github.com/victorkay97/RelayLine" target="_blank" rel="noopener noreferrer">MIT licensed <i data-lucide="arrow-up-right"></i></a></div></footer>
 <script type="module" src="/web/workspace.mjs"></script><script type="module" src="/web/publisher.mjs"></script></body></html>

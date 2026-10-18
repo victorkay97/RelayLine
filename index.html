@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101126">
+  <meta name="theme-color" content="#090909">
   <meta name="description" content="RelayLine helps people rediscover publisher-signed recovery routes when a website becomes unavailable. Built on Arkiv.">
   <title>RelayLine — Stay reachable when your website isn't</title>
+<script>(function(){try{var choice=localStorage.getItem('relayline:visual-theme');document.documentElement.dataset.theme=choice==='light'?'light':'dark'}catch(_){document.documentElement.dataset.theme='dark'}})();</script>
 </head>
 <body class="home-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -13,12 +14,12 @@
     <div class="nav-container">
       <a class="brand" href="./" aria-label="RelayLine home"><span class="brand-symbol" aria-hidden="true"><i data-lucide="network"></i></span><span class="brand-name">relayline<span class="brand-dot">.</span></span></a>
       <nav class="primary-nav" aria-label="Primary navigation">
-        <a href="./" aria-current="page"><i data-lucide="house"></i><span>Home</span></a>
-        <a href="./recover.html"><i data-lucide="compass"></i><span>Find a service</span></a>
-        <a href="./docs.html"><i data-lucide="book-open"></i><span>Docs</span></a>
-        <a href="./workspace.html"><i data-lucide="layout-dashboard"></i><span>Workspace</span></a>
-      </nav>
-      <span class="network-badge" title="This product currently uses the Arkiv Tiramisu testnet"><span class="pulse"></span><span>Arkiv testnet</span></span>
+<a href="./" aria-current="page"><i data-lucide="house"></i><span>Home</span></a>
+<a href="./workspace.html"><i data-lucide="layout-dashboard"></i><span>Workspace</span></a>
+<a href="./recover.html"><i data-lucide="compass"></i><span>Find a Service</span></a>
+<a href="./docs.html"><i data-lucide="book-open"></i><span>Documentation</span></a>
+</nav>
+      <div class="header-tools"><span class="network-badge" title="This product currently uses the Arkiv Tiramisu testnet"><span class="pulse"></span><span>Arkiv testnet</span></span><button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to light mode" title="Toggle light and dark appearance"><i data-lucide="sun"></i><span data-theme-label>Light</span></button></div>
     </div>
   </header>
   <main id="main" class="page-shell">
@@ -33,14 +34,25 @@
         </div>
         <p class="home-hero-note"><i data-lucide="shield-check"></i> No wallet needed to read recovery routes. Publishing requires wallet approval.</p>
       </div>
-      <div class="hero-visual home-visual" role="img" aria-label="Conceptual recovery path: a primary site becomes unavailable, its publisher-signed recovery record stays readable on Arkiv, and an alternative route can be discovered. Reachability is not guaranteed.">
-        <div class="visual-topline"><span>THE RECOVERY PATH</span><span class="preview-tag">Conceptual example</span></div>
-        <div class="route-row route-muted"><div class="route-glyph"><i data-lucide="globe-2"></i></div><div class="route-label"><span>01 / PRIMARY WEBSITE</span><strong>Your usual destination</strong></div><span class="route-pill route-down"><i data-lucide="alert-triangle"></i> Unavailable</span></div>
-        <div class="route-rail" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="route-row route-focus"><div class="route-glyph"><i data-lucide="database"></i></div><div class="route-label"><span>02 / ON ARKIV</span><strong>Publisher-signed recovery record</strong></div><span class="route-pill"><i data-lucide="fingerprint"></i> Attributed</span></div>
-        <div class="route-rail" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="route-row"><div class="route-glyph"><i data-lucide="route"></i></div><div class="route-label"><span>03 / DISCOVERY</span><strong>Authorized alternative address</strong></div><span class="route-pill route-green"><i data-lucide="arrow-up-right"></i> Discoverable</span></div>
-        <div class="visual-footer"><i data-lucide="shield-alert"></i><span>A signed record identifies its creator wallet, not real-world ownership or guaranteed endpoint availability.</span></div>
+      <div class="signal-diagram" role="img" aria-label="Conceptual route diagram: when a primary site is unavailable, the publisher's signed Arkiv record can still be read to locate an authorized alternative. Availability is not guaranteed.">
+        <div class="signal-diagram-heading"><span>FIG. 01 <span class="signal-divider">/</span> A WAY BACK</span><span class="signal-notice"><span class="signal-ring"></span> CONCEPTUAL · NOT LIVE</span></div>
+        <div class="signal-canvas">
+          <div class="signal-watermark" aria-hidden="true">CONTINUITY</div>
+          <svg class="signal-lines" viewBox="0 0 1000 270" preserveAspectRatio="none" aria-hidden="true">
+            <path class="signal-wire-muted" d="M132,135 C265,135 278,55 395,75 S625,196 732,139 S806,135 860,135"/>
+            <path class="signal-wire-main" d="M132,135 C265,135 278,55 395,75 S625,196 732,139 S806,135 860,135"/>
+            <circle class="signal-node-muted" cx="132" cy="135" r="13"/>
+            <circle class="signal-node-core" cx="480" cy="104" r="14"/>
+            <circle class="signal-node-ring" cx="860" cy="135" r="13"/>
+            <path class="signal-cross" d="M126,129 L138,141 M138,129 L126,141"/>
+            <circle class="signal-core-mark" cx="480" cy="104" r="4"/>
+            <path class="signal-tick" d="M854,135 L858,139 L868,128"/>
+          </svg>
+          <div class="signal-station signal-station-one"><span class="signal-index">01 / ORIGIN</span><strong>Site<br>unavailable</strong><span class="signal-caption">The usual address fails</span></div>
+          <div class="signal-station signal-station-two"><span class="signal-index">02 / ARKIV</span><strong>Signed<br>record</strong><span class="signal-caption">Publisher-attributed data</span></div>
+          <div class="signal-station signal-station-three"><span class="signal-index">03 / RECOVERY</span><strong>Another<br>way in</strong><span class="signal-caption">A discoverable alternative</span></div>
+        </div>
+        <div class="signal-diagram-foot"><span><i data-lucide="fingerprint"></i> VERIFY THE PUBLISHER FIRST</span><span>RECORD ≠ GUARANTEED REACHABILITY</span></div>
       </div>
     </section>
 
@@ -51,7 +63,7 @@
     </section>
 
     <section class="home-process" id="how-it-works" aria-labelledby="process-title">
-      <div class="home-section-heading"><span class="eyebrow"><span class="eyebrow-line"></span> MADE FOR CONTINUITY</span><h2 id="process-title">A second route. <span class="heading-soft">A clearer signal.</span></h2><p>RelayLine separates publishing from discovery so people can still find an authorized route when the original service is unavailable.</p></div>
+      <div class="home-section-heading"><span class="eyebrow"><span class="eyebrow-line"></span> THE SYSTEM, EXPLAINED</span><h2 id="process-title">A little redundancy.<br><span class="heading-soft">A lot more resilience.</span></h2><p>RelayLine separates publishing from discovery so people can still find an authorized route when the original service is unavailable.</p></div>
       <div class="home-process-grid">
         <article><span class="home-step">01 / PUBLISH</span><div class="feature-icon"><i data-lucide="wallet"></i></div><h3>Create a recovery record</h3><p>In your wallet-connected workspace, register a primary website and an alternate HTTPS address. Publishing happens only after you approve a testnet transaction.</p></article>
         <article><span class="home-step">02 / VERIFY</span><div class="feature-icon"><i data-lucide="fingerprint"></i></div><h3>Pin the actual publisher</h3><p>Readers independently establish which wallet to trust. A service name or shared recovery link alone isn't proof of ownership.</p></article>
