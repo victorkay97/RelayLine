@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --ignore-scripts --no-audit --no-fund
-      - run: npm run build
+      - run: npm run build -- --base=/RelayLine/
       - name: Validate built publisher and reader pages
         run: test -f dist/index.html && test -f dist/workspace.html && test -f dist/recover.html
       - uses: actions/configure-pages@v5
