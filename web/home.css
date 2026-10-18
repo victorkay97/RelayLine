@@ -1,0 +1,53 @@
+/* Public marketing homepage, intentionally separate from the publisher wizard. */
+.home-page{background:radial-gradient(ellipse 68% 37% at 50% 5%,rgba(98,77,163,.13),transparent 80%),var(--bg)}
+.hero-home{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;padding:105px 0 86px}
+.hero-home:before{inset:0 auto auto 50%;transform:translateX(-50%);width:min(100%,1040px);height:760px;background:radial-gradient(ellipse at 50% 32%,rgba(95,77,156,.21),transparent 69%)}
+.hero-home .hero-copy{max-width:990px;width:100%;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.home-kicker{display:inline-flex;align-items:center;justify-content:center;gap:11px;border:1px solid #52507C;background:#252540;color:#D7CFF2;padding:9px 16px;border-radius:999px;font-size:10px;font-weight:650;letter-spacing:1.2px}
+.home-kicker .pulse{flex:none}
+.home-kicker-separator{color:#FFAA8E}
+.hero-home h1{font-size:clamp(58px,7.6vw,108px);letter-spacing:-6.7px;line-height:1.02;margin:33px auto 26px;max-width:1050px}
+.hero-home .heading-soft{color:#C9BFEF}
+.hero-home .hero-copy>p:not(.home-hero-note){max-width:665px;color:#BEBBD6;font-size:16px;line-height:1.86;margin:0}
+.hero-home .hero-actions{justify-content:center;margin:32px auto 0;gap:12px}
+.hero-home .hero-actions .btn{padding:15px 23px;min-height:53px;border-radius:12px;font-size:13px}
+.home-hero-note{display:inline-flex;align-items:center;justify-content:center;gap:9px;color:#AAA7C8;font-size:11.5px!important;margin:23px 0 0!important;line-height:1.6}
+.home-hero-note svg{width:16px;height:16px;color:#FFAA8E}
+.home-visual{width:min(780px,100%);margin:75px auto 0;padding:29px 33px;text-align:left;box-shadow:0 45px 100px rgba(5,4,20,.34)}
+.home-visual .visual-topline{margin-bottom:21px}
+.home-visual .route-row{padding:21px 23px}
+.home-visual .route-rail{height:25px;margin-left:42px}
+.home-visual .visual-footer{margin-top:24px}
+.home-process{padding:109px 0 113px}
+.home-section-heading{max-width:760px;margin-bottom:37px}
+.home-section-heading h2,.home-proof h2,.home-final h2{font-family:'Geist Variable',sans-serif;font-size:clamp(36px,4.3vw,63px);line-height:1.13;letter-spacing:-2.8px;font-weight:560;margin:18px 0}
+.home-section-heading p,.home-proof-copy>p,.home-final>p{color:#B4B1D0;font-size:14px;line-height:1.85;max-width:620px}
+.home-process-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.home-process-grid article{background:linear-gradient(150deg,#1D203E,#161831);border:1px solid #353858;border-radius:18px;padding:30px 28px;min-width:0}
+.home-step{color:#FFB19B;font-size:10px;letter-spacing:1.8px;font-weight:700}
+.home-process-grid .feature-icon{margin-top:30px;margin-bottom:18px}
+.home-process-grid h3{font-size:20px;letter-spacing:-.55px;margin-bottom:12px}
+.home-process-grid p{font-size:12.2px;line-height:1.84;color:#B8B5D3;margin:0}
+.home-proof{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.9fr);gap:10%;align-items:center;border-top:1px solid #343655;padding:105px 0 118px}
+.home-proof-copy>p{max-width:640px}
+.home-text-link{display:inline-flex;align-items:center;gap:9px;color:#FFC2AC;font-size:13px;font-weight:650;margin-top:10px;border-bottom:1px solid #73596B;padding-bottom:8px}
+.home-text-link svg{width:16px;height:16px}
+.home-proof-details{background:#1B1D38;border:1px solid #3A3C61;border-radius:20px;padding:10px 27px}
+.home-proof-details>div{display:flex;align-items:flex-start;gap:16px;padding:26px 0}
+.home-proof-details>div+div{border-top:1px solid #343655}
+.home-proof-details svg{color:#FFAA8E;width:23px;height:23px}
+.home-proof-details span{display:block;flex:1}
+.home-proof-details strong{display:block;font-size:14px}
+.home-proof-details small{display:block;color:#B0ADCB;font-size:11.5px;line-height:1.7;margin-top:6px}
+.home-final{margin-bottom:104px;border-radius:23px;border:1px solid #554F7B;padding:63px 30px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#333056,transparent 78%),#1B1D3A}
+.home-final .eyebrow{justify-content:center}
+.home-final h2{font-size:clamp(34px,4vw,56px)}
+.home-final>p{margin:0 auto 24px}
+.home-final-links{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.home-final-links a{font-size:12px;color:#FFD6C9;font-weight:650;display:inline-flex;align-items:center;gap:7px}
+.home-final-links svg{width:16px;height:16px}
+.home-page .footer-brand{margin:0;flex:none}
+.home-page .footer-brand .brand-name{font-size:19px}
+@media(max-width:900px){.hero-home{padding:79px 0 70px}.hero-home .hero-copy{max-width:840px}.hero-home h1{font-size:clamp(50px,8vw,81px);letter-spacing:-4px}.hero-home .hero-visual{margin:60px auto 0}.home-process{padding:85px 0}.home-process-grid article{padding:23px 20px}.home-proof{gap:6%;padding:82px 0}}
+@media(max-width:680px){.hero-home{padding:57px 0 57px}.home-kicker{font-size:8px;letter-spacing:.7px;padding:9px 12px;gap:7px}.hero-home h1{font-size:clamp(42px,10.9vw,65px);line-height:1.04;letter-spacing:-2.8px;margin:26px 0 23px}.hero-home .hero-copy>p:not(.home-hero-note){font-size:13.2px}.home-hero-note{font-size:10.5px!important}.hero-home .hero-actions{flex-direction:column;width:100%;max-width:350px;gap:10px}.hero-home .hero-actions .btn{width:100%}.home-visual{margin-top:47px!important;padding:18px 15px}.home-visual .route-row{padding:14px 11px}.home-visual .route-rail{margin-left:29px}.home-process{padding:66px 0}.home-section-heading h2,.home-proof h2{font-size:36px;letter-spacing:-1.65px}.home-process-grid{grid-template-columns:1fr}.home-process-grid article{padding:24px}.home-process-grid .feature-icon{margin-top:17px}.home-proof{grid-template-columns:1fr;gap:26px;padding:70px 0}.home-proof-details{padding:6px 19px}.home-final{margin-bottom:75px;padding:47px 18px}.home-final h2{font-size:34px;letter-spacing:-1.4px}}
+@media(max-width:395px){.home-kicker{font-size:7px;gap:6px;padding:9px}.hero-home h1{font-size:40px;letter-spacing:-2.6px}.home-visual .route-label strong{font-size:11px}.home-visual .route-pill{font-size:8px}.home-visual .visual-topline{letter-spacing:.8px}}
