@@ -1,4 +1,4 @@
-# RelayLine Arkiv schema — validation phase
+# RelayLine Arkiv schema — implemented on Tiramisu
 
 Target network: Tiramisu, chain ID 7738577; SDK 0.8.x.
 
@@ -14,7 +14,7 @@ Target network: Tiramisu, chain ID 7738577; SDK 0.8.x.
 - `createdBy(PINNED_PUBLISHER)` is available for regular authenticated discovery; the unfiltered diagnostic query demonstrates attacker rejection.
 - Query selection and trust evaluation must share a block snapshot (first query page's `blockNumber`).
 
-## Implemented in code: independent observation (M5, live writes not verified)
+## Implemented and live-verified: independent observation (M5)
 
 - Indexed attributes: `project: str("relayline-v1")`, `kind: str("observation")`, `service_id: str(id)`, `endpoint_id: str(id)`, `status: str("reachable"|"unreachable")`.
 - JSON payload: `{schema_version:1,service_id,manifest_key,endpoint_id,endpoint_url,status,observed_at_ms,http_status}`.
@@ -25,7 +25,7 @@ Target network: Tiramisu, chain ID 7738577; SDK 0.8.x.
 - Operator-only CLI enforces exact HTTPS URL allowlist and public IPv4 DNS lookup pinned for TLS request, without redirects. See `docs/MONITORING.md`.
 - Never interpret a monitor claim as proof of censorship. CLI cannot publish without an explicit funded monitor wallet and `MONITOR_PUBLISH=YES`.
 
-## Implemented in code: publisher revocation and single-hop key rotation (M6)
+## Implemented and live-verified: publisher revocation and single-hop key rotation (M6)
 
 ### Revocation
 
@@ -41,10 +41,19 @@ Target network: Tiramisu, chain ID 7738577; SDK 0.8.x.
 - Signed by the pinned **root** publisher wallet, names the next publisher signer. Exactly one active root-signed rotation is allowed; conflicting records fail closed. Successor must already publish a valid manifest with revision >= min_revision. This implementation deliberately **does not** support multiple hops.
 - Reader makes **one** all-kinds query (`project + service_id`) so manifest, revocation and rotation decisions share the same block snapshot; signed monitor observations can be evaluated from the same query.
 - Browser reader pins root wallet out of band and remembers maximum accepted revision, rotation epoch and observed publisher revocations in localStorage. This is a **local rollback fence**, not global indelibility. A new device without trusted history can still be fooled by missing/deleted control records. A record's owner can delete it despite `readonly`.
-- CLI `npm run revoke` or `npm run rotate` requires `CONTROL_PUBLISH=YES` and a dedicated test-only wallet. These writes are UNVERIFIED on the real Tiramisu chain until receipt evidence exists.
+- CLI `npm run revoke` or `npm run rotate` requires `CONTROL_PUBLISH=YES` and a dedicated test-only wallet. Real root-signed rotation and successor-signed revocation were verified on Tiramisu on 18 October 2026; see `docs/ONCHAIN_EVIDENCE.md` for transaction references, creators, block numbers and fail-closed policy results.
 
 ## Planned but not yet implemented
 
-- Multi-hop identity rotation, durable independent archival of controls and stronger monitor reputation. Live control writes still need testnet validation.
+- Multi-hop identity rotation, durable independent archival of controls, continuous separately hosted monitors and stronger monitor reputation. Existing real M5 observations were short-lived and are historical snapshots rather than currently valid endpoint-health evidence.
 
 Everything on Arkiv is publicly readable. Do not publish private keys, personal data, authentication credentials or secrets.
+
+
+## Public, independently verified chain evidence
+
+- M4: signed manifest, original publisher `$creator`, real attacker-wallet issuer rejection, and controlled primary-failure fallback; see `docs/ONCHAIN_EVIDENCE.md`.
+- M5: distinct test wallets B and C published short-lived signed observations. A 2-of-2 reachable quorum was verified at snapshot block `735175`; records have since expired.
+- M6: root-authorized one-hop rotation activated successor revision 2. A successor-signed revocation was then correctly rejected as a usable current manifest (`latest_manifest_revoked`, `selected=null`) at block `736262`.
+
+These facts do **not** imply perpetual storage, current monitoring coverage, real-world publisher-domain ownership, or a production security audit.

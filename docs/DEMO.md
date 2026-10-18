@@ -1,6 +1,17 @@
 # RelayLine — three-minute judge demonstration plan
 
-**Storyboard only — a video has NOT been recorded.** Runtime target: 165–175 seconds (must be ≤180 seconds). Use real Tiramisu data and screen captures; no simulated green states or fabricated hashes.
+ 
+## Current submission capture notes (18 October 2026)
+
+**Use the [final submission handoff](SUBMISSION_HANDOFF.md) for an updated 2:45 shot list, recording setup and final upload checklist.** That plan supersedes any older Vercel publisher screenshot in the draft below.
+
+- Capture the **current GitHub Pages** landing and workspace; all publishing happens in `/workspace.html`, not the earlier Vercel publisher homepage.
+- The GitHub Pages reader queries Arkiv directly but shares a hosting origin with the workspace. The separate Vercel reader is independent-host evidence and may still have the older UI.
+- A 165-second silent storyboard MP4 was produced in [GitHub Actions run 39125577473](https://github.com/victorkay97/RelayLine/actions/runs/39125577473); it has **not** been reviewed as the final submission and contains earlier visual branding.
+- Use **dated archival proof** for the controlled primary 404 / fallback 200 test, two-monitor quorum and signed revocation. Never claim these historical snapshots are current.
+- Record a clear narration, verify **≤180 seconds**, publish a video accessible to judges without login, and paste its URL into Devfolio.
+
+**Final reviewed/narrated video NOT YET CONFIRMED. A silent draft MP4 exists.** Runtime target: 165–175 seconds (must be ≤180 seconds). Use real Tiramisu data and screen captures; no simulated green states or fabricated hashes.
 
 | Time | Shot | Narration focus |
 | --- | --- | --- |

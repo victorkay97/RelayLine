@@ -7,14 +7,14 @@ Canonical rubric: https://github.com/Arkiv-Network/global-tour-stop-pre-devcon/b
 
 | Gate | Evidence | Status |
 | --- | --- | --- |
-| Public working deployment | [GitHub Pages home](https://victorkay97.github.io/RelayLine/), [workspace](https://victorkay97.github.io/RelayLine/workspace.html), [reader](https://victorkay97.github.io/RelayLine/recover.html), [docs](https://victorkay97.github.io/RelayLine/docs.html); optional [independently hosted reader](https://relayline-reader.vercel.app/recover.html) | PARTIAL — first browser-wallet write and real hosted reader acceptance passed; further browser/device coverage pending |
+| Public working deployment | [GitHub Pages home](https://victorkay97.github.io/RelayLine/), [workspace](https://victorkay97.github.io/RelayLine/workspace.html), [reader](https://victorkay97.github.io/RelayLine/recover.html), [docs](https://victorkay97.github.io/RelayLine/docs.html); optional [independently hosted reader](https://relayline-reader.vercel.app/recover.html) | PASS for publicly accessible route checks and automated multi-viewport page tests; wallet signing is not re-run on every deploy |
 | Reproducibility | `docs/VALIDATION.md`, `docs/REPRODUCE.md` | PASS — G1/G2/G3/G4 live Arkiv proofs in ONCHAIN_EVIDENCE.md; full third-party reproducibility subject to expiry |
 | MIT public repo | [Repository](https://github.com/victorkay97/RelayLine) | PASS |
-| `/arkiv/schema.md` | [Data model](../arkiv/schema.md) | PRESENT; live entity examples pending |
+| `/arkiv/schema.md` | [Data model](../arkiv/schema.md) | PRESENT; see real M4/M5/M6 examples in ONCHAIN_EVIDENCE.md |
 | Actual Tiramisu creation addresses | `docs/ONCHAIN_EVIDENCE.md` | **PASS** real M4, M5 and M6 signed transactions and entity addresses in ONCHAIN_EVIDENCE.md |
 | `/arkiv/friction.md` | [Developer report](../arkiv/friction.md) | PRESENT; FR-005/006/007/008 cover actual publication, identity filtering, signed monitor agreement, and control records |
-| Demo video ≤3 minutes | `docs/DEMO.md` | SCRIPT READY; footage/video not recorded |
-| Devfolio required fields | `docs/DEVFOLIO_DRAFT.md` | DRAFT; user must submit |
+| Demo video ≤3 minutes | `docs/DEMO.md`, `docs/SUBMISSION_HANDOFF.md`, [silent draft artifact](https://github.com/victorkay97/RelayLine/actions/runs/39125577473) | **BLOCKER** — 165-second silent draft exists, but a reviewed final demonstration and accessible video URL have not been confirmed |
+| Devfolio required fields | `docs/DEVFOLIO_DRAFT.md`, `docs/SUBMISSION_HANDOFF.md` | **BLOCKER** — draft exists; user must complete required questions and confirm submission |
 | Built Oct 9–18 | Git commit dates and new RelayLine code | PASS for code written here since Oct 13 |
 | Evidence survives expiry | Public tx hashes and video of real entities | Public tx references and CI evidence recorded; demonstration video outstanding |
 
@@ -46,3 +46,8 @@ See `arkiv/friction.md`. Expected/actual/reproduction is provided for successful
 ## Track strategy
 
 Primary: **Censorship Resistance**. Open Source and Security are plausible secondaries because a documented data contract and creator verification are shipped, but whether to enter those tracks must depend on independently reproducible evidence. Avoid Privacy claims: Arkiv records and wallet addresses are public, and the product is designed for public service metadata.
+
+
+## Immediate submission handoff
+
+Use [SUBMISSION_HANDOFF.md](SUBMISSION_HANDOFF.md) for the confirmed public links, remaining personal declarations and final video timeline. **A successful CI build is not proof a project has been submitted to Devfolio.**

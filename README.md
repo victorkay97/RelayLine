@@ -89,3 +89,9 @@ Visual direction updated from dark pine/lime to **midnight indigo / persimmon**.
 
 
 The homepage has **no publisher wizard**: its two primary routes lead to Workspace and Find a service. Wallet-backed listing creation and updates remain exclusively inside the workspace; the static docs hub links to technical specifications, trust boundaries, and judging evidence.
+
+## October 18, 2026 — Submission handoff
+
+The [Devfolio submission handoff](docs/SUBMISSION_HANDOFF.md) contains current public URLs, real testnet creator addresses, prepared form answers, eligibility checks and the remaining submission tasks. See the [demo recording guide](docs/DEMO.md) for a <=3-minute judge walkthrough.
+
+A prior silent MP4 draft was generated in [GitHub Actions run 39125577473](https://github.com/victorkay97/RelayLine/actions/runs/39125577473); it is not a reviewed final video. A public final video URL and Devfolio submission confirmation have **not** been verified, so do not claim the project is submitted until the portal confirms it.
