@@ -131,3 +131,15 @@ Wallet B must publish an observation while C's record is still unexpired; otherw
 - Direct read-only Arkiv query at block **735698**: original Wallet B revision-1 entity `0x5a73279e0abe7a2ee450cf2457b7c2617e4a6e1024d03ca8e3a2a95d770b0f91` was still selected at epoch **0**. Wallet C revision-2 manifest was explicitly rejected as **`untrusted_creator`** before any authorization.
 - This is the correct, expected fail-closed state before Wallet B signs a successor rotation.
 - **Not yet established:** live root-signed rotation and successor-signed revocation. Record their actual public receipts and post-control reader decisions separately.
+
+## M6: Authorized publisher rotation — PASS (2026-10-18)
+
+**Independent signed rotation receipt, immutable creator, and reader transition:** [GitHub Actions run 39122093399](https://github.com/victorkay97/RelayLine/actions/runs/39122093399) at `2026-10-18T11:09:43Z`.
+
+- Original root Wallet B: `0x024e3989ff6ed673c90613815dca3017ab9ea50d`.
+- Actual successful Wallet B signed rotation tx: `0x110deaa5d50fc93ed80158e3dae3e4614b877667d99664d0ad32e6c848810b8a`, block **735935**.
+- Actual immutable creator Wallet B; rotation entity `0x250d41fb30aa27ca3c44ee77edd373ad177cedcab5e2a385f219f1586e7e0866`.
+- Rotation authorizes Wallet C `0xe9949b46262a98210bd1e4ab9ac525ac055a2d1e`, epoch **1**, minimum manifest revision **2**.
+- Independent direct Arkiv query at block **736008** selected Wallet C's exact revision-2 entity `0x42884b4c0edb63f3231b003f0ae669c3621c9016bb20b6871548ec13b18f05b1`, `issue=null`, activeSigner Wallet C.
+- Before rotation this same revision was correctly rejected as `untrusted_creator`; the authorization *changed* the reader's decision without changing the out-of-band pinned root.
+- **Revocation of this active successor manifest has not yet been signed or verified.** Do not claim M6 fully complete until a separate real Wallet C signed revocation is confirmed and reader fails closed.
