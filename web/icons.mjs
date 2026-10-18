@@ -1,5 +1,5 @@
 import {
-  createIcons, Sun, Moon, ArrowRight, ArrowUpRight, ArrowLeft, ShieldCheck, ShieldAlert,
+  createIcons, House, Route, ScanEye, Layers3, Terminal, Sun, Moon, ArrowRight, ArrowUpRight, ArrowLeft, ShieldCheck, ShieldAlert,
   Globe2, Compass, Activity, LayoutDashboard, Wallet, KeyRound,
   Check, CheckCircle2, ChevronRight, ChevronLeft, ExternalLink,
   Copy, CircleHelp, Link2, Info, AlertTriangle, RefreshCw,
@@ -7,7 +7,7 @@ import {
   Clock3, Eye, Plus, Settings2, FileCheck2, BookOpen, RotateCw,
   CheckCircle, Circle, Network, Search, ClipboardCheck, Database
 } from 'lucide';
-const icons = { Sun, Moon, ArrowRight, ArrowUpRight, ArrowLeft, ShieldCheck, ShieldAlert,
+const icons = { House, Route, ScanEye, Layers3, Terminal, Sun, Moon, ArrowRight, ArrowUpRight, ArrowLeft, ShieldCheck, ShieldAlert,
   Globe2, Compass, Activity, LayoutDashboard, Wallet, KeyRound,
   Check, CheckCircle2, ChevronRight, ChevronLeft, ExternalLink,
   Copy, CircleHelp, Link2, Info, AlertTriangle, RefreshCw,

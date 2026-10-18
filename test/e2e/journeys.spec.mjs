@@ -220,3 +220,19 @@ test('light mode stays accessible and within the viewport',async({page})=>{
     expect(size.width).toBeLessThanOrEqual(size.viewport+1);
   }
 });
+
+test('all Lucide icons render without empty placeholders on every public route',async({page})=>{
+ const errors=[];
+ page.on('pageerror',error=>errors.push(error.message));
+ for(const route of ['/','/workspace.html','/recover.html','/docs.html']){
+   await page.goto(route);
+   await expect(page.locator('.brand-symbol svg')).toBeVisible();
+   const leftovers=await page.locator('i[data-lucide]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('data-lucide')));
+   if(leftovers.length) console.log('LUCIDE_LEFTOVERS',route,JSON.stringify(leftovers));
+   expect(leftovers).toEqual([]);
+ }
+ await page.goto('/');
+ await expect(page.locator('.home-process-grid article').nth(2).locator('.feature-icon svg')).toBeVisible();
+ await expect(page.locator('.home-proof-details > div').nth(2).locator('svg')).toBeVisible();
+ expect(errors).toEqual([]);
+});
