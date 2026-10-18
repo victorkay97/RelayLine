@@ -1,4 +1,4 @@
-# RelayLine Arkiv developer friction report (working log)
+# RelayLine Arkiv developer friction report (verified observations and reproducible tests)
 
 **2026-10-13 — not a completed hackathon friction submission.** Record actual, reproducible observations only.
 
@@ -52,7 +52,7 @@ Automated read-only probe: `npm run probe:friction`, pinned SDK `0.8.1`, Node 22
 
 **Reproduction:** `npm install && node scripts/verify-m4-publication.mjs` while record is active; see [G1/G2 workflow](https://github.com/victorkay97/RelayLine/actions/runs/38553133526). The controlled outage script `scripts/verify-m4-recovery.mjs` succeeds only when the primary test fixture is temporarily offline; see [G4 workflow](https://github.com/victorkay97/RelayLine/actions/runs/38553629942). The primary fixture was restored afterward.
 
-**Limitation:** This validates a controlled failed URL, not actual censorship. A separate attacker's real on-chain creation remains pending, as do monitor and control signed writes. No SDK bug is claimed from these successful tests.
+**Limitation (at the time of FR-005):** This validates a controlled failed URL, not actual censorship. Real attacker, signed monitor and control tests were later completed, as documented in FR-006 through FR-008. No SDK bug is claimed from successful tests.
 
 ## FR-006 — Real impostor creator filtering (2026-10-14)
 
@@ -63,3 +63,23 @@ Automated read-only probe: `npm run probe:friction`, pinned SDK `0.8.1`, Node 22
 **Observed:** **PASS**. Second-wallet transaction `0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8` in block 563832 created entity `0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be` with immutable creator `0x024e3989ff6ed673c90613815dca3017ab9ea50d`; service `relayline-demo-oct14`, revision **1**. The independent query at block 563943 found and rejected the entity for `untrusted_creator`, continuing to select the first legitimate entity. Browser E2E accepted the legitimate endpoints and listed the rejection on desktop, mobile and compact views.
 
 **Reproduce:** `ATTACKER_ADDRESS=0x024e3989ff6ed673c90613815dca3017ab9ea50d ATTACKER_TX_HASH=0xd25321913a8d03b2356b4d4716f114de0a631bcc7127f5cde7b043dbe791dbf8 ATTACKER_ENTITY_KEY=0x2b47b26391ba4d35fa4a481f15b02bc48c7a64d041507152ed54cf32c41231be node scripts/verify-m4-impersonation.mjs`, while both entities are active. [Read-only verifier log](https://github.com/victorkay97/RelayLine/actions/runs/38557421557). [Hosted UI acceptance log](https://github.com/victorkay97/RelayLine/actions/runs/38557845347). This successful result does not establish an SDK defect or broader censorship resistance.
+
+## FR-007 — Real signed short-lived monitor observations and Node HTTPS preflight (2026-10-18)
+
+**Environment:** Node 22 Linux GitHub Actions runner and Windows developer CLI; public Tiramisu RPC chain 7738577; HTTPS allowlisted fallback test website. Two disposable wallets with publicly verifiable `$creator`.
+
+**Expected:** Monitor writes should be accepted with funded test-wallet gas; observation records should be short-lived and individually attributed. Policy requires two agreeing active trusted monitor identities before reporting `reachable`, otherwise `unknown`.
+
+**Actual:** An initial Linux dry-run surfaced a Node 22+ `lookup({all:true})` return-shape mismatch in RelayLine's own pinned HTTPS probe code; we fixed it to return array data when requested, and the dry-run passed HTTP 200. This was an **application integration bug, not an Arkiv SDK defect**. Subsequently Wallet B and C signed actual on-chain observations. On independent public query block **735175**, the evaluator returned `verifiedReachableSigners=2`, `rejectedObservationCount=0`, `fallbackQuorumStatus=reachable`. Their records expired normally, so earlier/later single-wallet snapshots returned `unknown`.
+
+**Reproduce/evidence:** [M5 preflight](https://github.com/victorkay97/RelayLine/actions/runs/39115016291), [signed B observation](https://github.com/victorkay97/RelayLine/actions/runs/39119771146), [signed C observation](https://github.com/victorkay97/RelayLine/actions/runs/39119115149), [2-of-2 quorum snapshot](https://github.com/victorkay97/RelayLine/actions/runs/39120257742). Code `scripts/check-m5-quorum.mjs`; snapshot is historical rather than guaranteed reproducible after expiry. Test wallets are distinct signers, **not** independently hosted monitors.
+
+## FR-008 — Root-authorized successor rotation and active-manifest revocation (2026-10-18)
+
+**Environment:** Public Tiramisu chain 7738577; original Wallet B root, successor Wallet C, disposable service `relayline-m6-oct18`. Reader pins Wallet B out-of-band, then checks actual immutable creator and active control entities.
+
+**Expected:** A higher-revision manifest published by Wallet C is untrusted before root approval. After Wallet B signs an epoch-1 one-hop rotation, reader should select Wallet C's revision 2. Once Wallet C revokes that active entity, reader should refuse recovery, not fall back to old Wallet B revision 1.
+
+**Actual:** Pre-rotation proof [run 39121384917](https://github.com/victorkay97/RelayLine/actions/runs/39121384917) rejected Wallet C as `untrusted_creator`. Root signed rotation tx `0x110deaa5d50fc93ed80158e3dae3e4614b877667d99664d0ad32e6c848810b8a` (block 735935); reader activated epoch 1 / Wallet C revision 2 at block **736008** ([run 39122093399](https://github.com/victorkay97/RelayLine/actions/runs/39122093399)). Successor signed revocation tx `0x4ed2e6e916d4d3f16960d02d7080f5da6d526657032a95349ecd706c089a5444` (block 736179), targeting `0x42884b4c0edb63f3231b003f0ae669c3621c9016bb20b6871548ec13b18f05b1`. At block **736262**, reader showed `issue=latest_manifest_revoked`, `selected=null`, no rollback to Wallet B's old record ([run 39122663682](https://github.com/victorkay97/RelayLine/actions/runs/39122663682)).
+
+**Interpretation and limitation:** The SDK worked for the tested transactions; no SDK fault is claimed. Control deletion/expiry and root compromise remain security limitations. This records observed chain snapshots, not permanent revocation or production key-recovery guarantees.
